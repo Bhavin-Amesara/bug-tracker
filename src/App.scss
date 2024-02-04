@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+// color palette
+:root {
+  --walnut-brown: #544b3dff;
+  --ebony: #515d4bff;
+  --hookers-green: #4e6e58ff;
+  --hookers-green-2: #4d7a68ff;
+  --viridian: #4c8577ff;
+  --cambridge-blue: #79b9acff;
+  --tiffany-blue: #a6ece0ff;
+  --tiffany-blue-2: #90e6ceff;
+  --aquamarine: #7adfbbff;
+  --aquamarine-2: #86e2c1ff;
+}
+// global styles
+:root {
+  --primary-color: #0066cc;
+  --secondary-color: #004080;
+  --teritary-color: #003366;
+  --fade-primary-color: #a8cbff;
+  --dark-color: #000;
+  --fade-dark-color: #333;
+  --light-color: #fff;
+  --fade-light-color: #d6d6d6;
+  --danger-color: #ff5e5e;
+  --success-color: #5eff5e;
+  --success-color-2: #009646;
+  --warning-color: #ffdb5e;
+  --info-color: #5e9eff;
+  --border-radius: 5px;
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  --transition: 0.4s;
+  --font-family: 'Poppins', sans-serif;
+  --font-size: 16px;
+  --font-weight: 400;
+  --line-height: 1.6;
+  --letter-spacing: 0.5px;
+  --container-width: 1200px;
+  --container-padding: 20px;
+  --container-margin: 0 auto;
+  --container-gap: 20px;
+  --container-min-width: 300px;
+  --container-max-width: 1200px;
+}
+
+// universal styles
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  color: var(--dark-color);
+  background-color: var(--fade-light-color);
+}
+
+.container {
+  width: 100%;
+  padding: var(--container-padding);
+  margin: var(--container-margin);
+  gap: var(--container-gap);
+  min-width: var(--container-min-width);
+  max-width: var(--container-max-width);
+}

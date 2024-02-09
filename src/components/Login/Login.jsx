@@ -1,50 +1,54 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "./Login.scss";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import "./Login.scss";
 
-const LoginPage = (props) => {
+const LoginPage = () => {
 
     const mySwal = withReactContent(Swal);
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loginMsg, setLoginMsg] = useState("")
+    const [setErrorClass, setSetErrorClass] = useState("error")
     
         
     const handleLogin = (e) => {
         e.preventDefault();
         if (email === "" || password === "") {
             setLoginMsg("Please enter email and password");
+            setSetErrorClass("authFailed");
             return;
         }
-        fetch("auth/login", {
+        const user = {
+            email: email,
+            password: password,
+        };
+
+        fetch("api/users/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email: email, password: password }),
+            body: JSON.stringify(user),
         })
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
-            if (data.message === "User found") {
-                setLoginMsg("User found");
+            if (data.message === "Login successful") {
                 mySwal.fire({
-                    title: "User found",
+                    title: "Login successfully",
                     text: "You are now logged in",
                     icon: "success",
                     confirmButtonText: "Ok",
                 });
+                console.log(mySwal);
+                setLoginMsg(data.message);
+                setSetErrorClass("authSuccess");
             } else {
-                setLoginMsg("User not found");
-                mySwal.fire({
-                    title: "Error",
-                    text: "User not found",
-                    icon: "error",
-                    confirmButtonText: "Ok",
-                });
+                setLoginMsg(data.message);
+                setSetErrorClass("authFailed");
             }
         });
     }
@@ -57,6 +61,7 @@ const LoginPage = (props) => {
             <form onSubmit={handleLogin} className="formAuth d-flex-column">
                 <div className="inputContainer">
                     <input
+                        type="email"
                         value={email}
                         placeholder="Enter your email here"
                         onChange={ev => setEmail(ev.target.value)}
@@ -65,6 +70,7 @@ const LoginPage = (props) => {
                 
                 <div className="inputContainer">
                     <input
+                        type="password"
                         value={password}
                         placeholder="Enter your password here"
                         onChange={ev => setPassword(ev.target.value)}
@@ -78,7 +84,7 @@ const LoginPage = (props) => {
                         value={"Log in"} />
                 </div>
             </form>
-            <div className="errorLabel">
+            <div className={setErrorClass}>
                 <span>{loginMsg}</span>
             </div>
             <div className="authLink">

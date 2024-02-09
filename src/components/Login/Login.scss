@@ -56,8 +56,13 @@
     }
   }
 
-  .errorLabel{
+  .authFailed{
     color: var(--danger-color);
+    font-size: var(--fs-small);
+    margin-bottom: 20px;
+  }
+  .authSuccess{
+    color: var(--success-color3);
     font-size: var(--fs-small);
     margin-bottom: 20px;
   }

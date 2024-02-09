@@ -16,10 +16,10 @@ const Navbar = () => {
         </div>
         <div className="navbar-middle">
           <ul>
-            <NavMenuItem title="BugZone" />
-            <NavMenuItem title="Projects" />
+            <NavMenuItem title="BugZone" routeLink="/bugzone" />
+            <NavMenuItem title="Projects" routeLink="/projects" />
             <NavMenuItem title="Tickets" routeLink="/issues" />
-            <NavMenuItem title="Search" />
+            <NavMenuItem title="Search" routeLink="/search" />
           </ul>
         </div>
         <div className="navbar-right">
@@ -28,7 +28,7 @@ const Navbar = () => {
             <Link to="/profile" className="profile">Profile</Link>
             <Link to="/login" className="login">Login</Link>
             <Link to="/register" className="onboarding">Register</Link>
-            <Link to="/logout" className="logout">Logout</Link>            
+            {/* <Link to="/logout" className="logout">Logout</Link>             */}
           </div>
         </div>
       </div>

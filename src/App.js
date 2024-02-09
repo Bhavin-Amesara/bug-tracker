@@ -4,6 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Issues from './components/Issues/Issues';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -32,7 +33,11 @@ function App() {
           <Issues />
         </>
         } />
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={
+        <>
+          <ErrorPage />
+        </>
+        } />
       </Routes>
     </Router>
  </>   

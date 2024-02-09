@@ -11,7 +11,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
     const [registerMsg, setRegisterMsg] = useState("");
-    const [msgColor, setMsgColor] = useState("");
+    const [setErrorClass, setSetErrorClass] = useState("error")
     const navigate = useNavigate();
 
     const mySwal = withReactContent(Swal);
@@ -25,6 +25,12 @@ const Register = () => {
             role: role,
         };
 
+        if (email === "" || username === "" || password === "" || role === "") {
+            setRegisterMsg("Please fill all fields");
+            setSetErrorClass("authFailed");
+            return;
+        }
+
         fetch("api/users/register", {
             method: "POST",
             headers: {
@@ -36,9 +42,8 @@ const Register = () => {
         .then((data) => {
             console.log(data.errMessage);
             if (data.errMessage) {
-                // setRegisterMsg(data.errMessage);
-                // setMsgColor("red");
-
+                setRegisterMsg(data.errMessage);
+                setSetErrorClass("authFailed");
                 mySwal.fire({
                     title: "Error",
                     text: data.errMessage,
@@ -48,7 +53,7 @@ const Register = () => {
             } else {
                 console.log("User created successfully");
                 setRegisterMsg("User created successfully");
-                setMsgColor("green");
+                setSetErrorClass("authSuccess");
                 
                 mySwal.fire({
                     title: "User created successfully",
@@ -88,7 +93,7 @@ const Register = () => {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Enter your username here"
-                            required
+                            // required
                         />
                     </div>
                     <div className="inputContainer">
@@ -98,7 +103,7 @@ const Register = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email here"
-                            required
+                            // required
                         />
                     </div>
                     <div className="inputContainer">
@@ -108,7 +113,7 @@ const Register = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password here"
-                            required
+                            // required
                         />
                     </div>
                     <div className="inputContainer">
@@ -117,7 +122,7 @@ const Register = () => {
                                 id="role" 
                                 value={role} 
                                 onChange={(e) => setRole(e.target.value)}
-                            required
+                            // required
                             >
                                 <option value="">Select a role</option>
                                 <option value="developer">Developer</option>
@@ -131,7 +136,7 @@ const Register = () => {
                     </div>
                 </form>
                 <div className="errorLabel">
-                    <span style={{ color: msgColor }}>{registerMsg}</span>
+                    <span className={setErrorClass}>{registerMsg}</span>
                 </div>
                 <div className="authLink">
                     Already have an account? <Link to="/login">Log in</Link>

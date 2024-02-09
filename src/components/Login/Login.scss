@@ -1,0 +1,70 @@
+.authContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: calc(100vh - 60px);
+
+  .titleContainer{
+    font-size: var(--fs-xxlarge);
+    text-transform: uppercase;
+  }
+
+  .formAuth{
+    width: 100%;
+    max-width: 400px;
+
+    .inputContainer input{
+      padding: 10px;
+      width: 250px;
+      font-size: var(--fs-small);
+      border: 1px solid var(--primary-color);
+      margin-bottom: 20px;
+
+      &:focus{
+        outline: none;
+        border-color: var(--secondary-color);
+      }
+    }
+
+    input[type="submit"]{
+      cursor: pointer;
+      font-size: var(--fs-normal);
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      text-transform: uppercase;
+      letter-spacing: var(--letter-spacing);
+      transition: background-color 0.3s ease;
+
+      &:hover{
+        background-color: var(--secondary-color);
+      }
+    }
+
+    select{
+      padding: 10px;
+      width: 250px;
+      font-size: var(--fs-small);
+      border: 1px solid var(--primary-color);
+      cursor: pointer;
+      margin-bottom: 20px;
+
+      &:focus{
+        outline: none;
+        border-color: var(--secondary-color);
+      }
+    }
+  }
+
+  .errorLabel{
+    color: var(--danger-color);
+    font-size: var(--fs-small);
+    margin-bottom: 20px;
+  }
+
+  .authLink{
+    font-size: var(--fs-small);
+    text-align: center;
+    margin-top: 20px;
+  }
+}

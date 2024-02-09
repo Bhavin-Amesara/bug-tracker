@@ -1,5 +1,7 @@
 // import React from 'react';
 import "./Navbar.scss";
+import NavMenuItem from "./NavMenuItem";
+import { Link } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -8,31 +10,25 @@ const Navbar = () => {
       <div className="navbar container">
         <div className="navbar-left">
           <div className="nav-logo">
-            <a href="#">BugTracker</a>
+            {/* <a href="#">BugTracker</a> */}
+            <Link to="/">BugTracker</Link>
           </div>
         </div>
         <div className="navbar-middle">
           <ul>
-            <li className="nav-item">
-              <a className="nav-link">BugZone</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link">Projects</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link">Tickets</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link">Search</a>
-            </li>
+            <NavMenuItem title="BugZone" />
+            <NavMenuItem title="Projects" />
+            <NavMenuItem title="Tickets" routeLink="/issues" />
+            <NavMenuItem title="Search" />
           </ul>
         </div>
         <div className="navbar-right">
           <div className="auth">
-            <a href="#" className="profile">Profile</a>
-            <a href="#" className="onboarding">Login</a>
-            <a href="#" className="onboarding">Register</a>
-            <a href="#" className="logout">Logout</a>
+            {/* link to */}
+            <Link to="/profile" className="profile">Profile</Link>
+            <Link to="/login" className="login">Login</Link>
+            <Link to="/register" className="onboarding">Register</Link>
+            <Link to="/logout" className="logout">Logout</Link>            
           </div>
         </div>
       </div>

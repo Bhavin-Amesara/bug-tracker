@@ -8,14 +8,14 @@ nav{
     justify-content: space-between;
     align-items: center;
     color: var(--light-color);
-    padding: 20px;
+    padding: 15px;
     transition: var(--transition);
 
     .navbar-left {
         padding-left: 20px;
 
         .nav-logo {
-            font-size: 24px;
+            font-size: var(--fs-large);
             font-weight: 500;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -45,7 +45,7 @@ nav{
 
             .nav-link {
                 padding: 10px;
-                font-size: 18px;
+                font-size: var(--fs-normal);
                 font-weight: 500;
                 letter-spacing: 1px;
                 text-decoration: none;
@@ -69,7 +69,7 @@ nav{
             letter-spacing: 1px;
             
             a {
-                font-size: 18px;
+                font-size: var(--fs-normal);
                 padding: 5px 10px;
                 margin: 0 10px;
                 color: var(--light-color);

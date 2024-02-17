@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.scss";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const LoginPage = () => {
+const LoginPage = ({setIsLoggedIn}) => {
 
+    const navigate = useNavigate();
     const mySwal = withReactContent(Swal);
 
     const [email, setEmail] = useState("")
@@ -37,15 +38,20 @@ const LoginPage = () => {
         .then((data) => {
             console.log(data);
             if (data.message === "Login successful") {
+                setIsLoggedIn(true);
                 mySwal.fire({
                     title: "Login successfully",
                     text: "You are now logged in",
                     icon: "success",
                     confirmButtonText: "Ok",
+                }).then(() => {
+                    navigate("/issues");
                 });
-                console.log(mySwal);
                 setLoginMsg(data.message);
                 setSetErrorClass("authSuccess");
+            } else if (data.message === "Unauthorized") {
+                setLoginMsg(data.message);
+                setSetErrorClass("authFailed");
             } else {
                 setLoginMsg(data.message);
                 setSetErrorClass("authFailed");

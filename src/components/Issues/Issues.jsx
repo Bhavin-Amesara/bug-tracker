@@ -3,17 +3,22 @@ import { useState, useEffect } from 'react';
 import $ from 'jquery';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import DataTable from 'datatables.net';
+import { Link } from 'react-router-dom';
+import ViewIssues from './ViewIssues';
+import CreateIssue from './CreateIssue';
 
-const Issues = () => {
+const Issues = ({ userDetails }) => {
     // const [userdata, setuserData] = useState([{}]);
     const [issuedata, setissueData] = useState([{}]);
     const [issueTracker, setIssueTracker] = useState([{}]);
+    const [responseMessage, setResponseMessage] = useState("");
     var random = "nitish";
     
     useEffect(() => {
         fetch("api/issues")
         .then((response) => response.json())
         .then((data) => {
+            console.log(data);
             setissueData(data);
         })
     }, [random]);
@@ -22,12 +27,15 @@ const Issues = () => {
         fetch("api/issue-tracker")
         .then((response) => response.json())
         .then((data) => {
+            if(data.message === "Unauthorized"){
+                setResponseMessage(data.message);
+            }
             setIssueTracker(data);
         })
     }, [random]);
 
-    console.log(issuedata.issues);
-    console.log(issueTracker.issueTracker);
+    // console.log(issuedata.issues);
+    // console.log(issueTracker.issueTracker);
 
     // try {
         
@@ -60,13 +68,38 @@ const Issues = () => {
         console.log(issuedata.issues);
     }
 
+    const [viewIssues, setViewIssues] = useState(true);
+    function toggleViewIssues(){
+        setViewIssues(!viewIssues);
+        var issueMenuLink = document.querySelector('.issueMenuLink');
+        var currentClass = issueMenuLink.className;
+        if(currentClass !== "issueMenuLink active"){
+            issueMenuLink.className = "issueMenuLink active";
+        } else {
+            issueMenuLink.className = "issueMenuLink";
+        }
+    }
     return (
-        <div className="dashcontent container">
-            <div className="table">
-                <div className="table-title dashboard-title">Recent Bugs</div>
-                <table id="table_id" className="display">
-                </table>
-            </div>
+        <div className="issuecontent container">
+            {
+            responseMessage !== "" ? 
+                <>
+                    <div className="response-message">{responseMessage}<br/>
+                    <span>To access the data, please login first</span></div>
+                </>
+            : 
+                <>
+                    <div className="issueHeader">
+                        <div className="table-title dashboard-title">Recent Bugs</div>
+                        <div className='issueMenu'>
+                            <Link to="/issues" onClick={() => toggleViewIssues()} className="issueMenuLink">Create Issues</Link>
+                        </div>
+                    </div>
+
+                    { !viewIssues ? <CreateIssue userDetails={userDetails} /> : null }
+                    <ViewIssues />
+                </>
+            }
         </div>
     );
 }

@@ -31,7 +31,7 @@ const Register = () => {
             return;
         }
 
-        fetch("api/users/register", {
+        fetch("api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,13 +40,13 @@ const Register = () => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.errMessage);
-            if (data.errMessage) {
-                setRegisterMsg(data.errMessage);
+            console.log(data.status);
+            if (data.status) {
+                setRegisterMsg(data.status);
                 setSetErrorClass("authFailed");
                 mySwal.fire({
                     title: "Error",
-                    text: data.errMessage,
+                    text: data.message,
                     icon: "error",
                     confirmButtonText: "Ok",
                 });
@@ -87,6 +87,7 @@ const Register = () => {
             <div className="form">
                 <form onSubmit={handleRegister} className="formAuth d-flex-column">
                     <div className="inputContainer">
+                        <span className="material-symbols-outlined">email</span>
                         <input
                             type="text"
                             id="username"
@@ -97,6 +98,7 @@ const Register = () => {
                         />
                     </div>
                     <div className="inputContainer">
+                        <span className="material-symbols-outlined">person</span>
                         <input
                             type="email"
                             id="email"
@@ -107,6 +109,7 @@ const Register = () => {
                         />
                     </div>
                     <div className="inputContainer">
+                        <span className="material-symbols-outlined">password</span>
                         <input
                             type="password"
                             id="password"
@@ -122,12 +125,9 @@ const Register = () => {
                                 id="role" 
                                 value={role} 
                                 onChange={(e) => setRole(e.target.value)}
-                            // required
                             >
                                 <option value="">Select a role</option>
                                 <option value="developer">Developer</option>
-                                <option value="manager">Manager</option>
-                                <option value="project manager">Project Manager</option>
                                 <option value="user">User</option>
                             </select>
                     </div>

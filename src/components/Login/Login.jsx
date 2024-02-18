@@ -3,17 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Login.scss";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
-const LoginPage = ({setIsLoggedIn}) => {
+const LoginPage = () => {
+    // context
+    const { dispatch } = useAuthContext();
 
     const navigate = useNavigate();
     const mySwal = withReactContent(Swal);
-
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loginMsg, setLoginMsg] = useState("")
     const [setErrorClass, setSetErrorClass] = useState("error")
-    
         
     const handleLogin = (e) => {
         e.preventDefault();
@@ -27,7 +28,7 @@ const LoginPage = ({setIsLoggedIn}) => {
             password: password,
         };
 
-        fetch("api/users/login", {
+        fetch("api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -37,11 +38,21 @@ const LoginPage = ({setIsLoggedIn}) => {
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
-            if (data.message === "Login successful") {
-                setIsLoggedIn(true);
+            if (data.status === true) {
+                // set to local storage
+                localStorage.setItem("user", JSON.stringify({
+                    userId: data.data._id,
+                    isLoggedIn: data.data.isLoggedIn,
+                    username: data.data.username,
+                    email: data.data.email,
+                    role: data.data.role,
+                    lastSeen: data.data.lastSeen,
+                    token: data.extraDetails.token,
+                }));
+                dispatch({ type: "LOGIN", payload: data.data });
                 mySwal.fire({
-                    title: "Login successfully",
-                    text: "You are now logged in",
+                    title: "Login successful",
+                    text: "You have been logged in successfully",
                     icon: "success",
                     confirmButtonText: "Ok",
                 }).then(() => {
@@ -49,10 +60,22 @@ const LoginPage = ({setIsLoggedIn}) => {
                 });
                 setLoginMsg(data.message);
                 setSetErrorClass("authSuccess");
-            } else if (data.message === "Unauthorized") {
+            } else if (data.status === false) {
                 setLoginMsg(data.message);
                 setSetErrorClass("authFailed");
+                mySwal.fire({
+                    title: "Error",
+                    html: `<div class="error-msg">${data.message}</div>` + `<div class="error-msg">${data.extraDetails}</div>`,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                });
             } else {
+                mySwal.fire({
+                    title: "Error",
+                    text: data.message,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                });
                 setLoginMsg(data.message);
                 setSetErrorClass("authFailed");
             }
@@ -66,6 +89,7 @@ const LoginPage = ({setIsLoggedIn}) => {
         <div className="form">
             <form onSubmit={handleLogin} className="formAuth d-flex-column">
                 <div className="inputContainer">
+                <span className="material-symbols-outlined">email</span>
                     <input
                         type="email"
                         value={email}
@@ -75,6 +99,7 @@ const LoginPage = ({setIsLoggedIn}) => {
                 </div>
                 
                 <div className="inputContainer">
+                    <span className="material-symbols-outlined">password</span>
                     <input
                         type="password"
                         value={password}

@@ -1,18 +1,25 @@
-// import React from 'react';
+
 import "./Navbar.scss";
 import NavMenuItem from "./NavMenuItem";
-import { Link } from 'react-router-dom';
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuthContext } from '../../hooks/useAuthContext';
+import useLogout from '../../hooks/useLogout';
 
-
-const Navbar = ({IsLoggedIn}) => {
-  console.log(IsLoggedIn, "IsLoggedIn from Navbar");
+const Navbar = () => {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+  
+  const logout = useLogout();
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  }
   return (
     <nav>
       <div className="navbar container">
         <div className="navbar-left">
           <div className="nav-logo">
-            {/* <a href="#">BugTracker</a> */}
-            <Link to="/">BugTracker</Link>
+            <NavLink to="/">BugTracker</NavLink>
           </div>
         </div>
         <div className="navbar-middle">
@@ -25,22 +32,18 @@ const Navbar = ({IsLoggedIn}) => {
         </div>
         <div className="navbar-right">
           <div className="auth">
-            {/* link to */}
-            {/* check is cookies set or not */}
-            { 
-              IsLoggedIn ?
+            { user &&
+              user.isLoggedIn ? 
               <>
-                <Link to="/profile" className="profile">Profile</Link>
-                <Link to="/logout" className="logout">Logout</Link>
+                <NavLink to="/profile" className="profile">Profile</NavLink>
+                <button className="logout" onClick={handleLogout}>Logout</button>
               </>
               :
               <>
-                <Link to="/login" className="login">Login</Link>
-                <Link to="/register" className="onboarding">Register</Link>
+                <NavLink to="/login" className="login">Login</NavLink>
+                <NavLink to="/register" className="onboarding">Register</NavLink>
               </>
             }
-            {/* <Link to="/logout" className="logout">Logout</Link> */}
-            {/* <Link to="/logout" className="logout">Logout</Link>             */}
           </div>
         </div>
       </div>

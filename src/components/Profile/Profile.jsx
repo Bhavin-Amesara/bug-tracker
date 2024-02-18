@@ -1,22 +1,24 @@
 import './Profile.scss';
-import { useState, useEffect } from 'react';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
-const Profile = ({ userDetails }) => {
-    console.log(userDetails);
+const Profile = () => {
+    // context
+    const { user } = useAuthContext();
+    function captilizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    var lastSeen = user.lastSeen;
+    if (lastSeen) {
+        lastSeen = formatDistanceToNow(new Date(lastSeen), { addSuffix: true });
+    }
+
     function zoomImage() {
         var img = document.querySelector('.profile-picture img');
         img.style.transform = "scale(1.5)";
         img.style.transition = "transform 0.25s ease";
-
-        // blur the background
-        // var container = document.querySelector('.profile-container');
-        // container.style.filter = "blur(2px)";
-        // container.style.transition = "filter 0.25s ease";
-        // setTimeout(() => {
-        //     container.style.filter = "blur(0px)";
-        // }, 2000);
-    }
-
+    }    
 
     function handleProfilePicture() {
         document.getElementById('fileInput').click();
@@ -39,14 +41,15 @@ const Profile = ({ userDetails }) => {
                     {/* Add profile picture */}
                     <div className="profile-info">
                         <h3>Personal Information</h3>
-                        <p>Name: {userDetails.username}</p>
-                        <p>Email: {userDetails.email}</p>
-                        {/* Add more profile information */}
+                        <p>Name: {user && captilizeFirstLetter(user.username)}</p>
+                        <p>Email: {user && user.email}</p>
+                        <p>Role: {user && captilizeFirstLetter(user.role)}</p>
+                        
                     </div>
                     <div className="profile-activity">
                         <h3>Recent Activity</h3>
                         <ul>
-                            <li>Logged in on 2022-01-01</li>
+                            <li>Last seen: {user && lastSeen}</li>
                             <li>Updated profile picture on 2022-01-02</li>
                             {/* Add more recent activity */}
                         </ul>

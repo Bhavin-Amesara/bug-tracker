@@ -1,14 +1,12 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Navbar.scss";
 
 const NavMenuItem = ({ title, routeLink }) => {
     return (
         <li className="nav-item">
-            <Link to={routeLink} className="nav-link">
-            {/* <a className="nav-link"> */}
+            <NavLink to={routeLink} className="nav-link">
                 {title}
-            {/* </a> */}
-            </Link>
+            </NavLink>
         </li>
     );
 }

@@ -14,30 +14,45 @@
     width: 100%;
     max-width: 400px;
 
-    .inputContainer input{
-      padding: 10px;
-      width: 250px;
-      font-size: var(--fs-small);
-      border: 1px solid var(--primary-color);
-      margin-bottom: 20px;
-
-      &:focus{
-        outline: none;
-        border-color: var(--secondary-color);
+    .inputContainer {
+      display: flex;
+      position: relative;
+      
+      span{
+        position: absolute;
+        right: 0px;
+        margin-bottom: 20px;
+        padding: 10px;
+        color: var(--primary-color);
       }
-    }
 
-    input[type="submit"]{
-      cursor: pointer;
-      font-size: var(--fs-normal);
-      background-color: var(--primary-color);
-      color: var(--light-color);
-      text-transform: uppercase;
-      letter-spacing: var(--letter-spacing);
-      transition: background-color 0.3s ease;
+      input{
+        padding: 10px;
+        width: 250px;
+        font-size: var(--fs-small);
+        border: 1px solid var(--primary-color);
+        margin-bottom: 20px;
+        padding-right: 40px;
 
-      &:hover{
-        background-color: var(--secondary-color);
+        &:focus{
+          outline: none;
+          border-color: var(--secondary-color);
+        }
+      }
+    
+
+      input[type="submit"]{
+        cursor: pointer;
+        font-size: var(--fs-normal);
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        text-transform: uppercase;
+        letter-spacing: var(--letter-spacing);
+        transition: background-color 0.3s ease;
+
+        &:hover{
+          background-color: var(--secondary-color);
+        }
       }
     }
 
@@ -48,11 +63,19 @@
       border: 1px solid var(--primary-color);
       cursor: pointer;
       margin-bottom: 20px;
+      // insert margin-right to for arrow
+      --webkit-appearance: none;
+      --moz-appearance: none;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px top 50%;
+      background-size: 20px;
 
       &:focus{
         outline: none;
         border-color: var(--secondary-color);
-      }
+      }      
     }
   }
 

@@ -1,12 +1,17 @@
-import { HandleCreateIssue, FetchProjects } from "./handleCreateIssue";
+import { FetchProjects } from "./handleCreateIssue";
 import React, { useState } from "react";
+import { useIssueContext } from "../../hooks/useIssueContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
 const Swal = require("sweetalert2");
 const withReactContent = require("sweetalert2-react-content");
 const mySwal = withReactContent(Swal);
-const axios = require("axios");
 
 const CreateIssue = ({ userDetails }) => {
-
+    // context
+    const { dispatch } = useIssueContext();
+    const { user } = useAuthContext();
+    const userId = user && user.isLoggedIn ? user.userId : "";
+    
     // work on this function
     const [projects, setProjects] = useState([]);
 
@@ -16,45 +21,18 @@ const CreateIssue = ({ userDetails }) => {
     const [issues, setIssue] = useState({
         title: "Issue 2",
         description: "This is a test issue 2",
-        project_id: "65bf5eaa0ff67b9808a81d28",
-        created_by: userDetails.userId,
+        project_id: "",
+        created_by: userId,
         status: "open",
         priority: "minor",
         visibility: "public",
         feature: "bug",
-        due_date: "2024-12-31",
+        due_date: "",
     });
 
     const HandleCreateIssue = (e) => {
         e.preventDefault();
-        var formData = new FormData();
-        formData.append("title", issues.title);
-        formData.append("description", issues.description);
-        formData.append("project_id", issues.project_id);
-        formData.append("created_by", issues.created_by);
-        formData.append("status", issues.status);
-        formData.append("priority", issues.priority);
-        formData.append("visibility", issues.visibility);
-        formData.append("feature", issues.feature);
-        formData.append("due_date", issues.due_date);
 
-        // let files = [];
-        // if (issues.attachment) {
-        //     for (let i = 0; i < issues.attachment.length; i++) {
-        //         files.push(issues.attachment[i].name);
-        //     }
-        // }
-        // issues.attachment = files;
-
-        // if (issues.attachment) {
-        //     for (let i = 0; i < issues.attachment.length; i++) {
-        //         formData.append("attachment", issues.attachment[i]);
-        //     }
-        // }
-        console.log(formData, "from create issue form frontend");
-        console.log(issues, "from create issue form frontend");
-
-        
         fetch("api/issues/", {
             method: "POST",
             headers: {
@@ -64,7 +42,10 @@ const CreateIssue = ({ userDetails }) => {
         })
         .then((response) => response.json())
         .then((data) => {
+            console.log(data)
             if (data.status === true) {
+                console.log(data, "from create issue form");
+                dispatch({ type: "CREATE_ISSUE", payload: data.data });
                 mySwal.fire({
                     title: "Issue created",
                     text: "Issue has been created successfully",
@@ -99,7 +80,7 @@ const CreateIssue = ({ userDetails }) => {
                     <div className="createIssueForm">
                         <div className="createIssueField">
                             <label htmlFor="created_by">Created By</label>
-                            <input type="text" name="created_by" id="created_by" value={userDetails.email} readOnly onChange={(e) => setIssue({ ...issues, created_by: e.target.value })} />
+                            <input type="text" name="created_by" id="created_by" value={"nitish@gmail.com"} readOnly onChange={(e) => setIssue({ ...issues, created_by: e.target.value })} />
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="title">Title</label>
@@ -113,10 +94,8 @@ const CreateIssue = ({ userDetails }) => {
                             <label htmlFor="project_id">Project</label>
                             <select name="project_id" id="project_id" required onChange={(e) => setIssue({ ...issues, project_id: e.target.value })}>
                                 {/* <option value="">Select a project</option> */}
-                                {projects.map((project) => (
-                                    <option key={project._id} value={project._id}>
-                                        {project.title}
-                                    </option>
+                                {projects.map((project) => 
+                                    (<option key={project._id} value={project._id}>{project.title}</option>
                                 ))}
                             </select>           
                         </div>

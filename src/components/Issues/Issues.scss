@@ -3,7 +3,7 @@
 }
 
 .dataTables_wrapper {
-    font-size: var(--fs-normal);
+    font-size: var(--fs-small);
 
     .table_id{
         width: 100%;
@@ -37,14 +37,15 @@
         .issue-btn {
             margin-left: 20px;
         }
-        a {
+        button {
             color: var(--primary-color);
             padding: 5px 10px;
             border-radius: 5px;
             text-decoration: none;
-            font-size: var(--fs-normal);
+            font-size: var(--fs-small);
             border: 1px solid var(--teritary-color);
             transition: all 0.4s ease-in-out;
+            background: transparent;
 
             &:hover {
                 background-color: var(--teritary-color);
@@ -93,16 +94,17 @@
             
 
             .createIssueForm {
+                width: 90%;
 
                 .createIssueField {
-                    margin-bottom: 20px;
+                    margin-bottom: 15px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
 
                     label {
                         margin-bottom: 5px;
-                        font-size: var(--fs-normal);
+                        font-size: var(--fs-small);
                     }
 
                     input, select, textarea {
@@ -110,7 +112,7 @@
                         max-width: 70%;
                         padding: 5px 10px;
                         border-radius: 5px;
-                        font-size: var(--fs-normal);
+                        font-size: var(--fs-small);
                         border: 1px solid var(--teritary-color);
                         transition: all 0.4s ease-in-out;
 
@@ -134,7 +136,7 @@
             .createIssueInput {
                 padding: 5px 10px;
                 border-radius: 5px;
-                font-size: var(--fs-normal);
+                font-size: var(--fs-small);
                 border: 1px solid var(--teritary-color);
                 transition: all 0.4s ease-in-out;
 
@@ -147,7 +149,7 @@
         .createIssueSubmit {
             padding: 5px 10px;
             border-radius: 5px;
-            font-size: var(--fs-normal);
+            font-size: var(--fs-small);
             background-color: var(--primary-color);
             color: var(--fade-light-color);
             border: none;

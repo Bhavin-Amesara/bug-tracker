@@ -12,6 +12,25 @@ const issueReducer = (state, action) => {
             return {
                 issues: [action.payload, ...state.issues],
             };
+        case "UPDATE_ISSUE":
+            return {
+                // got error as first render is null so added a check
+                issues: state.issues && state.issues.map((issue) =>
+                    issue._id === action.payload._id ? action.payload : issue
+                ),
+            };
+        case "SET_SINGLE_ISSUE":
+            return {
+                singleIssue: action.payload,
+            };
+        case "GET_SINGLE_ISSUE":
+            return {
+                singleIssue: state.issues && state.issues.find((issue) => issue._id === action.payload),
+            };
+        case "DELETE_ISSUE":
+            return {
+                issues: state.issues && state.issues.filter((issue) => issue._id !== action.payload),
+            };            
         default:
             return state;
     }

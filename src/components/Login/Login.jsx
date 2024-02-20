@@ -39,9 +39,8 @@ const LoginPage = () => {
         .then((data) => {
             console.log(data);
             if (data.status === true) {
-                // set to local storage
                 localStorage.setItem("user", JSON.stringify({
-                    userId: data.data._id,
+                    userId: data.data.userId,
                     isLoggedIn: data.data.isLoggedIn,
                     username: data.data.username,
                     email: data.data.email,

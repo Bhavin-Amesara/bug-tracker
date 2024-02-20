@@ -5,23 +5,24 @@ import CreateIssue from './CreateIssue';
 import { useState } from 'react';
 
 const Issues = () => {
-    const [toogleIssue, setToogleIssue] = useState(false);
+    // handle three views: view issues, create issue, and view single issue
+    const [view, setView] = useState('viewIssues');
 
-    const handleToogleIssue = () => {
-        setToogleIssue(!toogleIssue);
-        document.querySelector('button.createIssue').classList.toggle('active');
-    }
 
     return (
         <div className="issuecontent container">
             <div className="issueHeader">
                 <div className="table-title dashboard-title">Recent Bugs</div>
                 <div className='issueMenu'>
-                    <button className="createIssue" onClick={() => handleToogleIssue()}>Create Issue</button>
+                    <button className="btn-button" onClick={() => setView('viewIssues')}>View Issues</button>
+                    <button className="btn-button" onClick={() => setView('createIssue')}>Create Issue</button>
                 </div>
             </div>
             <div className="issueContent">
-                {toogleIssue ? <CreateIssue /> : <ViewIssues />}
+                {
+                    view === 'viewIssues' ? <ViewIssues /> : 
+                    view === 'createIssue' ? <CreateIssue /> : null
+                }
             </div>
         </div>
     );

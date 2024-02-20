@@ -5,6 +5,7 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 // import Logout from './components/Logout/Logout';
 import Issues from './components/Issues/Issues';
+import { SingleIssueView } from './components/Issues/SingleIssueView';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import Profile from './components/Profile/Profile';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -41,6 +42,11 @@ function App() {
         <Route path="/issues" element={
         <>
           {user && user.isLoggedIn ? <Issues /> : <Login />}
+        </>
+        } />
+        <Route path="/issue/:id" element={
+        <>
+          {user && user.isLoggedIn ? <SingleIssueView /> : <Login />}
         </>
         } />
         <Route path="/profile" element={

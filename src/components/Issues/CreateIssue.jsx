@@ -137,7 +137,7 @@ const CreateIssue = ({ userDetails }) => {
                             </select>
                         </div>
                         <div className="createIssueField">
-                            <button type="submit" className="createIssueSubmit">Create</button>
+                            <button type="submit" className="createIssueSubmit btn-button">Create</button>
                         </div>
                     </div>
                 </form>

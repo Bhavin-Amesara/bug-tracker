@@ -31,11 +31,11 @@ const Profile = () => {
                     <h2>User Profile</h2>
                 </div>
                 <div className="profile-picture">
-                    <form method="post" encType="multipart/form-data" className='profile-picture-form' >
+                    {/* <form method="post" encType="multipart/form-data" className='profile-picture-form' > */}
                         <img src="https://via.placeholder.com/150" onMouseOver={zoomImage} onMouseOut={() => { document.querySelector('.profile-picture img').style.transform = "scale(1)"; }} alt="Profile Picture" />
                         <input type="file" id="fileInput" style={{display: "none"}} />        
-                        <button type="button" onClick={handleProfilePicture}>Change Picture</button>
-                    </form>
+                        {/* <button type="button" onClick={handleProfilePicture}>Change Picture</button> */}
+                    {/* </form> */}
                 </div>
                 <div className="profile-dashboard">
                     {/* Add profile picture */}
@@ -49,8 +49,8 @@ const Profile = () => {
                     <div className="profile-activity">
                         <h3>Recent Activity</h3>
                         <ul>
-                            <li>Last seen: {user && lastSeen}</li>
-                            <li>Updated profile picture on 2022-01-02</li>
+                            <li>Last Logged In: {user && lastSeen}</li>
+                            {/* <li>Updated profile picture on 2022-01-02</li> */}
                             {/* Add more recent activity */}
                         </ul>
                     </div>

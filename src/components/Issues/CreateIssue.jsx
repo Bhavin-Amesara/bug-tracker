@@ -2,6 +2,7 @@ import { FetchProjects } from "./handleCreateIssue";
 import React, { useState } from "react";
 import { useIssueContext } from "../../hooks/useIssueContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import axios from "axios";
 const Swal = require("sweetalert2");
 const withReactContent = require("sweetalert2-react-content");
 const mySwal = withReactContent(Swal);
@@ -27,18 +28,33 @@ const CreateIssue = ({ userDetails }) => {
         priority: "minor",
         visibility: "public",
         feature: "bug",
-        due_date: "",
+        due_date: "2024-12-31",
+        file: [],
     });
 
     const HandleCreateIssue = (e) => {
         e.preventDefault();
 
-        fetch("api/issues/", {
-            method: "POST",
+        const formData = new FormData();
+        formData.append("title", issues.title);
+        formData.append("description", issues.description);
+        formData.append("project_id", issues.project_id);
+        formData.append("created_by", issues.created_by);
+        formData.append("status", issues.status);
+        formData.append("priority", issues.priority);
+        formData.append("visibility", issues.visibility);
+        formData.append("feature", issues.feature);
+        formData.append("due_date", issues.due_date);
+        for (let i = 0; i < issues.file.length; i++) {
+            formData.append("file", issues.file[i]);
+        }
+
+        console.log(...formData, "from create issue form");
+
+        axios.post("http://localhost:3300/api/issues", formData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
             },
-            body: JSON.stringify(JSON.parse(JSON.stringify(issues))),
         })
         .then((response) => response.json())
         .then((data) => {
@@ -76,7 +92,7 @@ const CreateIssue = ({ userDetails }) => {
                 <div className="createIssueTitle dashboard-title">Create Issue</div>
             </div>
             <div className="createIssueContent">
-                <form method="POST" onSubmit={HandleCreateIssue}className="createIssueForm d-flex-column" encType="multipart/form-data">
+                <form method="POST" onSubmit={HandleCreateIssue} className="createIssueForm d-flex-column" encType="multipart/form-data">
                     <div className="createIssueForm">
                         <div className="createIssueField">
                             <label htmlFor="created_by">Created By</label>
@@ -135,6 +151,10 @@ const CreateIssue = ({ userDetails }) => {
                                 <option value="defect">Defect</option>
                                 <option value="enhancement">Enhancement</option>
                             </select>
+                        </div>
+                        <div className="createIssueField">
+                            <label htmlFor="file">Attach File</label>
+                            <input type="file" name="file" id="file" multiple onChange={(e) => setIssue({ ...issues, file: e.target.files })} />
                         </div>
                         <div className="createIssueField">
                             <button type="submit" className="createIssueSubmit btn-button">Create</button>

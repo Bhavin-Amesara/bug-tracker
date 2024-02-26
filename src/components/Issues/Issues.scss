@@ -143,6 +143,19 @@
     }
 }
 
+// create issue error message
+.form-control .error {
+    color: var(--danger-color);
+    font-size: var(--fs-small);
+    margin-top: 5px;
+}
+
+.form-control .success {
+    color: var(--success-color);
+    font-size: var(--fs-small);
+    margin-top: 5px;
+}
+
 // single issue view
 .singleIssueView{
     display: flex;
@@ -269,4 +282,19 @@
 .issueTrackerMessage{
     font-size: var(--fs-normal);
     color: var(--teritary-color);
+}
+// css for assign issue to user
+.assignUserContent .issueDetailsItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 30px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 10px;
+}
+.assignUserContent .issueDetailsItem .issueDetailsLabel{
+    font-size: var(--fs-normal);
+    font-weight: 520;
 }

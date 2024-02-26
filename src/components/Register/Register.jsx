@@ -41,7 +41,7 @@ const Register = () => {
         .then((response) => response.json())
         .then((data) => {
             console.log(data.status);
-            if (data.status) {
+            if (data.status === false) {
                 setRegisterMsg(data.status);
                 setSetErrorClass("authFailed");
                 mySwal.fire({
@@ -62,7 +62,6 @@ const Register = () => {
                     confirmButtonText: "Ok",
                 });
                 navigate("/login");
-
             }
 
         })

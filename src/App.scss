@@ -130,7 +130,7 @@ body {
     justify-content: center;
     width: max-content;
     color: var(--primary-color);
-    padding: 10px 15px;
+    padding: 5px 10px;
     border-radius: 5px;
     text-decoration: none;
     font-size: var(--fs-large);
@@ -153,4 +153,10 @@ body {
       margin-left: 5px;
     }
   }
+  
+}
+
+svg {
+  margin-right: 10px;
+  width: 20px;
 }

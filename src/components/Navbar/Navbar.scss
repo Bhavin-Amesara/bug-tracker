@@ -44,6 +44,8 @@ nav{
             list-style: none;
 
             .nav-link {
+                display: flex;
+                align-items: center;
                 padding: 10px;
                 font-size: var(--fs-normal);
                 font-weight: 500;
@@ -56,6 +58,10 @@ nav{
                 &:hover {
                     color: var(--cambridge-blue);
                 }
+
+                svg {
+                    color: var(--cambridge-blue);
+                }
             }
         }
     }
@@ -65,10 +71,13 @@ nav{
 
         // auth then a
         .auth {
+            display: flex;
             font-weight: 500;
             letter-spacing: 1px;
             
             a, button {
+                display: flex;
+                align-items: center;
                 font-size: var(--fs-normal);
                 padding: 5px 10px;
                 margin: 0 10px;
@@ -81,6 +90,10 @@ nav{
                 &:hover {
                     background-color: var(--light-color);
                     color: var(--primary-color);
+                }
+
+                svg {
+                    height: auto;
                 }
             }
 

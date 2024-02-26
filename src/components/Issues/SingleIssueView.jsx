@@ -8,8 +8,13 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const SingleIssueView = () => {
+    // sweetalert
+    const mySwal = withReactContent(Swal);
+
     // toogle state
     const [editStatus, setEditStatus] = useState(false);
     const [editPriority, setEditPriority] = useState(false);
@@ -25,12 +30,17 @@ const SingleIssueView = () => {
     const [desc, setDescription] = useState(singleIssue?.description);
 
     // fetch issue id from url
-    var id = useParams().id;
-    id = id.toString();
-
+    var tempId = useParams().id;
+    tempId = tempId.toString();
+    const [issueId, setIssueId] = useState(tempId);
 
     useEffect(() => {
-        fetch("http://localhost:3300/api/issues/" + id)
+        setIssueId(tempId);
+        console.log(issueId, "from single issue view");
+    }, []);
+
+    useEffect(() => {
+        fetch("http://localhost:3300/api/issues/" + issueId)
         .then((response) => response.json())
         .then((response) => {
             // use date-fns to format date
@@ -46,7 +56,7 @@ const SingleIssueView = () => {
         .catch((error) => {
             console.log(error);
         });
-    }, [dispatch, id]);
+    }, [dispatch, issueId]);
     
     // handle form change
     const handleFormChange = (e) => {
@@ -59,7 +69,7 @@ const SingleIssueView = () => {
         // get user id
         const userId = user?.userId;
         // update issue
-        fetch("http://localhost:3300/api/issues/" + id, {
+        fetch("http://localhost:3300/api/issues/" + issueId, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -83,13 +93,38 @@ const SingleIssueView = () => {
 
     // handle issue delete
     const handleIssueDelete = () => {
-        dispatch({ type: "DELETE_ISSUE", payload: id });
+        // alert using sweetalert
+        mySwal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("http://localhost:3300/api/issues/" + issueId, {
+                    method: "DELETE",
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            }
+        });
+
+        dispatch({ type: "DELETE_ISSUE", payload: issueId });
     }
 
     // fetch issue tracker
     const [issueTrackerMessage, setIssueTrackerMessage] = useState("");
     useEffect(() => {
-        fetch("http://localhost:3300/api/issue-tracker/" + id)
+        fetch("http://localhost:3300/api/issue-tracker/" + issueId)
         .then((response) => response.json())
         .then((response) => {
             console.log(response);
@@ -113,14 +148,80 @@ const SingleIssueView = () => {
         .catch((error) => {
             console.log(error);
         });
-    }, [id]);
+    }, [issueId]);
 
+
+    // single issue assign user start
+    const userId = user && user.isLoggedIn ? user.userId : "";
+    const [assignedBy, setAssignedBy] = useState(userId);
+    const [assignTo, setAssignTo] = useState(userId);
+    const [assignDescription, setAssignDescription] = useState("");
+    const [assignFile, setAssignFile] = useState("");
+    const [assignIssueId, setAssignIssueId] = useState(issueId);
+    const [assignStatus, setAssignStatus] = useState();
+    
+    const handleAssigneeChange = (e) => {
+        e.preventDefault();
+
+        // to do: add the file upload functionality
+        var formData = new FormData();
+        formData.append('assignedBy', assignedBy);
+        formData.append('assignTo', assignTo);
+        formData.append('assignDescription', assignDescription);
+        formData.append('assignIssueId', assignIssueId);
+        formData.append('assignStatus', assignStatus);
+        for (let i = 0; i < assignFile.length; i++) {
+            formData.append('assignFile', assignFile[i]);
+        }
+        console.log(...formData, "from assign user form");
+        
+        
+        fetch('http://localhost:3300/api/issue-tracker', {
+            method: 'POST',
+            body: formData,
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+            if (!response.data) {
+                mySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                });
+                return;
+            }
+            if (response.message === "Internal Server Error"){
+                if(response.extraDetails && response.extraDetails.message){
+                    mySwal.fire({
+                        icon: 'error',
+                        title: 'Got some error',
+                        text: response.extraDetails.message.split(":")[2],
+                    })
+                    return;
+                }
+            }
+            mySwal.fire({
+                icon:"success",
+                title:"Issue Assign to User Successful",
+                text: response.message,
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    }
+    // single issue assign user end
 
     return (
         <>
         <div className="container">
             <div className="backButton">
-                <Link to="/issues" className="material-symbols-outlined">arrow_back<span>Back</span></Link> 
+                <Link to="/issues"> 
+                <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.6621 17C18.933 19.989 15.7013 22 11.9999 22C6.47703 22 1.99988 17.5228 1.99988 12C1.99988 6.47715 6.47703 2 11.9999 2C15.7013 2 18.933 4.01099 20.6621 7M11.9999 8L7.99995 12M7.99995 12L11.9999 16M7.99995 12H21.9999" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg> Back </Link>
             </div>
         </div>
         <div className="singleIssueView container">
@@ -168,7 +269,7 @@ const SingleIssueView = () => {
                             </div>
                         </div>
                         <div className="issueDetailsItem  d-flex">
-                            {/* <h2>Description</h2> */}
+                            {/* <h2>Description2</h2> */}
                             <textarea className="issueDetailsValue" name="description" id="description" disabled={!editDescription} onChange={(e) => setDescription(e.target.value)} value={desc}>
                             </textarea>
                             <span className={editDescription?"material-symbols-outlined active":"material-symbols-outlined"}
@@ -196,13 +297,73 @@ const SingleIssueView = () => {
                     </form>
                 </div>
             </div>
-            <div className="singleIssueTracker">
-                <div className="issueHeader">
-                    <div className="table-title dashboard-title">Issue Tracker</div>
+            
+            <div>
+                {/* single issue assign user start */}
+                <div className="assignUser">
+                    
+                    <div className="assignUserContent">
+                        <div className=" singleIssueViews issueDetails d-flex-column">
+                            <div className="issueHeader">
+                                <div className="table-title dashboard-title">Assign User</div>
+                            </div>
+                            <form className="issueDetailsForm" encType='multipart/form-data' method='post' id='assignUserForm' name='assignUserForm' >
+                                <div className="issueDetailsItem">
+                                    <div className="issueDetailsLabel">Issue</div>
+                                    <div className="issueDetailsValue" id="issueTitle">{singleIssue?.title}</div>
+                                    {/* <input type="hidden" name="assignIssueId" id="assignIssueId" value={issueId} /> */}
+                                </div>
+                                <div className="issueDetailsItem">
+                                    <div className="issueDetailsLabel">Assignee</div>
+                                    <div className="issueControls d-flex">
+                                        <select className="issueDetailsValue" name="assignTo" id="assignTo" value={assignTo} onChange={(e) => setAssignTo(e.target.value)}>
+                                            <option value={singleIssue?.created_by?._id}>{singleIssue?.created_by?.username}</option>
+                                            <option value="1">User 1</option>
+                                            <option value="2">User 2</option>
+                                            <option value="3">User 3</option>
+                                            <option value="4">User 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="issueDetailsItem">
+                                    <div className="issueDetailsLabel">Status</div>
+                                    <div className="issueControls d-flex">
+                                        <select className="issueDetailsValue" name="assignUserStatus" id="assignUserStatus" value={assignStatus} onChange={(e) => setAssignStatus(e.target.value)}>
+                                            <option value="">Select Status</option>
+                                            <option value="open">Open</option>
+                                            <option value="in-progress">In Progress</option>
+                                            <option value="resolved">Resolved</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="issueDetailsItem  d-flex">
+                                    <textarea className="issueDetailsValue" name="assignDescription" id="assignDescription" placeholder="Add some comments" onChange={(e) => setAssignDescription(e.target.value)}>
+                                    </textarea>
+                                </div>
+                                <div className="issueDetailsItem">
+                                    <label htmlFor="assignFile" className="issueDetailsLabel">Attachments</label>
+                                    <input type="file" id="assignFile" name="assignFile" multiple onChange={(e) => setAssignFile(e.target.files)} />
+                                </div>
+                                <div className="issueDetailsItem">
+                                    <div className="issueActions">
+                                        <button className="btn-button save" type="submit" onClick={handleAssigneeChange}>Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="issueTable">
-                    <table id="issuesTable" className="display"></table>
+                {/* single issue assign user end */}
+                {/* single issue tracker start */}
+                <div className="singleIssueTracker">
+                    <div className="issueHeader">
+                        <div className="table-title dashboard-title">Issue Tracker</div>
+                    </div>
+                    <div className="issueTable">
+                        <table id="issuesTable" className="display"></table>
+                    </div>
                 </div>
+                {/* single issue tracker end */}
             </div>
         </div>
         </>

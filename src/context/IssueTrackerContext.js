@@ -6,21 +6,21 @@ const issueTrackerReducer = (state, action) => {
     switch (action.type) {
         case "SET_ISSUES_TRACKER":
             return {
-                issues: action.payload,
+                issuesTracker: action.payload,
             };
         case "CREATE_ISSUE_TRACKER":
             return {
-                issues: [action.payload, ...state.issues],
+                issuesTracker: [action.payload, ...state.issuesTracker],
             };
         case "UPDATE_ISSUE_TRACKER":
             return {
-                issues: state.issues.map((issue) =>
-                    issue._id === action.payload._id ? action.payload : issue
+                issuesTracker: state.issuesTracker && state.issuesTracker.map((issueTracker) =>
+                issueTracker._id === action.payload._id ? action.payload : issueTracker
                 ),
             };
         case "DELETE_ISSUE_TRACKER":
             return {
-                issues: state.issues.filter((issue) => issue._id !== action.payload),
+                issuesTracker: state.issuesTracker && state.issuesTracker.filter((issueTracker) => issueTracker._id !== action.payload),
             };
         default:
             return state;
@@ -30,7 +30,7 @@ const issueTrackerReducer = (state, action) => {
 const IssueTrackerContextProvider = ({ children }) => {
     
     const [state, dispatch] = useReducer(issueTrackerReducer, {
-        issues: null,
+        issuesTracker: null,
     });
 
     return (

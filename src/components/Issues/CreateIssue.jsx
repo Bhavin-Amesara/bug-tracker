@@ -12,49 +12,43 @@ const CreateIssue = ({ userDetails }) => {
     const { dispatch } = useIssueContext();
     const { user } = useAuthContext();
     const userId = user && user.isLoggedIn ? user.userId : "";
+    const userEmail = user && user.email;
     
     // work on this function
     const [projects, setProjects] = useState([]);
 
     FetchProjects(userDetails, setProjects);
-    
-    // handle create issue
-    const [issues, setIssue] = useState({
-        title: "Issue 2",
-        description: "This is a test issue 2",
-        project_id: "",
-        created_by: userId,
-        status: "open",
-        priority: "minor",
-        visibility: "public",
-        feature: "bug",
-        due_date: "2024-12-31",
-        file: [],
-    });
+    const [issueTitle, setIssueTitle] = useState("Issue 2");
+    const [issueDescription, setIssueDescription] = useState("This is a test issue 2");
+    const [issueProjectID, setIssueProjectID] = useState("");
+    const [issueCreatedBy, setIssueCreatedBy] = useState(userId);
+    const [issueStatus, setIssueStatus] = useState("open");
+    const [issuePriority, setIssuePriority] = useState("minor");
+    const [issueVisibility, setIssueVisibility] = useState("public");
+    const [issueFeature, setIssueFeature] = useState("bug");
+    const [issueDueDate, setIssueDueDate] = useState("2024-07-31");
+    const [issueFile, setIssueFile] = useState("");
 
     const HandleCreateIssue = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
-        formData.append("title", issues.title);
-        formData.append("description", issues.description);
-        formData.append("project_id", issues.project_id);
-        formData.append("created_by", issues.created_by);
-        formData.append("status", issues.status);
-        formData.append("priority", issues.priority);
-        formData.append("visibility", issues.visibility);
-        formData.append("feature", issues.feature);
-        formData.append("due_date", issues.due_date);
-        for (let i = 0; i < issues.file.length; i++) {
-            formData.append("file", issues.file[i]);
+        formData.append("title", issueTitle);
+        formData.append("description", issueDescription);
+        formData.append("project_id", issueProjectID);
+        formData.append("created_by", issueCreatedBy);
+        formData.append("status", issueStatus);
+        formData.append("priority", issuePriority);
+        formData.append("visibility", issueVisibility);
+        formData.append("feature", issueFeature);
+        formData.append("due_date", issueDueDate);
+        for (let i = 0; i < issueFile.length; i++) {
+            formData.append("file", issueFile[i]);
         }
 
         console.log(...formData, "from create issue form");
-
-        axios.post("http://localhost:3300/api/issues", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+        fetch('api/issues', {
+            method: 'POST',
+            body: formData,
         })
         .then((response) => response.json())
         .then((data) => {
@@ -96,20 +90,20 @@ const CreateIssue = ({ userDetails }) => {
                     <div className="createIssueForm">
                         <div className="createIssueField">
                             <label htmlFor="created_by">Created By</label>
-                            <input type="text" name="created_by" id="created_by" value={"nitish@gmail.com"} readOnly onChange={(e) => setIssue({ ...issues, created_by: e.target.value })} />
+                            <input type="text" name="created_by" id="created_by" value={userEmail} readOnly/>
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="title">Title</label>
-                            <input type="text" name="title" id="title" required placeholder="Enter the title of the issue" onChange={(e) => setIssue({ ...issues, title: e.target.value })} value={issues.title} />
+                            <input type="text" name="title" id="title" required placeholder="Enter the title of the issue" value={issueTitle} onChange={(e) => setIssueTitle(e.target.value)} />
                         </div>
-                        <div className="createIssueField">
+                         <div className="createIssueField">
                             <label htmlFor="description">Description</label>
-                            <textarea name="description" id="description" required placeholder="Enter the description of the issue" onChange={(e) => setIssue({ ...issues, description: e.target.value })} value={issues.description}></textarea>
+                            <textarea name="description" id="description" required placeholder="Enter the description of the issue" value={issueDescription} onChange={(e) => setIssueDescription(e.target.value)}></textarea>
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="project_id">Project</label>
-                            <select name="project_id" id="project_id" required onChange={(e) => setIssue({ ...issues, project_id: e.target.value })}>
-                                {/* <option value="">Select a project</option> */}
+                            <select name="project_id" id="project_id" required onChange={(e) => setIssueProjectID(e.target.value)}>
+                                <option value="">Select a project</option>
                                 {projects.map((project) => 
                                     (<option key={project._id} value={project._id}>{project.title}</option>
                                 ))}
@@ -117,7 +111,7 @@ const CreateIssue = ({ userDetails }) => {
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="priority">Priority</label>
-                            <select name="priority" id="priority" required onChange={(e) => setIssue({ ...issues, priority: e.target.value })}>
+                            <select name="priority" id="priority" required onChange={(e) => setIssuePriority(e.target.value)}>
                                 <option value="minor">Minor</option>
                                 <option value="major">Major</option>
                                 <option value="critical">Critical</option>
@@ -126,12 +120,12 @@ const CreateIssue = ({ userDetails }) => {
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="due_date">Due Date</label>
-                            <input type="date" name="due_date" id="due_date" required min={today} onChange={(e) => setIssue({ ...issues, due_date: e.target.value })} 
-                            value={issues.due_date} />
+                            <input type="date" name="due_date" id="due_date" required min={today} onChange={(e) => setIssueDueDate(e.target.value)} 
+                            value={issueDueDate} />
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="status">Status</label>
-                            <select name="status" id="status" required onChange={(e) => setIssue({ ...issues, status: e.target.value })}>
+                            <select name="status" id="status" required onChange={(e) => setIssueStatus(e.target.value)}>
                                 <option value="open">Open</option>
                                 <option value="in-progress">In Progress</option>
                                 <option value="on-hold">On Hold</option>
@@ -139,14 +133,14 @@ const CreateIssue = ({ userDetails }) => {
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="visibility">Visibility</label>
-                            <select name="visibility" id="visibility" required onChange={(e) => setIssue({ ...issues, visibility: e.target.value })}>
+                            <select name="visibility" id="visibility" required onChange={(e) => setIssueVisibility(e.target.value)}>
                                 <option value="public">Public</option>
                                 <option value="private">Private</option>
                             </select>
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="feature">Feature</label>
-                            <select name="feature" id="feature" required onChange={(e) => setIssue({ ...issues, feature: e.target.value })}>
+                            <select name="feature" id="feature" required onChange={(e) => setIssueFeature(e.target.value)}>
                                 <option value="bug">Bug</option>
                                 <option value="defect">Defect</option>
                                 <option value="enhancement">Enhancement</option>
@@ -154,8 +148,8 @@ const CreateIssue = ({ userDetails }) => {
                         </div>
                         <div className="createIssueField">
                             <label htmlFor="file">Attach File</label>
-                            <input type="file" name="file" id="file" multiple onChange={(e) => setIssue({ ...issues, file: e.target.files })} />
-                        </div>
+                            <input type="file" name="file" id="file" multiple onChange={(e) => setIssueFile(e.target.files)} />
+                        </div> 
                         <div className="createIssueField">
                             <button type="submit" className="createIssueSubmit btn-button">Create</button>
                         </div>

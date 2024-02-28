@@ -36,7 +36,6 @@
 
     .issueMenu {
         margin-left: 10px;
-        margin-bottom: 20px;
 
         .issue-btn {
             margin-left: 20px;
@@ -297,4 +296,9 @@
 .assignUserContent .issueDetailsItem .issueDetailsLabel{
     font-size: var(--fs-normal);
     font-weight: 520;
+}
+
+// css for issue tracker path:issueTracter.jsx
+#issuesTrackerTable svg{
+    margin: 0;
 }

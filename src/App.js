@@ -10,6 +10,7 @@ import ErrorPage from './components/ErrorPage/ErrorPage';
 import Profile from './components/Profile/Profile';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
+import { IssueTrackerContextProvider } from './context/IssueTrackerContext';
 
 function App() {
   const { user } = useAuthContext();
@@ -46,7 +47,11 @@ function App() {
         } />
         <Route path="/issue/:id" element={
         <>
-          {user && user.isLoggedIn ? <SingleIssueView /> : <Login />}
+          {user && user.isLoggedIn ? 
+          <IssueTrackerContextProvider>
+            <SingleIssueView /> 
+          </IssueTrackerContextProvider>
+          : <Login />}
         </>
         } />
         <Route path="/profile" element={

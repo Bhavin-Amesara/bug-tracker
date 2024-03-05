@@ -10,7 +10,7 @@ const issueTrackerReducer = (state, action) => {
             };
         case "CREATE_ISSUE_TRACKER":
             return {
-                issuesTracker: [action.payload, ...state.issuesTracker],
+                issuesTracker: state.issuesTracker && [action.payload, ...state.issuesTracker],
             };
         case "UPDATE_ISSUE_TRACKER":
             return {

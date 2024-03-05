@@ -11,6 +11,9 @@ import Profile from './components/Profile/Profile';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
 import { IssueTrackerContextProvider } from './context/IssueTrackerContext';
+import Project from './components/Project/Project';
+import { ProjectContextProvider } from './context/ProjectContext';
+import SingleProjectView from './components/Project/SingleProjectView';
 
 function App() {
   const { user } = useAuthContext();
@@ -57,6 +60,24 @@ function App() {
         <Route path="/profile" element={
         <>
           {user && user.isLoggedIn ? <Profile /> : <Login />}
+        </>
+        } />
+        <Route path="/projects" element={
+        <>
+          {user && user.isLoggedIn ? 
+          <ProjectContextProvider>
+            <Project />
+          </ProjectContextProvider>
+          : <Login />}
+        </>
+        } />
+        <Route path="/project/:id" element={
+        <>
+          {user && user.isLoggedIn ? 
+          <ProjectContextProvider>
+            <SingleProjectView />
+          </ProjectContextProvider>
+          : <Login />}
         </>
         } />
         <Route path="*" element={

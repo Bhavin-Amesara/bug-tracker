@@ -43,7 +43,6 @@ const IssueTracker = ({ issueId }) => {
         .then((response) => {
             console.log(response, "response from issue tracker delete path: components/Issues/IssueTracker.jsx");
             if (response.status === "success") {
-                dispatch({ type: "DELETE_ISSUE_TRACKER", payload: issueTrackerId });
                 dispatch({ type: "UPDATE_ISSUE_TRACKER", payload: response.data });
                 dispatch({ type: "SET_ISSUE_TRACKER", payload: response.data });
             }

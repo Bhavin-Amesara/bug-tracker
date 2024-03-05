@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { IssueTracker } from "./IssueTracker";
 import { useIssueTrackerContext } from "../../hooks/useIssueTrackerContext";
+// react toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SingleIssueView = () => {
     // sweetalert
@@ -97,6 +100,7 @@ const SingleIssueView = () => {
         })
         .then((response) => response.json())
         .then((response) => {
+            toast.success('Issue updated successfully');
             response.data.updatedAt = formatDistanceToNow(new Date(response.data.updatedAt), { addSuffix: true });
             response.data.createdAt = formatDistanceToNow(new Date(response.data.createdAt), { addSuffix: true });
             dispatch({ type: "UPDATE_ISSUE", payload: response.data });
@@ -204,11 +208,7 @@ const SingleIssueView = () => {
             response.data.updatedAt = formatDistanceToNow(new Date(response.data.updatedAt), { addSuffix: true });
             console.log(response.data, "from single issue view");
             dispatchIssueTracker({ type: "CREATE_ISSUE_TRACKER", payload: response.data });
-            mySwal.fire({
-                icon:"success",
-                title:"Issue Assign to User Successful",
-                text: response.message,
-            });
+            toast.success('Issue assigned successfully');
         })
         .catch((error) => {
             console.log(error);
@@ -239,10 +239,11 @@ const SingleIssueView = () => {
                         </svg> Back </Link>
                     </div>
                     <div className='issueMenu'>
-                        <button id="assignToUser" className="btn-button" onClick={() => {handleActive('assignToUser');}}>Assign to User</button>
+                        <button id="assignToUser" className="btn-button" onClick={() => {handleActive('assignToUser');}}>Assign to Developer</button>
                     </div>
                 </div>
             </div>
+            <ToastContainer />
             <div className="singleIssueView container">
                 {!toggleButtonAssignUser ?
                 <div className="singleIssueViews">
@@ -310,7 +311,6 @@ const SingleIssueView = () => {
                             <div className="issueDetailsItem">
                                 <div className="issueActions">
                                     <button className="btn-button save" type="submit" onClick={handleFormChange}>Save</button>
-                                    <button className="btn-button reset" type="reset" onClick={() => { setEditStatus(false); setEditPriority(false); setEditDescription(false); }}>Cancel</button>
                                     <button className="btn-button delete" type="button" onClick={handleIssueDelete}>Delete</button>
                                 </div>
                             </div>
@@ -323,7 +323,7 @@ const SingleIssueView = () => {
                         <div className="assignUserContent">
                             <div className=" singleIssueViews issueDetails d-flex-column">
                                 <div className="issueHeader">
-                                    <div className="table-title dashboard-title">Assign User</div>
+                                    <div className="table-title dashboard-title">Assign Developer</div>
                                 </div>
                                 <form className="issueDetailsForm" encType='multipart/form-data' method='post' id='assignUserForm' name='assignUserForm' >
                                     <div className="issueDetailsItem">

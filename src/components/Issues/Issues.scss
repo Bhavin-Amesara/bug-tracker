@@ -51,108 +51,6 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 3rem;
-
-    .createIssue {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding: 20px;
-        width: 50%;
-        border-radius: 5px;
-        transition: all 0.4s ease-in-out;
-        // glassmorphism effect
-        
-        border: 1px solid var(--border-color);
-        background: rgba( 255, 255, 255, 0.25 );
-        backdrop-filter: blur( 4px );
-        box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-        -webkit-backdrop-filter: blur( 4px );
-        border-radius: 10px;
-
-        .createIssueContent{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 1rem;
-            width: 100%;
-            
-
-            .createIssueForm {
-                width: 90%;
-
-                .createIssueField {
-                    margin-bottom: 15px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    label {
-                        margin-bottom: 5px;
-                        font-size: var(--fs-small);
-                    }
-
-                    input, select, textarea {
-                        min-width: 70%;
-                        max-width: 70%;
-                        padding: 5px 10px;
-                        border-radius: 5px;
-                        font-size: var(--fs-small);
-                        border: 1px solid var(--teritary-color);
-                        transition: all 0.4s ease-in-out;
-
-                        &:focus {
-                            border: 1px solid var(--primary-color);
-                        }
-                        
-                        &[readonly] {
-                            background-color: var(--fade-light-color);
-                            cursor: not-allowed;
-                        }
-                    }
-
-                    textarea {
-                        height: 120px;
-                        resize: none;
-                    }
-                }
-            }
-
-            .createIssueInput {
-                padding: 5px 10px;
-                border-radius: 5px;
-                font-size: var(--fs-small);
-                border: 1px solid var(--teritary-color);
-                transition: all 0.4s ease-in-out;
-
-                &:focus {
-                    border: 1px solid var(--primary-color);
-                }
-            }
-        }
-
-        .createIssueSubmit {
-            background-color: var(--primary-color);
-            color: var(--fade-light-color);
-
-            &:hover {
-                background-color: var(--teritary-color);
-            }
-        }
-    }
-}
-
-// create issue error message
-.form-control .error {
-    color: var(--danger-color);
-    font-size: var(--fs-small);
-    margin-top: 5px;
-}
-
-.form-control .success {
-    color: var(--success-color);
-    font-size: var(--fs-small);
-    margin-top: 5px;
 }
 
 // single issue view
@@ -296,6 +194,22 @@
 .assignUserContent .issueDetailsItem .issueDetailsLabel{
     font-size: var(--fs-normal);
     font-weight: 520;
+    margin-right: 2px;
+}
+.assignUser .issueDetailsForm span{
+    font-size: var(--fs-normal);
+}
+.assignUser .css-1gywuxd-MuiInputBase-root-MuiOutlinedInput-root{
+    line-height: normal;
+}
+.assignUser .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon.css-19i3fn2-MuiAutocomplete-root .MuiOutlinedInput-root {
+    padding-right: 20px;
+}
+.assignUser .MuiFormControl-root {
+    background-color: aliceblue;
+}
+.assignUser .MuiAutocomplete-endAdornment {
+    margin: 2px;
 }
 
 // css for issue tracker path:issueTracter.jsx

@@ -2,7 +2,6 @@ import { FetchProjects } from "./handleCreateIssue";
 import React, { useState } from "react";
 import { useIssueContext } from "../../hooks/useIssueContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import axios from "axios";
 const Swal = require("sweetalert2");
 const withReactContent = require("sweetalert2-react-content");
 const mySwal = withReactContent(Swal);
@@ -73,34 +72,32 @@ const CreateIssue = ({ userDetails }) => {
         });
 
     };
-    
-    
-
     // handle due date to be greater than today
     const today = new Date().toISOString().split("T")[0];
 
     return (
         <div className="issueForm">
-        <div className="createIssue">
-            <div className="createIssueHeader">
-                <div className="createIssueTitle dashboard-title">Create Issue</div>
+        <div className="formBody">
+            <div className="formHeader">
+                <div className="formTitle dashboard-title">Create Issue</div>
             </div>
-            <div className="createIssueContent">
-                <form method="POST" onSubmit={HandleCreateIssue} className="createIssueForm d-flex-column" encType="multipart/form-data">
-                    <div className="createIssueForm">
-                        <div className="createIssueField">
+            <div className="formContent">
+                <form method="POST" onSubmit={HandleCreateIssue} className="formFields d-flex-column" encType="multipart/form-data">
+                    <div className="formFields">
+                        {/* check css for form-group class in app.scss file */}
+                        <div className="form-group"> 
                             <label htmlFor="created_by">Created By</label>
                             <input type="text" name="created_by" id="created_by" value={userEmail} readOnly/>
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="title">Title</label>
                             <input type="text" name="title" id="title" required placeholder="Enter the title of the issue" value={issueTitle} onChange={(e) => setIssueTitle(e.target.value)} />
                         </div>
-                         <div className="createIssueField">
+                         <div className="form-group">
                             <label htmlFor="description">Description</label>
                             <textarea name="description" id="description" required placeholder="Enter the description of the issue" value={issueDescription} onChange={(e) => setIssueDescription(e.target.value)}></textarea>
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="project_id">Project</label>
                             <select name="project_id" id="project_id" required onChange={(e) => setIssueProjectID(e.target.value)}>
                                 <option value="">Select a project</option>
@@ -109,7 +106,7 @@ const CreateIssue = ({ userDetails }) => {
                                 ))}
                             </select>           
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="priority">Priority</label>
                             <select name="priority" id="priority" required onChange={(e) => setIssuePriority(e.target.value)}>
                                 <option value="minor">Minor</option>
@@ -118,12 +115,12 @@ const CreateIssue = ({ userDetails }) => {
                                 <option value="blocker">Blocker</option>
                             </select>
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="due_date">Due Date</label>
                             <input type="date" name="due_date" id="due_date" required min={today} onChange={(e) => setIssueDueDate(e.target.value)} 
                             value={issueDueDate} />
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="status">Status</label>
                             <select name="status" id="status" required onChange={(e) => setIssueStatus(e.target.value)}>
                                 <option value="open">Open</option>
@@ -131,14 +128,14 @@ const CreateIssue = ({ userDetails }) => {
                                 <option value="on-hold">On Hold</option>
                             </select>
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="visibility">Visibility</label>
                             <select name="visibility" id="visibility" required onChange={(e) => setIssueVisibility(e.target.value)}>
                                 <option value="public">Public</option>
                                 <option value="private">Private</option>
                             </select>
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="feature">Feature</label>
                             <select name="feature" id="feature" required onChange={(e) => setIssueFeature(e.target.value)}>
                                 <option value="bug">Bug</option>
@@ -146,12 +143,12 @@ const CreateIssue = ({ userDetails }) => {
                                 <option value="enhancement">Enhancement</option>
                             </select>
                         </div>
-                        <div className="createIssueField">
+                        <div className="form-group">
                             <label htmlFor="file">Attach File</label>
                             <input type="file" name="file" id="file" multiple onChange={(e) => setIssueFile(e.target.files)} />
                         </div> 
-                        <div className="createIssueField">
-                            <button type="submit" className="createIssueSubmit btn-button">Create</button>
+                        <div className="form-group">
+                            <button type="submit" className="btn-button">Create Issue</button>
                         </div>
                     </div>
                 </form>

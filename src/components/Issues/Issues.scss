@@ -54,28 +54,20 @@
 }
 
 // single issue view
-.singleIssueView{
+.issueTrackerContainer {
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    
-    .issueHeader{
-        margin-top: 20px;
-        justify-content: center;   
-    }
+    gap: 20px;
 }
-
-.singleIssueViews{
-    max-width: 400px;
+.singleIssueViews, .singleIssueEdit{
+    max-width: 380px;
     width: 100%;
     border-radius: 5px;
     border: 1px solid var(--primary-color);
-    // background: rgba( 255, 255, 255, 0.25 );
-    // backdrop-filter: blur( 4px );
-    // box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    // -webkit-backdrop-filter: blur( 4px );
-    // border-radius: 10px;
-
+    
+    .issueHeader{
+            margin: 20px auto;
+            justify-content: center;   
+    }
 
     .issueDetails{
         width: 100%;
@@ -83,7 +75,7 @@
         flex-direction: column;
         align-items: center;
 
-        .issueDetailsItem{
+        .issueDetailsItem, .issueDetailsItemDesc{
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -94,12 +86,12 @@
             padding-bottom: 10px;
 
             .issueDetailsLabel{
-                font-size: var(--fs-normal);
+                font-size: var(--fs-small);
                 font-weight: 520;
             }
 
             .issueDetailsValue{
-                font-size: var(--fs-normal);
+                font-size: var(--fs-small);
             }
 
             .issueActions{
@@ -118,12 +110,7 @@
                     background-color: var(--danger-color);
                 }
 
-                .reset{
-                    color: var(--fade-light-color);
-                    background-color: var(--secondary-color);
-                }
-
-                .save:hover, .delete:hover, .reset:hover{
+                .save:hover, .delete:hover{
                     background-color: var(--primary-color);
                 }
             }
@@ -134,7 +121,7 @@
         width: 100%;
 
         select {
-            width: 150px;
+            width: 180px;
             padding: 5px 10px;
             border-radius: 5px;
             font-size: var(--fs-small);
@@ -176,6 +163,29 @@
     }
 
 }
+// single issue edit
+.singleIssueEdit{
+    max-width: inherit;
+    width: 100%;
+
+    .issueDetails{
+        flex-direction: row;
+    }
+
+    .issueDetailsItem{
+        height: 40px;
+    }
+
+    .issueActualContent, .issueEditContent{
+        width: 50%;
+        height: 350px;
+    }
+    .issueDetailsItemDesc{
+        margin-bottom: 10px;
+        height: 140px;
+    }
+}
+
 .issueTrackerMessage{
     font-size: var(--fs-normal);
     color: var(--teritary-color);

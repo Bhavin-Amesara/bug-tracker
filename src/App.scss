@@ -11,7 +11,8 @@
   --tiffany-blue-2: #90e6ceff;
   --aquamarine: #7adfbbff;
   --aquamarine-2: #86e2c1ff;
-  --primary-color: #0066cc;
+  // --primary-color: #0066cc;
+  --primary-color: #0057ac;
   --secondary-color: #004080;
   --teritary-color: #003366;
   --fade-primary-color: #a8cbff;
@@ -90,6 +91,38 @@ body {
   color: var(--dark-color);
   background-color: var(--fade-light-color);
   // background-color: var(--light-color);
+  transition: all 0.4s ease-in-out;
+}
+
+.main-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.sidebar-container{
+  width: 15%;
+  height: 100vh;
+  background-color: var(--primary-color);
+  transition: all 0.4s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-container-full {
+  width: 100%;
+  transition: all 0.4s ease-in-out;
+}
+
+.content-container {
+  width: 85%;
+  margin-left: 15%;
+  transition: all 0.4s ease-in-out;
 }
 
 .container {
@@ -124,7 +157,7 @@ body {
 }
 
 .backButton{
-  margin-left: 20px;
+  // margin-left: 20px;
   a{
     display: flex;
     align-items: center;
@@ -216,6 +249,14 @@ svg {
         }
     }
 
+    select{
+      option {
+        font-size: var(--fs-small);        
+        scrollbar-width: thin;
+        scrollbar-color: var(--teritary-color) var(--fade-light-color);
+      }
+    }
+
     textarea {
         height: 120px;
         resize: none;
@@ -226,4 +267,8 @@ svg {
 // toasts
 .Toastify__toast-body > div:nth-child(2) {
   font-size: var(--fs-small);
+}
+
+.assignUserContent .issueDetailsItem:last-child{
+  border-bottom: none;
 }

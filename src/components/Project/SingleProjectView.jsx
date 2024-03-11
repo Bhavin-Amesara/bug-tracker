@@ -4,19 +4,43 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 
 
 const SingleProjectView = () => {
     const { id } = useParams();
     const [project, setProject] = useState(null);
+    const [projectIssues, setProjectIssues] = useState([]);
+    const [projectIssuesTracker, setProjectIssuesTracker] = useState([{}]);
     const navigate = useNavigate();
     
     useEffect(() => {
         fetch('http://localhost:3300/api/projects/' + id) 
         .then((res) => res.json())
         .then((data) => {
+            if (data.status === false) {
+                navigate('/projects');
+            }
+            console.log(data);
+            data.data.createdAt = formatDistanceToNow(new Date(data.data.createdAt), { addSuffix: true });
+            data.data.updatedAt = formatDistanceToNow(new Date(data.data.updatedAt), { addSuffix: true });
             setProject(data.data);
         });
+
+        fetch('http://localhost:3300/api/issues/project/' + id)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data, "issues");
+            setProjectIssues(data.data);
+        });
+
+        fetch('http://localhost:3300/api/issue-tracker/project/' + id)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data, "issuestracker");
+            setProjectIssuesTracker(data.data);
+        });
+
     }, [id]);
     
     return (
@@ -33,16 +57,26 @@ const SingleProjectView = () => {
                     </div>
                 </div>
             <ToastContainer />
-            <div className="singleProjectView container">
-                <h1>Project: {project && project.title}</h1>
-                <p>Description: {project && project.description}</p>
-                <p>Created by: {project && project.created_by}</p>
-                <p>Lead: {project && project.lead}</p>
-                <p>Visibility: {project && project.visibility}</p>
-                <p>Department: {project && project.department}</p>
-                <p>Created at: {project && project.createdAt}</p>
-                <p>Updated at: {project && project.updatedAt}</p>
-                <p>Status: {project && project.status}</p>
+            <div className="singleProjectView container d-flex d-flex-column">
+                <div className="singleProjectDetails">
+                    <div className="singleProjectContent">
+                        <h1>Project: {project && project.title}</h1>
+                        <p>Description: {project && project.description}</p>
+                        <p>Created by: {project && project.created_by.username}</p>
+                        <p>Lead: {project && project.lead.username}</p>
+                        <p>Visibility: {project && project.visibility}</p>
+                        <p>Department: {project && project.department}</p>
+                        <p>Created at: {project && project.createdAt}</p>
+                        <p>Updated at: {project && project.updatedAt}</p>
+                        <p>Status: {project && project.status}</p>
+                    </div>
+                    <div className="singleProjectAnalytics">
+                        <h1>Analytics</h1>
+                        <p>Number of issues: { projectIssues.length }</p>
+                        <p>Number of user (working on): { projectIssuesTracker.length }</p>
+                    </div>
+                </div>
+                
             </div>
             </div>
         </>

@@ -4,6 +4,7 @@ import { useProjectContext } from "../../hooks/useProjectContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const Swal = require("sweetalert2");
 const withReactContent = require("sweetalert2-react-content");
@@ -15,6 +16,8 @@ const Project = () => {
     const { user } = useAuthContext();
     const userId = user && user.isLoggedIn ? user.userId : "";
     const userEmail = user && user.email;
+    // navigate
+    const navigate = useNavigate();
 
     // state
     const [projectTitle, setProjectTitle] = useState("G17 Frontend");
@@ -49,15 +52,17 @@ const Project = () => {
                     title: "Project created",
                     text: "Project has been created successfully",
                     icon: "success",
+                }).then(() => {
+                    // handleActive('viewProjects');
                 });
             } else {
-                
-                if (response.extraDetails && response.extraDetails.message) {
-                    toast.error(response.extraDetails.message);
-                }else if (response.extraDetails) {
-                    toast.error(response.extraDetails);
-                }else if (response.message) {
+                console.log(response);
+                if (response.message !== "") {
                     toast.error(response.message);
+                } else if (response.extraDetails && response.extraDetails.message) {
+                    toast.error(response.extraDetails.message);
+                }else if (response.extraDetails ) {
+                    toast.error(response.extraDetails);
                 }
             }
         });

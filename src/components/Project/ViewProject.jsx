@@ -45,7 +45,10 @@ const ViewProject = () => {
         $('#projectTable').on('click', 'button', function () {
             var data = $('#projectTable').DataTable().row($(this).parents('tr')).data();
             dispatch({ type: "SET_SINGLE_PROJECT", payload: data });
+            console.log(data, "-----------------------------------------------");
             navigate(`/project/${data._id}`);
+            // clear last 3 navigations from the history
+            window.history.go(-3);
         });
     }
 
@@ -53,22 +56,7 @@ const ViewProject = () => {
     return (
         <div>
             <ToastContainer />
-            <h1>View Project</h1>
             <table id="projectTable" className="display">
-                {/* <thead>
-                    <tr>
-                        <th>Project Name</th>
-                        <th>Project Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {projects && projects.map((project) => (
-                        <tr key={project._id}>
-                            <td>{project.title}</td>
-                            <td>{project.description}</td>
-                        </tr>
-                    ))}
-                </tbody>  */}
             </table>
         </div>
     );

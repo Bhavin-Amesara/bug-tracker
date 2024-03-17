@@ -63,9 +63,7 @@ function App() {
         } />
         <Route path="/bugzone" element={
         <>
-          <Bugzone 
-            activeBugzoneLink={activeBugzoneLink}
-          />
+          {user && user.isLoggedIn ? <Bugzone activeBugzoneLink={activeBugzoneLink} /> : <Login />}
         </>
         } />
         <Route path="/issues" element={

@@ -217,4 +217,44 @@
     margin: 0;
 }
 
-  
+.bugzone-content .viewBug .public-bugs{
+    margin-top: 20px;
+    margin-bottom: 1rem;
+    padding: 0 30px;
+    border-bottom: 1px solid var(--cambridge-blue);
+    padding-bottom: 10px;
+
+    .bug-header-row{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .bug-title{
+            font-size: var(--fs-normal);
+            font-weight: 520;
+        }
+
+        .bug-creator{
+            font-size: var(--fs-normal);
+            color: var(--primary-color2);
+            text-transform: capitalize;
+        }
+    }
+
+    .bug-description{
+        font-size: var(--fs-normal);
+        color: var(--fade-dark-color);
+    }
+
+    .bug-feature{
+        margin-top: 10px;
+        font-size: var(--fs-small);
+        color: var(--tag-color);
+        background-color: var(--tag-background);
+        padding: 5px 10px;
+        width: max-content;
+        border-radius: 5px;
+    }
+
+}

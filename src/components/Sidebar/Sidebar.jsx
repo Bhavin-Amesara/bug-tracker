@@ -78,12 +78,12 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
         } 
     }
     const handleSingleProjectClick = (props) => {
-        if(props === 'singleProjectDetails'){
-            setActiveSingleProjectLink('singleProjectDetails');
-            if(document.getElementById('single-project-btn2')){
+        if(props === 'addUserToProject'){
+            setActiveSingleProjectLink('addUserToProject');
+            if(document.getElementById('single-project-btn3')){
+                document.getElementById('single-project-btn1').classList.remove('active');
                 document.getElementById('single-project-btn2').classList.remove('active');
-                document.getElementById('single-project-btn3').classList.remove('active');
-                document.getElementById('single-project-btn1').classList.add('active');
+                document.getElementById('single-project-btn3').classList.add('active');
             }
         } else if(props === 'editSingleProject'){
             setActiveSingleProjectLink('editSingleProject');
@@ -92,12 +92,12 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                 document.getElementById('single-project-btn3').classList.remove('active');
                 document.getElementById('single-project-btn2').classList.add('active');
             }
-        } else if(props === 'addUserToProject'){
-            setActiveSingleProjectLink('addUserToProject');
-            if(document.getElementById('single-project-btn3')){
-                document.getElementById('single-project-btn1').classList.remove('active');
+        } else if(props === 'singleProjectDetails'){
+            setActiveSingleProjectLink('singleProjectDetails');
+            if(document.getElementById('single-project-btn2')){
                 document.getElementById('single-project-btn2').classList.remove('active');
-                document.getElementById('single-project-btn3').classList.add('active');
+                document.getElementById('single-project-btn3').classList.remove('active');
+                document.getElementById('single-project-btn1').classList.add('active');
             }
         }
     }

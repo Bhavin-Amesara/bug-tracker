@@ -50,24 +50,38 @@
   --container-gap: 20px;
   --container-min-width: 300px;
   --container-max-width: 1200px;
+  --tag-background: #272727;
+  --tag-color: #fff;
+  --neon-color: #0057ac;
+  --neon-color2: #00c6ff;
 }
 
 // dark mode
 .dark-theme {
+  --primary-color2: #0684ff;
   --primary-color: #212121;
   --secondary-color: #424242;
   --teritary-color: #616161;
   --fade-primary-color: #a8cbff;
   --dark-color: #101010;
+  --dark-color2: #070707;
   --fade-dark-color: #f2f2f2;
-  --light-color: #ffffff;
+  --light-color: #d4d4d4;
   --light-color2: #212121;
   --fade-light-color: #d6d6d6;
   --cambridge-blue: #79b9acff;
+  --info-color: #5e9eff;
+  --border-color: #abc3db;
+  --tag-background: #c2c2c2;
+  --tag-color: #068;
+  --neon-color: #0684ffaa;
+  --neon-color2: #0684ffaa;
+  --fade-light-color2: #383838;
 }
 
-body .dark-theme {
+.dark-theme body {
   color: var(--light-color2);
+  background: var(--dark-color);
 }
 
 // universal styles
@@ -130,6 +144,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
 }
 
 .content-container-full {
@@ -150,6 +165,11 @@ body {
   gap: var(--container-gap);
   min-width: var(--container-min-width);
   max-width: var(--container-max-width);
+}
+
+.inner-container {
+  width: 100%;
+  gap: var(--container-gap);
 }
 
 .btn-button {
@@ -289,4 +309,47 @@ svg {
 
 .assignUserContent .issueDetailsItem:last-child{
   border-bottom: none;
+}
+
+// dark mode
+.dark-theme .container {
+  color: var(--light-color);
+
+  .dashboard-title{
+    color: var(--primary-color2);
+  }
+}
+
+.dark-theme .formBody {
+  background: transparent;
+  border: 1px solid var(--info-color);
+
+  .formHeader .formTitle{
+    color: var(--light-color);
+  }
+
+  .form-group label{
+    color: var(--light-color);
+  }
+
+}
+.dark-theme .btn-button,
+.dark-theme .backButton a{
+  color: var(--primary-color2);
+  border: 1px solid var(--info-color);
+
+  &:hover {
+    background-color: var(--primary-color2);
+    color: var(--light-color);
+  }
+}
+
+.dark-theme .singleIssueEdit .issueDetailsForm span:hover,
+.dark-theme .singleIssueEdit .issueDetailsForm span.active{
+  color: var(--primary-color2);
+}
+
+.dark-theme .singleIssueEdit,
+.dark-theme .singleIssueViews{
+  background: var(--dark-color2);
 }

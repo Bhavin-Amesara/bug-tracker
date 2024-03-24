@@ -140,6 +140,9 @@ const Register = () => {
                 <div className="authLink">
                     Already have an account? <Link to="/login">Log in</Link>
                 </div>
+                <div className="authLink">
+                    Forgot password? <Link to="/forgot-password">Reset password</Link>
+                </div>
             </div>
         </div>
     );

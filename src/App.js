@@ -17,6 +17,7 @@ import { ProjectContextProvider } from './context/ProjectContext';
 import SingleProjectView from './components/Project/SingleProjectView';
 import Sidebar from './components/Sidebar/Sidebar';
 import Bugzone from './components/BugZone/BugZone';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 
 function App() {
   const { user } = useAuthContext();
@@ -59,6 +60,11 @@ function App() {
         <Route path="/register" element={
         <>
           {user && user.isLoggedIn ? <Dashboard /> : <Register />}
+        </>
+        } />
+        <Route path="/forgot-password" element={
+        <>
+          {user && user.isLoggedIn ? <Dashboard /> : <ResetPassword />}
         </>
         } />
         <Route path="/bugzone" element={

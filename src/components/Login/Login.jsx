@@ -120,6 +120,9 @@ const LoginPage = () => {
             <div className="authLink">
                 Don't have an account? <Link to="/register">Register</Link>
             </div>
+            <div className="authLink">
+                Forgot password? <Link to="/forgot-password">Reset</Link>
+            </div>
         </div>
     </div>
 }

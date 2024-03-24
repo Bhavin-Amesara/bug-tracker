@@ -5,15 +5,24 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
+// import { Chart, Line } from 'react-chartjs-2';
+import { Chart } from 'chart.js/auto';
+import { Line } from 'react-chartjs-2';
+import AssignUserToProject from "./AssignUserToProject";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
+const SingleProjectView = ({ activeSingleProjectLink }) => {
+    // context
+    const { user } = useAuthContext();
 
-const SingleProjectView = () => {
     const { id } = useParams();
     const [project, setProject] = useState(null);
     const [projectIssues, setProjectIssues] = useState([]);
     const [projectIssuesTracker, setProjectIssuesTracker] = useState([{}]);
+    const [projectUsers, setProjectUsers] = useState([]);
     const navigate = useNavigate();
-    
+    const [issueCreatedByUserForProject, setIssueCreatedByUserForProject] = useState(null);
+
     useEffect(() => {
         fetch('http://localhost:3300/api/projects/' + id) 
         .then((res) => res.json())
@@ -21,7 +30,6 @@ const SingleProjectView = () => {
             if (data.status === false) {
                 navigate('/projects');
             }
-            console.log(data);
             data.data.createdAt = formatDistanceToNow(new Date(data.data.createdAt), { addSuffix: true });
             data.data.updatedAt = formatDistanceToNow(new Date(data.data.updatedAt), { addSuffix: true });
             setProject(data.data);
@@ -30,18 +38,68 @@ const SingleProjectView = () => {
         fetch('http://localhost:3300/api/issues/project/' + id)
         .then((res) => res.json())
         .then((data) => {
-            console.log(data, "issues");
             setProjectIssues(data.data);
         });
 
         fetch('http://localhost:3300/api/issue-tracker/project/' + id)
         .then((res) => res.json())
         .then((data) => {
-            console.log(data, "issuestracker");
             setProjectIssuesTracker(data.data);
         });
 
+        fetch('http://localhost:3300/api/projects/users/' + id)
+        .then((res) => res.json())
+        .then((data) => {
+            setProjectUsers(data.data);
+        });
+        
     }, [id]);
+
+    const data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'Issues',
+            data: [projectIssues.length, 19, 3, 5, 2, 3, 4],
+            fill: false,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgba(255, 99, 132, 0.2)',
+          },
+          {
+            label: 'Issue Tracker',
+            data: [projectIssuesTracker.length, 19, 8, 5, -2, 3, 4.5],
+            fill: false,
+            backgroundColor: 'rgb(54, 162, 235)',
+            borderColor: 'rgba(54, 162, 235, 0.2)',
+          },
+        ],
+    };
+
+    const showIssueCreatedByUser = (userId) => {
+        fetch(`http://localhost:3300/api/projects/${id}/issues/user/${userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            if (data.status === false) {
+                setIssueCreatedByUserForProject(null);
+                return;
+            } 
+            if (data.data.length === 0) {
+                setIssueCreatedByUserForProject(null);
+                return;
+            }
+            data.data.forEach(issue => {
+                issue.createdAt = formatDistanceToNow(new Date(issue.createdAt), { addSuffix: true });
+                issue.updatedAt = formatDistanceToNow(new Date(issue.updatedAt), { addSuffix: true });
+            });
+            setIssueCreatedByUserForProject(data.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+
     
     return (
         <>
@@ -57,7 +115,9 @@ const SingleProjectView = () => {
                     </div>
                 </div>
             <ToastContainer />
-            <div className="singleProjectView container d-flex d-flex-column">
+            <div className="singleProjectView inner-container d-flex d-flex-column">
+            { activeSingleProjectLink === 'singleProjectDetails' ? 
+            <><div className="table-title dashboard-title">Project Details</div> 
                 <div className="singleProjectDetails">
                     <div className="singleProjectContent">
                         <h1>Project: {project && project.title}</h1>
@@ -74,8 +134,67 @@ const SingleProjectView = () => {
                         <h1>Analytics</h1>
                         <p>Number of issues: { projectIssues.length }</p>
                         <p>Number of user (working on): { projectIssuesTracker.length }</p>
+                        <div className="chart">
+                            <Line data={data} />
+                        </div>  
                     </div>
-                </div>
+                </div></>
+            : activeSingleProjectLink === 'editSingleProject' ? <div className="table-title dashboard-title">Edit Project</div> 
+            : activeSingleProjectLink === 'addUserToProject' ? 
+                <>
+                    <AssignUserToProject projectName={project && project.title} />
+                    {/* display user related to this project */}
+                    <div className="inner-container viewProjectUsers d-flex">
+                        <div className="table-title dashboard-title"> Project Users </div>
+                        {
+                            projectUsers.map(user => {
+                                return (
+                                    <div className="projectUser" key={user.id}>
+                                        {/* <div className="projectUserDetails"> */}
+                                            <button className="btn btn-button" onClick={() => showIssueCreatedByUser(user.userId._id) }> {user.userId.username} </button>
+                                        {/* </div> */}
+                                    </div>
+                                )
+                            })
+                        }
+                        </div>
+                    <div className="inner-container">
+                        <div className="issueDetailsForProjects">
+                            <div className="table-title dashboard-title">Issues</div>
+                            <div className="issueDetailsContent">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Priority</th>
+                                            <th>Status</th>
+                                            <th>Created At</th>
+                                            <th>Updated At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        { issueCreatedByUserForProject ? issueCreatedByUserForProject.map(issue => {
+                                            return (
+                                                <tr key={issue._id}>
+                                                    <td>{issue.title}</td>
+                                                    <td>{issue.priority}</td>
+                                                    <td>{issue.status}</td>
+                                                    <td>{issue.createdAt}</td>
+                                                    <td>{issue.updatedAt}</td>
+                                                </tr>
+                                            )
+                                        }) : 
+                                        <tr>
+                                            <td colSpan="5">No issues found for this user</td>
+                                        </tr>}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </>
+            : null }
                 
             </div>
             </div>

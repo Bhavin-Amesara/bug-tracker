@@ -45,7 +45,7 @@ const CreateIssue = ({ userDetails }) => {
         }
 
         console.log(...formData, "from create issue form");
-        fetch('api/issues', {
+        fetch('http://localhost:3300/api/issues', {
             method: 'POST',
             body: formData,
         })

@@ -8,10 +8,10 @@ const FetchProjects = (userDetails, setProjects) => {
     // console.log(userId, "from handleCreateIssue.jsx");
 
     useEffect(() => {
-        fetch("api/projects/user/" + userId, )
+        fetch("http://localhost:3300/api/projects/user/" + userId)
         .then((response) => response.json())
         .then((data) => {
-            // console.log(data, "from handleCreateIssue.jsx");
+            console.log(data, "from handleCreateIssue.jsx");
             if (data.status === true) {
                 setProjects(data.data);
             } else {
@@ -22,7 +22,7 @@ const FetchProjects = (userDetails, setProjects) => {
             console.log(error, "from handleCreateIssue.jsx");
             setProjects([]);
         });
-    }, [userDetails]);
+    }, []);
 }
 
 export { FetchProjects };

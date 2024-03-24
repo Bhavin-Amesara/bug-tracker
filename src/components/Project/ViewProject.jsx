@@ -20,9 +20,10 @@ const ViewProject = () => {
     const userId = user && user.isLoggedIn ? user.userId : "";
     // fetch all projects
     useEffect(() => {
-        fetch("api/projects/user/" + userId)
+        fetch("http://localhost:3300/api/projects/user/" + userId)
             .then((res) => res.json())
             .then((data) => {
+                console.log(data.data);
                 dispatch({ type: "SET_PROJECTS", payload: data.data });
         });
     }, [dispatch]);
@@ -45,7 +46,6 @@ const ViewProject = () => {
         $('#projectTable').on('click', 'button', function () {
             var data = $('#projectTable').DataTable().row($(this).parents('tr')).data();
             dispatch({ type: "SET_SINGLE_PROJECT", payload: data });
-            console.log(data, "-----------------------------------------------");
             navigate(`/project/${data._id}`);
             // clear last 3 navigations from the history
             window.history.go(-3);

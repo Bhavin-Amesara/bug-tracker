@@ -46,14 +46,14 @@ const Project = () => {
         })
         .then((response) => response.json())
         .then((response) => {
-            if (response.status === true) {
+            if (response.status === true && (response.statusCode === 200) || (response.statusCode === 201)) {
                 dispatch({ type: "CREATE_PROJECT", payload: response.data });
                 mySwal.fire({
                     title: "Project created",
                     text: "Project has been created successfully",
                     icon: "success",
                 }).then(() => {
-                    // handleActive('viewProjects');
+                    navigate("/projects");
                 });
             } else {
                 console.log(response);

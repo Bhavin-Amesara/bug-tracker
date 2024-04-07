@@ -65,117 +65,6 @@
     }
 }
 
-.singleIssueViews{
-    max-width: 400px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid var(--primary-color);
-    // background: rgba( 255, 255, 255, 0.25 );
-    // backdrop-filter: blur( 4px );
-    // box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    // -webkit-backdrop-filter: blur( 4px );
-    // border-radius: 10px;
-
-
-    .issueDetails{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .issueDetailsItem{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 30px;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--secondary-color);
-            padding-bottom: 10px;
-
-            .issueDetailsLabel{
-                font-size: var(--fs-normal);
-                font-weight: 520;
-            }
-
-            .issueDetailsValue{
-                font-size: var(--fs-normal);
-            }
-
-            .issueActions{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-
-                .save{
-                    color: var(--fade-light-color);
-                    background-color: var(--success-color2);
-                }
-
-                .delete{
-                    color: var(--fade-light-color);
-                    background-color: var(--danger-color);
-                }
-
-                .reset{
-                    color: var(--fade-light-color);
-                    background-color: var(--secondary-color);
-                }
-
-                .save:hover, .delete:hover, .reset:hover{
-                    background-color: var(--primary-color);
-                }
-            }
-        }
-    }
-
-    .issueDetailsForm{
-        width: 100%;
-
-        select {
-            width: 150px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: var(--fs-small);
-            border: 1px solid var(--secondary-color);
-            color: var(--secondary-color);
-            transition: all 0.4s ease-in-out;
-
-            &:focus {
-                border: 1px solid var(--primary-color);
-            }
-        }
-
-        span {
-            font-size: var(--fs-large);
-            margin-left: 10px;
-            cursor: pointer;
-        
-            &:hover {
-                color: var(--primary-color);
-            }
-
-            &.active {
-                color: var(--primary-color);
-            }
-        }
-
-        textarea{
-            padding: 10px;
-            width: 100%;
-            height: 120px;
-            resize: none;
-            color: var(--dark-color);
-        }
-
-        .issueDetailsValue{
-            font-size: var(--fs-normal);
-            color: var(--dark-color); 
-        }
-    }
-
-}
 .issueTrackerMessage{
     font-size: var(--fs-normal);
     color: var(--teritary-color);
@@ -247,14 +136,94 @@
         color: var(--fade-dark-color);
     }
 
-    .bug-feature{
+    .bug-footer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 10px;
-        font-size: var(--fs-small);
-        color: var(--tag-color);
-        background-color: var(--tag-background);
-        padding: 5px 10px;
-        width: max-content;
-        border-radius: 5px;
+        
+        .bug-tags{
+            display: flex;
+            align-items: center;
+            .bug-feature, .bug-votes{
+                font-size: var(--fs-small);
+                color: var(--tag-color);
+                span{
+                    margin-right: 5px;
+                    background-color: var(--tag-background);
+                    padding: 5px 10px;
+                    width: max-content;
+                    border-radius: 5px;
+                }
+            }
+            .bug-votes span{
+                background-color: var(--success-color2);
+            }
+            .bug-votes span:last-child{
+                background-color: var(--danger-color);
+            }
+        }
+    }
+}
+
+.singleBugzone {
+    .sbugzone-header {
+        font-size: var(--fs-normal);
+        font-weight: 520;
+        margin-bottom: 1rem;
     }
 
+    .sbugzone-description {
+        font-size: var(--fs-normal);
+        color: var(--fade-dark-color);
+    }
+
+    .sbugzone-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+        
+        .sbugzone-tags {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+.SingleBugzoneForm{
+    width: 100%;display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+
+    input{
+        padding: 3px 10px;
+        width: 50%;
+    }
+    .singleCommonEdit .commonEditDetails 
+    .commonEditDetailsForm select{
+        width: 50%;
+    }
+    .commonEditDetailsForm .singleBugzoneTextarea{
+        height: 140px;
+
+        textarea{
+            width: 50%;
+            height: 100%;
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+        }
+    }
+
+    .commonEditDetailsItem .save{
+        background-color: var(--success-color2);
+    }
+    .commonEditDetailsItem .delete{
+        background-color: var(--danger-color);
+    }
+}
+
+.dark-theme .bugzone-content .viewBug .public-bugs .bug-footer .bug-tags .bug-votes{
+    color: var(--fade-light-color);
 }

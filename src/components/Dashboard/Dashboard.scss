@@ -18,9 +18,19 @@
 .countcards, .dashreport {   
     padding: 20px;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    background-color: var(--light-color);
+    background-color: var(--fade-light-color3);
     transition: var(--transition) ease-in-out;
+    // glassmorphism effect
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    &:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2),
+                    0 1px 13px rgba(0, 0, 0, 0.15), 
+                    0 3px 5px rgba(0, 0, 0, 0.1),
+                    0 2px 4px rgba(0, 0, 0, 0.08);
+        // add more depth
+        transform: translateY(-2px);       
+    }
 }
 
 .dashboard {
@@ -78,47 +88,49 @@
         padding: 20px 0;
         
         .countcards {
-            width: 25%;
+            width: 19%;
+
+            .dashboard-title {
+                margin-bottom: 20px;
+            }
 
             .cards {
                 padding: 10px;
                 margin-bottom: 5px;
                 border: 1px solid black;
-                background-color: var(--fade-primary-color);
+                background-color: var(--neon-color);
 
                 .carditem {
-                    display: grid;
-                    grid-template-rows: 1fr 1fr;
-                    gap: 10px;
+                    display: flex;
+                    justify-content: space-evenly;
                     padding: 10px;
                     font-weight: 500;    
                     align-items: end;
                     color: var(--dark-color);
 
                     .cardtitle {
-                        grid-column: 1 / 3;
-                        font-size: var(--fs-large);
+                        font-size: var(--fs-normal);
+                        color: var(--light-color);
                     }
 
-                    .cardname {
-                        grid-column: 1 / 2;
-                        font-size: 18px;
-                    }
+                    // .cardname {
+                    //     grid-column: 1 / 2;
+                    //     font-size: var(--fs-normal);
+                    // }
 
                     .cardcount {
-                        grid-column: 2 / 3;
-                        font-size: var(--fs-xlarge);
+                        font-size: var(--fs-normal);
                         display: flex;
                         justify-content: end;
                         align-self: end;
-                        color: var(--secondary-color);
+                        color: var(--fade-light-color);
                     }
                 }
             }
         }
 
         .dashreport {
-            width: 70%;
+            width: 100%;
 
             .reportcontent{
                 flex-direction: column;
@@ -148,10 +160,15 @@
                 .reportGraph {
                     padding: 20px;
                     transition: var(--transition) ease-in-out;
+                    width: 100%;
 
                     img{
                         width: 100%;
                         height: 300px;
+                    }
+
+                    #showContent{
+                        width: auto;
                     }
                 }
             }

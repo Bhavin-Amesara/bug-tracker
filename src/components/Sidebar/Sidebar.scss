@@ -65,7 +65,7 @@
             color: var(--tiffany-blue-2);
         }
 
-        &.active {
+        &.active, &.active1, &.active2, &.active3, &.active4, &.active5 {
             border-left: 3px solid var(--tiffany-blue-2);
             color: var(--tiffany-blue-2);
         }

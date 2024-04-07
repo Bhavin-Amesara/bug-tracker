@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.scss";
 
-const NavMenuItem = ({ title, routeLink }) => {
+const NavMenuItem = ({ title, routeLink, activeLink }) => {
     
     return (
         <li className="nav-item">

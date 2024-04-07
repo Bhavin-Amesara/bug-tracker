@@ -49,7 +49,7 @@ const ResetPassword = () => {
     }
 
     return (
-        <div className="authContainer">
+        <div className="authContainer container">
            <div className="titleContainer">
                 <h2>Reset Password</h2>
             </div>

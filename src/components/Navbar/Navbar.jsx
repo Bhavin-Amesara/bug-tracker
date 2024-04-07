@@ -5,16 +5,42 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import useLogout from '../../hooks/useLogout';
 
-const Navbar = () => {
+const Navbar = ({ activeLink }) => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
   
   
   const logout = useLogout();
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async() => {
+    await fetch("http://localhost:3300/api/users/lastseen/" + user.userId, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            lastseen: new Date(),
+        }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+    });
+    await logout();
     navigate("/login");
   }
+
+  // handle click event for the theme toggle
+  const handleThemeClick = (props) => {
+    if(props === 'sunlight'){
+        document.documentElement.classList.remove('dark-theme');
+        document.querySelector('.themeToggleBtnItem.active').classList.remove('active');
+        document.querySelector('.themeToggleBtnItem').classList.add('active');
+    } else if(props === 'moonlight'){
+        document.documentElement.classList.add('dark-theme');
+        document.querySelector('.themeToggleBtnItem.active').classList.remove('active');
+        document.querySelector('.themeToggleBtnItem:last-child').classList.add('active');
+    }
+}
   return (
     <nav>
       <div className="navbar container">
@@ -26,12 +52,28 @@ const Navbar = () => {
         </div>
         <div className="navbar-middle">
           <ul>
-            <NavMenuItem title="BugZone" routeLink="/bugzone" />
-            <NavMenuItem title="Projects" routeLink="/projects" />
-            <NavMenuItem title="Tickets" routeLink="/issues" />
-            <NavMenuItem title="Search" routeLink="/search" />
+            <NavMenuItem title="BugZone" routeLink="/bugzones" activeLink={activeLink} />
+            { user && user.role === "user" ? null :
+            <>
+              <NavMenuItem title="Projects" routeLink="/projects" activeLink={activeLink} />
+              <NavMenuItem title="Tickets" routeLink="/issues" activeLink={activeLink} />
+            </>
+            }
+            {/* <NavMenuItem title="Search" routeLink="/search" activeLink={activeLink} /> */}
           </ul>
         </div>
+        {/* color theme toggle */}
+        { user && user.isLoggedIn ? null :
+        <div className="themeToggle">
+            <div className="themeToggleBtn">
+                <button className="themeToggleBtnItem active" onClick={() => handleThemeClick("sunlight")}>
+                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="h-full w-full"><rect x="0" y="0" rx="30" fill="transparent" stroke="transparent" strokeWidth="0" strokeOpacity="100%" paintOrder="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2"><path d="M12 3V2m0 20v-1m9-9h1M2 12h1m15.5-6.5L20 4M4 20l1.5-1.5M4 4l1.5 1.5m13 13L20 20"/><circle cx="12" cy="12" r="4"/></g></g></svg></svg>
+                </button>
+                <button className="themeToggleBtnItem" onClick={() => handleThemeClick("moonlight")}>            
+                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="h-full w-full"><rect x="0" y="0" rx="30" fill="transparent" stroke="transparent" strokeWidth="0" strokeOpacity="100%" paintOrder="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img"xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path fill="currentColor" fillRule="evenodd" d="M11.486 4.768a7.25 7.25 0 1 0 7.399 9.51a6.25 6.25 0 0 1-7.398-9.51ZM3.25 12a8.75 8.75 0 0 1 10.074-8.65a.75.75 0 0 1 .336 1.342a4.75 4.75 0 1 0 5.83 7.499a.75.75 0 0 1 1.22.654A8.751 8.751 0 0 1 3.25 12Z" clipRule="evenodd"/></g></svg></svg>
+                </button>
+            </div>
+        </div>}
         <div className="navbar-right">
           <div className="auth">
             { user &&

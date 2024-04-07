@@ -2,12 +2,19 @@ import React from 'react';
 import './Sidebar.scss';
 import { useLocation } from 'react-router-dom';
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuthContext } from '../../hooks/useAuthContext';
+import DashboardCard from '../Dashboard/DashBoardCard';
 
-const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActiveSingleIssueLink, setActiveSingleProjectLink, setActiveBugzoneLink }) => {
+const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActiveSingleIssueLink, setActiveSingleProjectLink, setActiveBugzoneLink, setActiveSingleBugzoneLink, dashboardData, setActiveDashboardItemLink }) => {
+    // context
+    const { user } = useAuthContext();
     // get full route 
     const location = useLocation();
     // set active class for the current route
     const currentRoute = location.pathname.split('/')[1];
+    if (currentRoute === '') {
+       var currentRoute1 = 'dashboard';
+    }
     // navigate
     const navigate = useNavigate();
 
@@ -104,27 +111,75 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
     const handleBugzoneClick = (props) => {
         if(props === 'viewBugzone'){
             setActiveBugzoneLink('viewBugzone');
-            if(document.getElementById('bugzone-btn3')){
-                document.getElementById('bugzone-btn2').classList.remove('active');
-                document.getElementById('bugzone-btn1').classList.remove('active');
-                document.getElementById('bugzone-btn3').classList.add('active');
+            if(document.getElementById('bugzones-btn3')){
+                // document.getElementById('bugzone-btn2').classList.remove('active');
+                document.getElementById('bugzones-btn1').classList.remove('active');
+                document.getElementById('bugzones-btn3').classList.add('active');
             }
         } else if(props === 'reportBugzone'){
             setActiveBugzoneLink('reportBugzone');
+            if(document.getElementById('bugzones-btn1')){
+                // document.getElementById('bugzone-btn2').classList.remove('active');
+                document.getElementById('bugzones-btn3').classList.remove('active');
+                document.getElementById('bugzones-btn1').classList.add('active');
+            }
+        } 
+    }
+    const handleSingleBugzoneClick = (props) => {
+        if(props === 'viewSingleBugzone'){
+            setActiveSingleBugzoneLink('viewSingleBugzone');
             if(document.getElementById('bugzone-btn1')){
+                // document.getElementById('bugzone-btn2').classList.remove('active');
                 document.getElementById('bugzone-btn2').classList.remove('active');
-                document.getElementById('bugzone-btn3').classList.remove('active');
                 document.getElementById('bugzone-btn1').classList.add('active');
             }
-        } else if(props === 'updateBugzone'){
-            setActiveBugzoneLink('updateBugzone');
+        } else if(props === 'editSingleBugzone'){
+            setActiveSingleBugzoneLink('editSingleBugzone');
             if(document.getElementById('bugzone-btn2')){
+                // document.getElementById('bugzone-btn2').classList.remove('active');
                 document.getElementById('bugzone-btn1').classList.remove('active');
-                document.getElementById('bugzone-btn3').classList.remove('active');
                 document.getElementById('bugzone-btn2').classList.add('active');
             }
+        } 
+    }
+
+    // handle click event for the dashboard menu
+    const handleDashboardClick = (props) => {
+        if(props === 'users'){
+            setActiveDashboardItemLink('users');
+            if(document.getElementById('dashboard-btn2')){
+                document.getElementById('dashboard-btn2').classList.remove('active');
+                document.getElementById('dashboard-btn3').classList.remove('active');
+                // document.getElementById('dashboard-btn4').classList.remove('active');
+                document.getElementById('dashboard-btn1').classList.add('active');
+            }
+        } else if(props === 'projects'){
+            setActiveDashboardItemLink('projects');
+            if(document.getElementById('dashboard-btn1')){
+                document.getElementById('dashboard-btn1').classList.remove('active');
+                document.getElementById('dashboard-btn3').classList.remove('active');
+                // document.getElementById('dashboard-btn4').classList.remove('active');
+                document.getElementById('dashboard-btn2').classList.add('active');
+            }
+        } else if(props === 'issues'){
+            setActiveDashboardItemLink('issues');
+            if(document.getElementById('dashboard-btn1')){
+                document.getElementById('dashboard-btn1').classList.remove('active');
+                document.getElementById('dashboard-btn2').classList.remove('active');
+                // document.getElementById('dashboard-btn4').classList.remove('active');
+                document.getElementById('dashboard-btn3').classList.add('active');
+            }
+        // } else if(props === 'public-issues'){
+        //     setActiveDashboardItemLink('public-issues');
+        //     if(document.getElementById('dashboard-btn1')){
+        //         document.getElementById('dashboard-btn1').classList.remove('active');
+        //         document.getElementById('dashboard-btn2').classList.remove('active');
+        //         document.getElementById('dashboard-btn3').classList.remove('active');
+        //         document.getElementById('dashboard-btn4').classList.add('active');
+        //     }
         }
     }
+
 
     // handle click event for the theme toggle
     const handleThemeClick = (props) => {
@@ -147,15 +202,26 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
             </svg>
             <div className="user-name">{userName}</div>
             </div>
+            <NavLink to="/" className="btn-sidebar-button" >Dashboard</NavLink>
             <div className="sidebarMenu">
                 <div className="sidebarMenuItems">
                     <div className="sidebarMenuItem">
-                        <NavLink to="/" className="btn-sidebar-button">Dashboard</NavLink>
+                            
+                        { user.role === 'admin' ? currentRoute1 === 'dashboard' ?
+                        <>
+                            <span className="sidebarMenuItemsGroup">Analytics</span>
+                            <button id="dashboard-btn1" className="btn-sidebar-button active" onClick={() => handleDashboardClick("users")}>Users</button>
+                            <button id="dashboard-btn2" className="btn-sidebar-button" onClick={() => handleDashboardClick("projects")}>Projects</button>
+                            <button id="dashboard-btn3" className="btn-sidebar-button" onClick={() => handleDashboardClick("issues")}>Issues</button>
+                            {/* <button id="dashboard-btn4" className="btn-sidebar-button" onClick={() => handleDashboardClick("public-issues")}>Public Issues</button> */}
+                        </>
+                            : null : null
+                        }
                     </div>
                 </div>
             </div>            
             {
-                currentRoute === 'issue' ?
+                currentRoute === 'issue' ? user.role === 'user' ? null :
                 <div className="sidebarMenu">
                     <div className="sidebarMenuItems">
                         <div className="sidebarMenuItem">
@@ -170,7 +236,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                         </div>
                     </div>
                 </div>
-                : currentRoute === 'issues' ?
+                : currentRoute === 'issues' ? user.role === 'user' ? null :
                 <div className="sidebarMenu">
                     <div className="sidebarMenuItems">
                         <span className="sidebarMenuItemsGroup">Issues</span>
@@ -178,7 +244,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                         <button id="issue-btn2" className="btn-sidebar-button" onClick={() => handleIssueClick("createIssue")}>Create Issue</button>
                     </div>
                 </div>
-                : currentRoute === 'projects' ?
+                : currentRoute === 'projects' ? user.role === 'user' ? null :
                 <div className="sidebarMenu">
                     <div className="sidebarMenuItems">
                         <span className="sidebarMenuItemsGroup">Projects</span>
@@ -186,7 +252,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                         <button id="project-btn2" className="btn-sidebar-button" onClick={() => handleProjectClick("createProject")}>Create Project</button>
                     </div>
                 </div>
-                : currentRoute === 'project' ?
+                : currentRoute === 'project' ? user.role === 'user' ? null :
                 <div className="sidebarMenu">
                     <div className="sidebarMenuItems">
                         <span className="sidebarMenuItemsGroup">Single Project</span>
@@ -211,13 +277,20 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                         <button className="btn-sidebar-button">Profile</button>
                     </div>
                 </div>
-                : currentRoute === 'bugzone' ?
+                : currentRoute === 'bugzones' ?
                 <div className="sidebarMenu">
                     <div className="sidebarMenuItems">
                         <span className="sidebarMenuItemsGroup">BugZones</span>
-                        <button id="bugzone-btn1" className="btn-sidebar-button active" onClick={() => handleBugzoneClick("reportBugzone")}>Report Bug</button>
-                        <button id="bugzone-btn2" className="btn-sidebar-button" onClick={() => handleBugzoneClick("updateBugzone")}>Update Bug</button>
-                        <button id="bugzone-btn3" className="btn-sidebar-button" onClick={() => handleBugzoneClick("viewBugzone")}>View All Bug</button>
+                        <button id="bugzones-btn1" className="btn-sidebar-button active" onClick={() => handleBugzoneClick("reportBugzone")}>Report Bug</button>
+                        <button id="bugzones-btn3" className="btn-sidebar-button" onClick={() => handleBugzoneClick("viewBugzone")}>View All Bug</button>
+                    </div>
+                </div>
+                : currentRoute === 'bugzone' ?
+                <div className="sidebarMenu">
+                    <div className="sidebarMenuItems">
+                        <span className="sidebarMenuItemsGroup">BugZone</span>
+                        <button id="bugzone-btn1" className="btn-sidebar-button active" onClick={() => handleSingleBugzoneClick("viewSingleBugzone")}>Bug Details</button>
+                        <button id="bugzone-btn2" className="btn-sidebar-button " onClick={() => handleSingleBugzoneClick("editSingleBugzone")}>Edit Bug</button>
                     </div>
                 </div>
                 : null
@@ -226,10 +299,10 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
             <div className="themeToggle">
                 <div className="themeToggleBtn">
                     <button className="themeToggleBtnItem active" onClick={() => handleThemeClick("sunlight")}>
-                        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="h-full w-full"><rect x="0" y="0" rx="30" fill="transparent" stroke="transparent" strokeWidth="0" strokeOpacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2"><path d="M12 3V2m0 20v-1m9-9h1M2 12h1m15.5-6.5L20 4M4 20l1.5-1.5M4 4l1.5 1.5m13 13L20 20"/><circle cx="12" cy="12" r="4"/></g></g></svg></svg>
+                        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="h-full w-full"><rect x="0" y="0" rx="30" fill="transparent" stroke="transparent" strokeWidth="0" strokeOpacity="100%" paintOrder="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2"><path d="M12 3V2m0 20v-1m9-9h1M2 12h1m15.5-6.5L20 4M4 20l1.5-1.5M4 4l1.5 1.5m13 13L20 20"/><circle cx="12" cy="12" r="4"/></g></g></svg></svg>
                     </button>
                     <button className="themeToggleBtnItem" onClick={() => handleThemeClick("moonlight")}>            
-                        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" class="h-full w-full"><rect x="0" y="0" rx="30" fill="transparent" stroke="transparent" strokeWidth="0" strokeOpacity="100%" paint-order="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img"xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path fill="currentColor" fill-rule="evenodd" d="M11.486 4.768a7.25 7.25 0 1 0 7.399 9.51a6.25 6.25 0 0 1-7.398-9.51ZM3.25 12a8.75 8.75 0 0 1 10.074-8.65a.75.75 0 0 1 .336 1.342a4.75 4.75 0 1 0 5.83 7.499a.75.75 0 0 1 1.22.654A8.751 8.751 0 0 1 3.25 12Z" clip-rule="evenodd"/></g></svg></svg>
+                        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="h-full w-full"><rect x="0" y="0" rx="30" fill="transparent" stroke="transparent" strokeWidth="0" strokeOpacity="100%" paintOrder="stroke"></rect><svg width="256px" height="256px" viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img"xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path fill="currentColor" fillRule="evenodd" d="M11.486 4.768a7.25 7.25 0 1 0 7.399 9.51a6.25 6.25 0 0 1-7.398-9.51ZM3.25 12a8.75 8.75 0 0 1 10.074-8.65a.75.75 0 0 1 .336 1.342a4.75 4.75 0 1 0 5.83 7.499a.75.75 0 0 1 1.22.654A8.751 8.751 0 0 1 3.25 12Z" clipRule="evenodd"/></g></svg></svg>
                     </button>
                 </div>
             </div>

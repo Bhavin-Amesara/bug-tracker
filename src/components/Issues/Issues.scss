@@ -58,133 +58,6 @@
     display: flex;
     gap: 20px;
 }
-.singleIssueViews, .singleIssueEdit{
-    max-width: 380px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid var(--primary-color);
-    
-    .issueHeader{
-            margin: 20px auto;
-            justify-content: center;   
-    }
-
-    .issueDetails{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .issueDetailsItem, .issueDetailsItemDesc{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 30px;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--secondary-color);
-            padding-bottom: 10px;
-
-            .issueDetailsLabel{
-                font-size: var(--fs-small);
-                font-weight: 520;
-            }
-
-            .issueDetailsValue{
-                font-size: var(--fs-small);
-            }
-
-            .issueActions{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-
-                .save{
-                    color: var(--fade-light-color);
-                    background-color: var(--success-color2);
-                }
-
-                .delete{
-                    color: var(--fade-light-color);
-                    background-color: var(--danger-color);
-                }
-
-                .save:hover, .delete:hover{
-                    background-color: var(--primary-color);
-                }
-            }
-        }
-    }
-
-    .issueDetailsForm{
-        width: 100%;
-
-        select {
-            width: 180px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: var(--fs-small);
-            border: 1px solid var(--secondary-color);
-            color: var(--secondary-color);
-            transition: all 0.4s ease-in-out;
-
-            &:focus {
-                border: 1px solid var(--primary-color);
-            }
-        }
-
-        span {
-            font-size: var(--fs-large);
-            margin-left: 10px;
-            cursor: pointer;
-        
-            &:hover {
-                color: var(--primary-color);
-            }
-
-            &.active {
-                color: var(--primary-color);
-            }
-        }
-
-        textarea{
-            padding: 10px;
-            width: 100%;
-            height: 120px;
-            resize: none;
-            color: var(--dark-color);
-        }
-
-        .issueDetailsValue{
-            font-size: var(--fs-normal);
-            color: var(--dark-color); 
-        }
-    }
-
-}
-// single issue edit
-.singleIssueEdit{
-    max-width: inherit;
-    width: 100%;
-
-    .issueDetails{
-        flex-direction: row;
-    }
-
-    .issueDetailsItem{
-        height: 40px;
-    }
-
-    .issueActualContent, .issueEditContent{
-        width: 50%;
-        height: 350px;
-    }
-    .issueDetailsItemDesc{
-        margin-bottom: 10px;
-        height: 140px;
-    }
-}
 
 .issueTrackerMessage{
     font-size: var(--fs-normal);
@@ -225,4 +98,159 @@
 // css for issue tracker path:issueTracter.jsx
 #issuesTrackerTable svg{
     margin: 0;
+}
+
+.SingleIssueDetailPage{
+    display: flex;
+    flex-direction: column;
+    .issueDetailContainer{
+        display: flex;
+        flex-direction: row;
+        .issueDetailHeader{
+            font-size: 18px;
+            span{
+                font-size: 16px;
+            }
+        }
+        .issueDetailHeaderRight {
+            display: flex;
+            gap: 10px;
+            margin: 1rem auto;
+            .issueTags{
+                border-radius: 3px;
+                font-size: 12px;
+                border: 1px solid var(--primary-color2);
+                width: max-content;
+                padding: 2px 5px;
+                // background-color: var(--primary-color2);
+            }
+        }
+
+        .issueDetailContent{
+            font-size: var(--fs-normal);
+            .issueDetailContentItem{
+                padding: 5px 10px;
+                margin-bottom: 1rem;
+                border-bottom: 1px solid var(--neon-color);
+            }
+        }
+    }
+
+    .commentsForIssue{
+        display: flex;
+        flex-direction: column;
+        .commentForIssue{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            margin-top: 1rem;
+            border: 1px solid var(--neon-color);
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.37);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
+            
+            .commentHeader{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                font-size: var(--fs-normal);
+                text-transform: capitalize;
+                margin-bottom: 1rem;
+            }
+            .commentBody{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                font-size: var(--fs-normal);
+                color: var(--teritary-color);
+                margin-bottom: 1rem;
+                
+            }
+            .commentFooter{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                font-size: var(--fs-normal);
+                .commentLinks{
+                    span{
+                        button{
+                            margin-right:10px;
+                        }
+                        .cancel{
+                            border-color: var(--danger-color);
+                            color: var(--danger-color);
+                            &:hover{
+                                color: var(--light-color);
+                                background-color: var(--danger-color);
+                            }
+                        }
+                    }
+                    svg{
+                        display: flex;
+                        margin-right: 0px;
+                    }
+                }
+                .commentAck{
+                    color: var(--teritary-color);
+                }
+            }
+            span{
+                font-size: var(--fs-xsmall);
+                color: var(--fade-dark-color3);
+            }
+        }
+    
+    }
+}
+// AddCommentToIssue.jsx
+.dark-theme .formBodyIssue {
+    background: transparent;
+    border: 1px solid var(--info-color);
+  }
+  .formBodyIssue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: 10px 20px;
+    width: 50%;
+    border-radius: 5px;
+    transition: all 0.4s ease-in-out;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    
+    .form-group{
+        display: flex;
+        justify-content: center;
+    }
+    .addComment{
+        width: 100%;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        padding: 5px 10px;
+        textarea{
+            padding: 5px 10px;
+            min-height: 120px;
+            width: 100%;
+            max-width: 478px;
+            min-width: 478px;
+        }
+    }
+    button{
+        margin-right:10px;
+        cursor: pointer;
+        svg{
+            display: flex;
+            margin-right: 0px;
+        }
+    }
 }

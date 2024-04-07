@@ -173,11 +173,11 @@ const SingleIssueAssign = ({ issueId }) => {
         <>
     <div className="assignUser">                      
         <div className="assignUserContent">
-            <div className=" singleIssueViews issueDetails d-flex-column">
-                <div className="issueHeader">
+            <div className=" singleCommonViews d-flex-column">
+                <div className="commonEditHeader">
                     <div className="table-title dashboard-title">Assign Developer</div>
                 </div>
-                <form className="issueDetailsForm" encType='multipart/form-data' method='post' id='assignUserForm' name='assignUserForm' >
+                <form className="commonEditDetailsForm" encType='multipart/form-data' method='post' id='assignUserForm' name='assignUserForm' >
                     <div className="issueDetailsItem">
                         <div className="issueDetailsLabel">Issue</div>
                         <div className="issueDetailsValue" id="issueTitle">{singleIssue?.title}</div>
@@ -194,7 +194,7 @@ const SingleIssueAssign = ({ issueId }) => {
                             </select>
                         </div>
                     </div>
-                    <div className="issueDetailsItem">
+                    {/* <div className="issueDetailsItem">
                         <div className="issueDetailsLabel">Status</div>
                         <div className="issueControls d-flex">
                             <select className="issueDetailsValue" name="assignUserStatus" id="assignUserStatus" value={assignStatus} onChange={(e) => setAssignStatus(e.target.value)}>
@@ -204,7 +204,7 @@ const SingleIssueAssign = ({ issueId }) => {
                                 <option value="resolved">Resolved</option>
                             </select>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="issueDetailsItem  d-flex">
                         <textarea className="issueDetailsValue" name="assignDescription" id="assignDescription" placeholder="Add some comments" onChange={(e) => setAssignDescription(e.target.value)}>
                         </textarea>

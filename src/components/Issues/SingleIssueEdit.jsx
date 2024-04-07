@@ -36,7 +36,6 @@ const SingleIssueEdit = () => {
 
     useEffect(() => {
         setIssueId(tempId);
-        console.log(issueId, "from single issue view");
     }, []);
 
     // first time loading issue data based on issue ID
@@ -47,7 +46,7 @@ const SingleIssueEdit = () => {
             if(response.status === false){
                 mySwal.fire({
                     title: response.message,
-                    text: "Issue might be deleted",
+                    text: "Single issue might be deleted",
                     icon: "warning",
                     confirmButtonText: "Ok",
                 }).then(() => {
@@ -69,7 +68,7 @@ const SingleIssueEdit = () => {
     }, [dispatch]);
     
     // handle form change [updating issue data using issue ID]
-    const handleFormChange = (e) => {
+    const handleFormUpdate = (e) => {
         e.preventDefault();
         // update state
         setStatus(document.getElementById("status").value);
@@ -93,6 +92,10 @@ const SingleIssueEdit = () => {
         })
         .then((response) => response.json())
         .then((response) => {
+            if(response.status === false){
+                toast.error(response.message);
+                return;
+            }
             toast.success('Issue updated successfully');
             response.data.updatedAt = formatDistanceToNow(new Date(response.data.updatedAt), { addSuffix: true });
             response.data.createdAt = formatDistanceToNow(new Date(response.data.createdAt), { addSuffix: true });
@@ -106,7 +109,7 @@ const SingleIssueEdit = () => {
     }
 
     // handle issue delete
-    const handleIssueDelete = () => {
+    const handleFormDelete = () => {
         // alert using sweetalert
         mySwal.fire({
             title: "Are you sure?",
@@ -126,7 +129,7 @@ const SingleIssueEdit = () => {
                 .then((response) => {
                     if(response.status){
                         mySwal.fire({
-                            title: "Issue Deleted successful",
+                            title: "Single Issue Deleted successful",
                             icon: "success",
                             confirmButtonText: "Ok",
                         }).then(() => {
@@ -137,7 +140,7 @@ const SingleIssueEdit = () => {
                 .catch((error) => {
                     console.log(error.message);
                     mySwal.fire({
-                        title: "Issue not deleted",
+                        title: "Single Issue not deleted",
                         text: "Try Again",
                         icon: "error",
                         confirmButtonText: "Ok",
@@ -151,43 +154,43 @@ const SingleIssueEdit = () => {
     return (
         <>
         <ToastContainer />
-        <div className="singleIssueEdit ">
-            <div className="issueHeader">
-                <div className="table-title dashboard-title">Issue Details</div>
+        <div className="singleCommonEdit ">
+            <div className="commonEditHeader">
+                <div className="table-title dashboard-title">Edit Issue Details</div>
             </div>
-            <div className="issueDetails">
-                <div className="issueActualContent">
-                <div className="issueDetailsItem">
-                    <div className="issueDetailsLabel">Title</div>
-                    <div className="issueDetailsValue">{singleIssue?.title}</div>
+            <div className="commonEditDetails">
+                <div className="commonEditActualContent">
+                <div className="commonEditDetailsItem">
+                    <div className="commonEditDetailsLabel">Title</div>
+                    <div className="commonEditDetailsValue">{singleIssue?.title}</div>
                 </div>
-                <div className="issueDetailsItem">
-                    <div className="issueDetailsLabel">Project</div>
-                    <div className="issueDetailsValue">{singleIssue?.project_id?.title}</div>
+                <div className="commonEditDetailsItem">
+                    <div className="commonEditDetailsLabel">Project</div>
+                    <div className="commonEditDetailsValue">{singleIssue?.project_id?.title}</div>
                 </div>
-                <div className="issueDetailsItem">
-                    <div className="issueDetailsLabel">Created By</div>
-                    <div className="issueDetailsValue">{singleIssue?.created_by?.username}</div>
+                <div className="commonEditDetailsItem">
+                    <div className="commonEditDetailsLabel">Created By</div>
+                    <div className="commonEditDetailsValue">{singleIssue?.created_by?.username}</div>
                 </div>
-                <div className="issueDetailsItem">
-                    <div className="issueDetailsLabel">Updated At</div>
-                    <div className="issueDetailsValue">{singleIssue?.updatedAt}</div>
+                <div className="commonEditDetailsItem">
+                    <div className="commonEditDetailsLabel">Updated At</div>
+                    <div className="commonEditDetailsValue">{singleIssue?.updatedAt}</div>
                 </div>
-                <div className="issueDetailsItem">
-                    <div className="issueDetailsLabel">Created At</div>
-                    <div className="issueDetailsValue">{singleIssue?.createdAt}</div>
+                <div className="commonEditDetailsItem">
+                    <div className="commonEditDetailsLabel">Created At</div>
+                    <div className="commonEditDetailsValue">{singleIssue?.createdAt}</div>
                 </div>
-                <div className="issueDetailsItem">
-                    <div className="issueDetailsLabel">Updated By</div>
-                    <div className="issueDetailsValue">{singleIssue?.last_updated_by?singleIssue?.last_updated_by?.username:"Not updated"}</div>
+                <div className="commonEditDetailsItem">
+                    <div className="commonEditDetailsLabel">Updated By</div>
+                    <div className="commonEditDetailsValue">{singleIssue?.last_updated_by?.username}</div>
                 </div>
                 </div>
-                <div className="issueEditContent">
-                <form className="issueDetailsForm">
-                    <div className="issueDetailsItem">
-                        <div className="issueDetailsLabel">Status</div>
-                        <div className="issueControls d-flex" >
-                            <select className="issueDetailsValue" name="status" id="status" value={status} disabled={!editStatus} onChange={(e) => setStatus(e.target.value)}>
+                <div className="commonEditEditContent">
+                <form className="commonEditDetailsForm">
+                    <div className="commonEditDetailsItem">
+                        <div className="commonEditDetailsLabel">Status</div>
+                        <div className="commonEditControls d-flex" >
+                            <select className="commonEditDetailsValue" name="status" id="status" value={status} disabled={!editStatus} onChange={(e) => setStatus(e.target.value)}>
                                 <option value="open">Open</option>
                                 <option value="in-progress">In Progress</option>
                                 <option value="resolved">Resolved</option>
@@ -196,10 +199,10 @@ const SingleIssueEdit = () => {
                                 onClick={() => setEditStatus(!editStatus)}>edit</span>
                         </div>
                     </div>
-                    <div className="issueDetailsItem">
-                        <div className="issueDetailsLabel">Priority</div>
-                        <div className="issueControls d-flex">
-                            <select className="issueDetailsValue" name="priority" id="priority" value={priority} disabled={!editPriority} onChange={(e) => setPriority(e.target.value)}>
+                    <div className="commonEditDetailsItem">
+                        <div className="commonEditDetailsLabel">Priority</div>
+                        <div className="commonEditControls d-flex">
+                            <select className="commonEditDetailsValue" name="priority" id="priority" value={priority} disabled={!editPriority} onChange={(e) => setPriority(e.target.value)}>
                                 <option value="minor">Minor</option>
                                 <option value="major">Major</option>
                                 <option value="critical">Critical</option>
@@ -209,16 +212,16 @@ const SingleIssueEdit = () => {
                             onClick={() => setEditPriority(!editPriority)}>edit</span>
                         </div>
                     </div>
-                    <div className="issueDetailsItemDesc d-flex">
-                        <textarea className="issueDetailsValue" name="description" id="description" disabled={!editDescription} onChange={(e) => setDescription(e.target.value)} value={desc}>
+                    <div className="commonEditDetailsItemDesc d-flex">
+                        <textarea className="commonEditDetailsValue" name="description" id="description" disabled={!editDescription} onChange={(e) => setDescription(e.target.value)} value={desc}>
                         </textarea>
                         <span className={editDescription?"material-symbols-outlined active":"material-symbols-outlined"}
                         onClick={() => setEditDescription(!editDescription)}>edit</span>
                     </div>
-                    <div className="issueDetailsItem">
-                        <div className="issueActions">
-                            <button className="btn-button save" type="submit" onClick={handleFormChange}>Save</button>
-                            <button className="btn-button delete" type="button" onClick={handleIssueDelete}>Delete</button>
+                    <div className="commonEditDetailsItem">
+                        <div className="commonEditActions">
+                            <button className="btn-button save" type="submit" onClick={handleFormUpdate}>Update</button>
+                            <button className="btn-button delete" type="button" onClick={handleFormDelete}>Delete</button>
                         </div>
                     </div>
                 </form>

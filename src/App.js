@@ -7,7 +7,7 @@ import Register from './components/Register/Register';
 // import Logout from './components/Logout/Logout';
 import Issues from './components/Issues/Issues';
 import { SingleIssueView } from './components/Issues/SingleIssueView';
-import ErrorPage from './components/ErrorPage/ErrorPage';
+import ErrorPage from './components/AuthPage/ErrorPage';
 import Profile from './components/Profile/Profile';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
@@ -18,6 +18,8 @@ import SingleProjectView from './components/Project/SingleProjectView';
 import Sidebar from './components/Sidebar/Sidebar';
 import Bugzone from './components/BugZone/BugZone';
 import ResetPassword from './components/ResetPassword/ResetPassword';
+import SingleBugzoneView from './components/BugZone/SingleBugzoneView';
+import AccessDeniedPage from './components/AuthPage/AccessDeniedPage';
 
 function App() {
   const { user } = useAuthContext();
@@ -26,11 +28,18 @@ function App() {
   const [activeSingleIssueLink, setActiveSingleIssueLink] = useState("singleIssueDetails");
   const [activeSingleProjectLink, setActiveSingleProjectLink] = useState("singleProjectDetails");
   const [activeBugzoneLink, setActiveBugzoneLink] = useState("viewBugzone");
+  const [activeSingleBugzoneLink, setActiveSingleBugzoneLink] = useState("viewSingleBugzone");
+  const [dashboardData, setDashboardData] = useState([]);
+  const [activeDashboardItemLink, setActiveDashboardItemLink] = useState("");
   
   return (
  <>
     <Router>
-      <Navbar />
+      <Navbar 
+        setActiveBugzoneLink={setActiveBugzoneLink}
+        setActiveIssueLink={setActiveIssueLink}
+        setActiveProjectLink={setActiveProjectLink}
+      />
       <div className="main-container">
       { user && user.isLoggedIn ? 
         <div className="sidebar-container">
@@ -41,6 +50,9 @@ function App() {
             setActiveSingleIssueLink={setActiveSingleIssueLink}
             setActiveSingleProjectLink={setActiveSingleProjectLink}
             setActiveBugzoneLink={setActiveBugzoneLink}
+            setActiveSingleBugzoneLink={setActiveSingleBugzoneLink}
+            setActiveDashboardItemLink={setActiveDashboardItemLink}
+            dashboardData={dashboardData}
           />
         </div>
         : null }
@@ -49,7 +61,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Dashboard />
+            <Dashboard setDashboardData={setDashboardData} activeDashboardItemLink={activeDashboardItemLink} />
           </>
         } />
         <Route path="/login" element={
@@ -67,19 +79,28 @@ function App() {
           {user && user.isLoggedIn ? <Dashboard /> : <ResetPassword />}
         </>
         } />
-        <Route path="/bugzone" element={
+        <Route path="/bugzones" element={
         <>
           {user && user.isLoggedIn ? <Bugzone activeBugzoneLink={activeBugzoneLink} /> : <Login />}
         </>
         } />
+        <Route path="/bugzone/:id" element={
+        <>
+          {user && user.isLoggedIn ? <SingleBugzoneView activeSingleBugzoneLink={activeSingleBugzoneLink} /> : <Login />}
+        </>
+        } />
         <Route path="/issues" element={
         <>
-          {user && user.isLoggedIn ? <Issues activeIssueLink={activeIssueLink} /> : <Login />}
+          {user && user.isLoggedIn ? 
+            user.role === "user" ? <AccessDeniedPage /> :
+            <Issues activeIssueLink={activeIssueLink} /> 
+          : <Login />}
         </>
         } />
         <Route path="/issue/:id" element={
         <>
           {user && user.isLoggedIn ? 
+            user.role === "user" ? <AccessDeniedPage /> :
           <IssueTrackerContextProvider>
             <SingleIssueView activeSingleIssueLink={activeSingleIssueLink} />
           </IssueTrackerContextProvider>
@@ -94,6 +115,7 @@ function App() {
         <Route path="/projects" element={
         <>
           {user && user.isLoggedIn ? 
+            user.role === "user" ? <AccessDeniedPage /> : 
           <ProjectContextProvider>
             <Project activeProjectLink={activeProjectLink} />
           </ProjectContextProvider>
@@ -103,6 +125,7 @@ function App() {
         <Route path="/project/:id" element={
         <>
           {user && user.isLoggedIn ? 
+            user.role === "user" ? <AccessDeniedPage /> :
           <ProjectContextProvider>
             <SingleProjectView activeSingleProjectLink={activeSingleProjectLink} />
           </ProjectContextProvider>

@@ -27,6 +27,18 @@ const projectReducer = (state, action) => {
             return {
                 singleProject: state.projects && state.projects.find((project) => project._id === action.payload),
             };
+        case "ADD_USER_TO_PROJECT":
+            return {
+                projects: state.projects && state.projects.map((project) =>
+                    project._id === action.payload.projectId ? { ...project, users: [...project.users, action.payload.userId] } : project
+                ),
+            };
+        case "REMOVE_USER_FROM_PROJECT":
+            return {
+                projects: state.projects && state.projects.map((project) =>
+                    project._id === action.payload.projectId ? { ...project, users: project.users.filter((user) => user !== action.payload.userId) } : project
+                ),
+            };
         case "DELETE_PROJECT":
             return {
                 projects: state.projects && state.projects.filter((project) => project._id !== action.payload),

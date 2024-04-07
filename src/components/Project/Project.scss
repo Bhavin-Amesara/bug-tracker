@@ -19,6 +19,10 @@
     align-items: center;
     margin-bottom: 3rem;
 
+    .formBody{
+        margin-top: 5rem;
+    }
+
     .formContent{
         width: 80%;
 
@@ -46,6 +50,25 @@
     justify-content: space-between;
     align-items: start;
     width: 100%;
+
+    .singleProjectContent{
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+        width: 50%;
+
+        h1, p{
+            color: var(--dark-color3);
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--teritary-color);
+        }
+        p span{
+            color: var(--fade-dark-color);
+        }
+    }
 
     .singleProjectAnalytics{
         display: flex;
@@ -94,10 +117,15 @@
             }
 
             .search-wrapper {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid var(--teritary-color);
-                outline: none;
+                background-color: transparent;
+                .searchBox {
+                    padding: 10px;
+                    border: 1px solid var(--teritary-color);
+                    outline: none;
+                    width: 100%;
+                    background-color: var(--fade-light-color2);
+                    color: var(--dark-color2);
+                }
             }
         }
 
@@ -140,7 +168,6 @@
         }
         
         .search-wrapper {
-            background-color: var(--light-color);
             color: var(--dark-color);
 
         }
@@ -149,26 +176,36 @@
     .multiSelectContainer li{
         color: var(--dark-color);
     }
-    .btn {
+    .btn-button {
         border:  1px solid var(--primary-color2);
         background-color: transparent;
         color: var(--light-color);
         
         &:hover {
             color: var(--primary-color2);
+            background-color: var(--light-color);
         }
     }
-  
 }
 
 .viewProjectUsers{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: start;
+    
+    background-color: var(--light-color);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(31, 38, 135, 0.5);
+    padding: 10px;
+    margin-bottom: 1rem;
 
-    .dashboard-title {
+    .dashboard-title{
         width: 100%;
     }
+}
+
+.dark-theme .viewProjectUsers {
+    background-color: var(--light-color2);
 }
 
 .projectUser {
@@ -177,57 +214,8 @@
     align-items: center;
     margin-bottom: 1rem;
 
-
-    .projectUserDetails {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        min-width: 200px;
-        background-color: var(--neon-color);
-        border-radius: 5px;
-        animation: neon-animation 1s infinite alternate;
+    .btn{
         cursor: pointer;
-
-        p {
-            color: var(--fade-light-color);
-            font-size: var(--fs-normal);
-            width: max-content;
-        }
-        &:hover {
-            position: relative;
-            overflow: hidden;
-            animation: none;
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 0;
-                height: 0;
-                background-color: var(--neon-color2);
-                border-radius: 50%;
-                opacity: 0.5;
-                transition: width 0.3s ease-out, height 0.3s ease-out;
-            }
-        }
-
-        &:hover::before {
-            width: 200%;
-            height: 200%;
-        }
-    }
-
-
-    @keyframes neon-animation {
-        0% {
-            box-shadow: 0 0 5px var(--neon-color), 0 0 10px var(--neon-color);
-        }
-        100% {
-            box-shadow: 0 0 10px var(--neon-color), 0 0 0px var(--neon-color);
-        }
     }
 }
 
@@ -237,8 +225,8 @@
     margin-top: 1rem;
     border: 1px solid var(--teritary-color);
 
-    th {
-        background-color: var(--primary-color);
+    tr th {
+        background-color: var(--primary-color2);
         color: var(--fade-light-color);
         padding: 10px;
         text-align: center;
@@ -251,11 +239,16 @@
     }
 
     tr:nth-child(even) {
-        background-color: var(--light-color);
+        background-color: var(--fade-light-color2);
     }
 
     tr:hover {
         background-color: var(--fade-light-color2);
     }
 
+    tr:nth-child(even):hover {
+        background-color: var(--fade-light-color2);
+    }
+
 }
+

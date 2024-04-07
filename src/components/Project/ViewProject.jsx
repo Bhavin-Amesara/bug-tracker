@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import $ from 'jquery';
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { formatDistanceToNow } from 'date-fns';
 
 const ViewProject = () => {
     // context
@@ -24,6 +25,10 @@ const ViewProject = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data.data);
+                data.data.forEach((project) => {
+                    project.createdAt = formatDistanceToNow(new Date(project.createdAt), { addSuffix: true });
+                    project.updatedAt = formatDistanceToNow(new Date(project.updatedAt), { addSuffix: true });
+                });
                 dispatch({ type: "SET_PROJECTS", payload: data.data });
         });
     }, [dispatch]);
@@ -34,7 +39,8 @@ const ViewProject = () => {
             columns: [
                 { data: "title", title: "Title" },
                 { data: "description", title: "Description" },
-                { data: "createdAt", title: "Created At" },
+                { data: "department", title: "Department" },
+                { data: "updatedAt", title: "Updated At" },
                 { data: null, title: "View", render: function (data, type, row) {
                     return `<button class="btn-button" data-id="${data._id}">View</button>`;
                 } },

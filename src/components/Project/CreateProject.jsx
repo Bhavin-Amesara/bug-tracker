@@ -53,7 +53,7 @@ const Project = () => {
                     text: "Project has been created successfully",
                     icon: "success",
                 }).then(() => {
-                    navigate("/projects");
+                    navigate("/project/" + response.data._id);
                 });
             } else {
                 console.log(response);

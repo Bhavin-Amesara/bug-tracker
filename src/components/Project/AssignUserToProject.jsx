@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const AssignUserToProject = ({projectName}) => {
@@ -12,7 +13,6 @@ const AssignUserToProject = ({projectName}) => {
     const [selectedUser, setSelectedUser] = useState([]);
     const [selectedUserNames, setSelectedUserNames] = useState([]);
     const [projectUsers, setProjectUsers] = useState([]);
-    const [message, setMessage] = useState(null);
     const tempId = useParams().id.toString();
 
     useEffect(() => {
@@ -66,15 +66,20 @@ const AssignUserToProject = ({projectName}) => {
         })
         .then(res => res.json())
         .then(data => {
-            setMessage(data.message);
+            if (data.status === false) {
+                toast.error(data.message);
+                return;
+            }
+            toast.success(data.message);
         })
         .catch(err => {
-            setMessage("Failed to assign user to project");
+            toast.error("Failed to assign user to project");
         });
     }
 
     return (
         <div className="inner-container assignUserToProject">
+            <ToastContainer />
             <div className="table-title dashboard-title"><span>Add User to Project</span> "{projectName}"</div>
             <form className='assignUserToProjectForm' onSubmit={assignUserToProject}>
                 <div className="form-group">
@@ -87,11 +92,8 @@ const AssignUserToProject = ({projectName}) => {
                         isObject={true}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Assign User</button>
+                <button type="submit" className="btn btn-button">Assign User</button>
             </form>
-            <div className="message">
-                {message}
-            </div>
         </div>
     )   
 }

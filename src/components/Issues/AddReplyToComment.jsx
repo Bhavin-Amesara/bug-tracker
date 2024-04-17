@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { useCommentContext } from '../../hooks/useCommentContext';
-const AddCommentToIssue = ({ issueId }) => {
+
+const AddReplyToComment = ({ commentId, issueId, setActiveEditComment }) => {
     // context
     const { user } = useAuthContext();
     const { dispatch: commentDispatch } = useCommentContext();
 
-    const [comment, setComment] = useState('');
-    const addComment = (e) => {
+    const [reply, setReply] = useState('');
+
+    const addReply = (e) => {
         e.preventDefault();
+        setActiveEditComment(false);
         const formData = new FormData();
-        formData.append('comment', comment);
+        formData.append('comment', reply);
         formData.append('issueId', issueId);
         formData.append('commentedBy', user.userId);
-
+        formData.append('parentId', commentId);
+        console.log(Object.fromEntries(formData));
         fetch("http://localhost:3300/api/issues/comments/" + issueId, {
             method: 'POST',
             headers: {
@@ -26,28 +30,29 @@ const AddCommentToIssue = ({ issueId }) => {
         .then((data) => {
             console.log(data);
             if(data.status === true && (data.statusCode === 201 || data.statusCode === 200)) {
-                setComment('');
+                setReply('');
                 toast.success(data.message);
-                commentDispatch({ type: "CREATE_ISSUE_COMMENT", payload: data.data });
+                commentDispatch({ type: "ADD_REPLY", payload: data.data });
             } else {
                 toast.error(data.message);
             }
         });
     }
     return (
-        <><ToastContainer />
-        <form className='formBodyIssue'>
-            <div className='addComment form-group form-group2'>
-                <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder='Add a comment'></textarea>
+        <>
+        <form className='d-flex'>
+            <div className='addReply form-group form-group2'>
+                <textarea value={reply} onChange={(e) => setReply(e.target.value)} placeholder='Add a reply'></textarea>
             </div>
             <div className='form-group form-group2'>
-                {/* <label htmlFor='addComment' className='btn btn-button'>
+                {/* <label htmlFor='addReply' className='btn btn-button'>
                     <svg viewBox="0 0 24 24" fill="currentColor" x="128" y="128" role="img"  xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"><path d="M13.544 10.456a4.368 4.368 0 0 0-6.176 0l-3.089 3.088a4.367 4.367 0 1 0 6.177 6.177L12 18.177"/><path d="M10.456 13.544a4.368 4.368 0 0 0 6.176 0l3.089-3.088a4.367 4.367 0 1 0-6.177-6.177L12 5.823"/></g></g></svg>
                 </label> */}
-                {/* <input type='file' id='addComment' className='form-control' style={{ display: 'none' }} /> */}
-                <button type='button' onClick={addComment} className='btn btn-button'>Add Comment</button>
+                {/* <input type='file' id='addReply' className='form-control' style={{ display: 'none' }} /> */}
+                <button type='button' onClick={addReply} className='btn btn-button'>Add Reply</button>
             </div>
         </form></>
-    );
+    )
 }
-export default AddCommentToIssue;
+
+export default AddReplyToComment;  

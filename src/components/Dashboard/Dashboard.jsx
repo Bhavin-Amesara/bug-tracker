@@ -54,23 +54,47 @@ const Dashboard = ({ setDashboardData, activeDashboardItemLink }) => {
         setGetPublicIssues(data.data)});
 
     if(setDashboardData){
-    setDashboardData({
-      users: getUsers.length,
-      projects: getProjects.length,
-      issues: getIssues.length,
-      publicIssues: getPublicIssues.length,
-    })}
+      setDashboardData({
+        users: getUsers.length,
+        projects: getProjects.length,
+        issues: getIssues.length,
+        publicIssues: getPublicIssues.length,
+      })}
   }, []);
 
   useEffect(() => {
     if ( activeDashboardItemLink === "users" ) {
       setDataToTable("users", getUsers);
+      setDashboardData({
+        users: getUsers.length,
+        projects: getProjects.length,
+        issues: getIssues.length,
+        publicIssues: getPublicIssues.length,
+      });
     } else if ( activeDashboardItemLink === "projects" ) {
       setDataToTable("projects", getProjects);
+      setDashboardData({
+        users: getUsers.length,
+        projects: getProjects.length,
+        issues: getIssues.length,
+        publicIssues: getPublicIssues.length,
+      });
     } else if ( activeDashboardItemLink === "issues" ) {
       setDataToTable("issues", getIssues);
+      setDashboardData({
+        users: getUsers.length,
+        projects: getProjects.length,
+        issues: getIssues.length,
+        publicIssues: getPublicIssues.length,
+      });
     } else if ( activeDashboardItemLink === "public-issues" ) {
       setDataToTable("public-issues", getPublicIssues);
+      setDashboardData({
+        users: getUsers.length,
+        projects: getProjects.length,
+        issues: getIssues.length,
+        publicIssues: getPublicIssues.length,
+      });
     }
   }, [activeDashboardItemLink]);
 

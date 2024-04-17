@@ -43,7 +43,7 @@ const SingleIssueAssign = ({ issueId }) => {
         }
         console.log(...formData, "from assign user form");
         
-        
+        setAssignDescription("");
         fetch('http://localhost:3300/api/issue-tracker', {
             method: 'POST',
             body: formData,

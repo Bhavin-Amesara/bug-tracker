@@ -106,6 +106,9 @@
     .issueDetailContainer{
         display: flex;
         flex-direction: row;
+        .issueDetail{
+            width: 40%;
+        }
         .issueDetailHeader{
             font-size: 18px;
             span{
@@ -245,12 +248,120 @@
             min-width: 478px;
         }
     }
-    button{
+    label{
         margin-right:10px;
         cursor: pointer;
         svg{
             display: flex;
             margin-right: 0px;
         }
+    }
+}
+
+.promptToReopenIssue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    border: 1px solid var(--teritary-color);
+    padding: 1rem 2rem;
+    font-size: var(--fs-small);
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    width: max-content;
+
+    span {
+        font-size: var(--fs-normal);
+        button{
+            border: 1px solid var(--teritary-color);
+            border-radius: 5px;
+            &:hover{
+                background-color: var(--teritary-color);
+                color: var(--light-color);
+            }
+        }
+    }
+    button {
+        margin-left: 1rem;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background-color: transparent;
+            border-radius: 50%;
+
+        &:hover {
+            background-color: var(--danger-color);
+            color: var(--light-color);
+        }
+        svg{
+            display: flex;
+            width: 25px;
+            margin-right: 0px;
+        }
+    }
+}
+
+.replyToComment, .editCommentDesc{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 100%;
+    transition: all 0.4s ease-in-out;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.25);
+    // backdrop-filter: blur(4px);
+    box-shadow: inset 0 2px 6px 0 rgba(31, 38, 135, 0.37);
+    // -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    form{
+        width: 100%;
+    }
+    .form-group{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .addReply{
+        width: 100%;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        padding: 5px 10px;
+        textarea{
+            padding: 5px 10px;
+            min-height: 120px;
+            width: 100%;
+            min-width: 478px;
+            max-width: 880px;
+        }
+    }
+
+    label{
+        margin-right:10px;
+        cursor: pointer;
+        svg{
+            display: flex;
+            margin-right: 0px;
+        }
+    }
+
+    .btn-button{
+        width: max-content;
+    }
+}
+.editCommentDesc{
+    .addReply textarea{
+        padding: 5px 10px;
+        min-height: 120px;
+        width: 100%;
+        min-width: 478px;
+        max-width: 800px;
     }
 }

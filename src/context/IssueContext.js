@@ -30,7 +30,32 @@ const issueReducer = (state, action) => {
         case "DELETE_ISSUE":
             return {
                 issues: state.issues && state.issues.filter((issue) => issue._id !== action.payload),
-            };            
+            };        
+        case "SET_ISSUE_STATUS":
+            return {
+                issues: state.issues && state.issues.map((issue) =>
+                    issue._id === action.payload._id ? { ...issue, status: action.payload.status } : issue
+                ),
+            };
+        case "SET_ISSUE_COMMENTS":
+            return {
+                singleIssueComments: action.payload,
+            };
+        case "CREATE_ISSUE_COMMENT":
+            return {
+                singleIssueComments: [action.payload, ...state.singleIssueComments],
+            };
+        case "DELETE_ISSUE_COMMENT":
+            return {
+                singleIssueComments: state.singleIssueComments.filter((comment) => comment._id !== action.payload),
+            };
+        case "UPDATE_ISSUE_COMMENT":
+            return {
+                singleIssueComments: state.singleIssueComments.map((comment) =>
+                    comment._id === action.payload._id ? action.payload : comment
+                ),
+            };
+
         default:
             return state;
     }

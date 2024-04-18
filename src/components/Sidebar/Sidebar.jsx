@@ -3,23 +3,28 @@ import './Sidebar.scss';
 import { useLocation } from 'react-router-dom';
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthContext } from '../../hooks/useAuthContext';
-import DashboardCard from '../Dashboard/DashBoardCard';
+import { useIssueContext } from '../../hooks/useIssueContext';
 
-const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActiveSingleIssueLink, setActiveSingleProjectLink, setActiveBugzoneLink, setActiveSingleBugzoneLink, dashboardData, setActiveDashboardItemLink }) => {
+const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActiveSingleIssueLink, setActiveSingleProjectLink, setActiveBugzoneLink, setActiveSingleBugzoneLink, dashboardData, setActiveDashboardItemLink, activeSingleIssueReopenLink, setActiveSingleIssueReopenLink }) => {
     // context
     const { user } = useAuthContext();
+    const { singleIssue } = useIssueContext();
     // get full route 
     const location = useLocation();
     // set active class for the current route
     const currentRoute = location.pathname.split('/')[1];
     if (currentRoute === '') {
-       var currentRoute1 = 'dashboard';
+        var currentRoute1 = 'dashboard';
+        setActiveSingleIssueReopenLink(false);
+       setActiveSingleIssueLink('singleIssueDetails');
     }
     // navigate
     const navigate = useNavigate();
 
     // handle click event for the sidebar menu
     const handleIssueClick = (props) => {
+        setActiveSingleIssueReopenLink(false);
+        setActiveSingleIssueLink('singleIssueDetails');
         if(props === 'viewIssues'){
             setActiveIssueLink('viewIssues');
             if(document.getElementById('issue-btn2')){
@@ -35,11 +40,13 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
         } 
     }
     const handleSingleIssueClick = (props) => {
+        setActiveSingleIssueReopenLink(false);
         if(props === 'singleIssueDetails'){
             setActiveSingleIssueLink('singleIssueDetails');
             if(document.getElementById('single-issue-btn2')){
                 document.getElementById('single-issue-btn2').classList.remove('active');
                 document.getElementById('single-issue-btn3').classList.remove('active');
+                document.getElementById('single-issue-btn4').classList.remove('active');
                 document.getElementById('single-issue-btn5').classList.remove('active');
                 document.getElementById('single-issue-btn1').classList.add('active');
             }
@@ -48,6 +55,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
             if(document.getElementById('single-issue-btn1')){
                 document.getElementById('single-issue-btn1').classList.remove('active');
                 document.getElementById('single-issue-btn3').classList.remove('active');
+                document.getElementById('single-issue-btn4').classList.remove('active');
                 document.getElementById('single-issue-btn5').classList.remove('active');                
                 document.getElementById('single-issue-btn2').classList.add('active');
             }
@@ -56,8 +64,18 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
             if(document.getElementById('single-issue-btn3')){
                 document.getElementById('single-issue-btn1').classList.remove('active');
                 document.getElementById('single-issue-btn2').classList.remove('active');
+                document.getElementById('single-issue-btn4').classList.remove('active');
                 document.getElementById('single-issue-btn5').classList.remove('active');
                 document.getElementById('single-issue-btn3').classList.add('active');
+            }
+        } else if(props === 'transferSingleIssue'){
+            setActiveSingleIssueLink('transferSingleIssue');
+            if(document.getElementById('single-issue-btn4')){
+                document.getElementById('single-issue-btn1').classList.remove('active');
+                document.getElementById('single-issue-btn2').classList.remove('active');
+                document.getElementById('single-issue-btn3').classList.remove('active');
+                document.getElementById('single-issue-btn5').classList.remove('active');
+                document.getElementById('single-issue-btn4').classList.add('active');
             }
         } else if(props === 'viewIssue'){
             navigate('/issues');
@@ -65,9 +83,55 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                 document.getElementById('single-issue-btn1').classList.remove('active');
                 document.getElementById('single-issue-btn2').classList.remove('active');
                 document.getElementById('single-issue-btn3').classList.remove('active');
+                document.getElementById('single-issue-btn4').classList.remove('active');
                 document.getElementById('single-issue-btn5').classList.add('active');
             }
         }
+    }
+    const handleSingleIssueClick2 = (props) => {
+        setActiveSingleIssueReopenLink(false);
+        if(props === 'singleIssueDetails'){
+            setActiveSingleIssueLink('singleIssueDetails');
+            if(document.getElementById('single-issue-btn1')){
+                document.getElementById('single-issue-btn5').classList.remove('active');
+                document.getElementById('single-issue-btn1').classList.add('active');
+            }
+        } else if(props === 'viewIssue'){
+            setActiveSingleIssueReopenLink(false);
+            setActiveSingleIssueLink('singleIssueDetails');
+            if(document.getElementById('single-issue-btn5')){
+                document.getElementById('single-issue-btn5').classList.remove('active');
+                document.getElementById('single-issue-btn1').classList.add('active');
+            }
+            navigate('/issues');
+        }
+    }
+    const handleSingleIssueClick3 = (props) => {
+        if(props === 'singleIssueDetails'){
+            setActiveSingleIssueLink('singleIssueDetails');
+            if(document.getElementById('single-issue-btn1')){
+                document.getElementById('single-issue-btn2').classList.remove('active');
+                document.getElementById('single-issue-btn5').classList.remove('active');
+                document.getElementById('single-issue-btn1').classList.add('active');
+            }
+        } else if(props === 'editSingleIssue'){
+            setActiveSingleIssueLink('editSingleIssue');
+            if(document.getElementById('single-issue-btn1')){
+                document.getElementById('single-issue-btn1').classList.remove('active');
+                document.getElementById('single-issue-btn5').classList.remove('active');
+                document.getElementById('single-issue-btn2').classList.add('active');
+            }
+        } else if(props === 'viewIssue'){
+            setActiveSingleIssueReopenLink(false);
+            setActiveSingleIssueLink('singleIssueDetails');
+            if(document.getElementById('single-issue-btn5')){
+                document.getElementById('single-issue-btn5').classList.remove('active');
+                document.getElementById('single-issue-btn2').classList.remove('active');
+                document.getElementById('single-issue-btn1').classList.add('active');
+            }
+            navigate('/issues');
+        }
+
     }
     const handleProjectClick = (props) => {
         if(props === 'viewProjects'){
@@ -85,6 +149,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
         } 
     }
     const handleSingleProjectClick = (props) => {
+        setActiveSingleIssueReopenLink(false);
         if(props === 'addUserToProject'){
             setActiveSingleProjectLink('addUserToProject');
             if(document.getElementById('single-project-btn3')){
@@ -109,6 +174,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
         }
     }
     const handleBugzoneClick = (props) => {
+        setActiveSingleIssueReopenLink(false);
         if(props === 'viewBugzone'){
             setActiveBugzoneLink('viewBugzone');
             if(document.getElementById('bugzones-btn3')){
@@ -126,6 +192,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
         } 
     }
     const handleSingleBugzoneClick = (props) => {
+        setActiveSingleIssueReopenLink(false);
         if(props === 'viewSingleBugzone'){
             setActiveSingleBugzoneLink('viewSingleBugzone');
             if(document.getElementById('bugzone-btn1')){
@@ -145,6 +212,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
 
     // handle click event for the dashboard menu
     const handleDashboardClick = (props) => {
+        setActiveSingleIssueReopenLink(false);
         if(props === 'users'){
             setActiveDashboardItemLink('users');
             if(document.getElementById('dashboard-btn2')){
@@ -193,6 +261,7 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
             document.querySelector('.themeToggleBtnItem:last-child').classList.add('active');
         }
     }
+    console.log('singleIssue', activeSingleIssueReopenLink);
     
     return (
         <div className="sidebar">
@@ -210,9 +279,9 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                         { user.role === 'admin' ? currentRoute1 === 'dashboard' ?
                         <>
                             <span className="sidebarMenuItemsGroup">Analytics</span>
-                            <button id="dashboard-btn1" className="btn-sidebar-button active" onClick={() => handleDashboardClick("users")}>Users</button>
-                            <button id="dashboard-btn2" className="btn-sidebar-button" onClick={() => handleDashboardClick("projects")}>Projects</button>
-                            <button id="dashboard-btn3" className="btn-sidebar-button" onClick={() => handleDashboardClick("issues")}>Issues</button>
+                            <button id="dashboard-btn1" className="btn-sidebar-button active" onClick={() => handleDashboardClick("users")}>Users {dashboardData?.users}</button>
+                            <button id="dashboard-btn2" className="btn-sidebar-button" onClick={() => handleDashboardClick("projects")}>Projects {dashboardData?.projects}</button>
+                            <button id="dashboard-btn3" className="btn-sidebar-button" onClick={() => handleDashboardClick("issues")}>Issues {dashboardData?.issues}</button>
                             {/* <button id="dashboard-btn4" className="btn-sidebar-button" onClick={() => handleDashboardClick("public-issues")}>Public Issues</button> */}
                         </>
                             : null : null
@@ -226,13 +295,31 @@ const Sidebar = ({ userName, setActiveIssueLink, setActiveProjectLink, setActive
                     <div className="sidebarMenuItems">
                         <div className="sidebarMenuItem">
                             <span className="sidebarMenuItemsGroup">Single Issues</span>
-                            <button id="single-issue-btn1" className="btn-sidebar-button active" onClick={() => handleSingleIssueClick("singleIssueDetails")}>Issue Details</button>
-                            <button id="single-issue-btn2" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("editSingleIssue")}>Edit Issue</button>
-                            <button id="single-issue-btn3" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("assignSingleIssue")}>Assign Issue</button>
+                            {singleIssue && (singleIssue.status === 'resolved' && !activeSingleIssueReopenLink)? 
+                            <>
+                                <button id="single-issue-btn1" className="btn-sidebar-button active" onClick={() => handleSingleIssueClick2("singleIssueDetails")}>Issue Details</button>
+                            </>
+                            : singleIssue && singleIssue.status === 'resolved' ?
+                            <>
+                                <button id="single-issue-btn1" className="btn-sidebar-button active" onClick={() => handleSingleIssueClick3("singleIssueDetails")}>Issue Details</button>
+                                <button id="single-issue-btn2" className="btn-sidebar-button" onClick={() => handleSingleIssueClick3("editSingleIssue")}>Edit Issue</button>
+                            </>
+                            :
+                            <>
+                                <button id="single-issue-btn1" className="btn-sidebar-button active" onClick={() => handleSingleIssueClick("singleIssueDetails")}>Issue Details</button>
+                                <button id="single-issue-btn2" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("editSingleIssue")}>Edit Issue</button>
+                                <button id="single-issue-btn3" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("assignSingleIssue")}>Assign Issue</button>
+                                <button id="single-issue-btn4" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("transferSingleIssue")}>Transfer Issue</button>
+                            </>}
                         </div>
                         <div className="sidebarMenuItem">
                             <span className="sidebarMenuItemsGroup">Issues</span>
-                            <button id="single-issue-btn5" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("viewIssue")}>View Issue</button>
+                            {singleIssue && (singleIssue.status === 'resolved' && !activeSingleIssueReopenLink) ? 
+                            <button id="single-issue-btn5" className="btn-sidebar-button active" onClick={() => handleSingleIssueClick2("viewIssue")}>View Issue</button>
+                            :  singleIssue && singleIssue.status === 'resolved' ?
+                            <button id="single-issue-btn5" className="btn-sidebar-button active" onClick={() => handleSingleIssueClick3("viewIssue")}>View Issue</button>
+                            : <button id="single-issue-btn5" className="btn-sidebar-button" onClick={() => handleSingleIssueClick("viewIssue")}>View Issue</button>
+                            }
                         </div>
                     </div>
                 </div>

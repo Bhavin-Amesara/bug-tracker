@@ -83,6 +83,8 @@
   --neon-color2: #0684ffaa;
   --fade-light-color2: #383838;
   --fade-light-color3: #172031;
+  --success-color2: #009646;
+  --success-color3: #AFD198;
 }
 
 .dark-theme body {
@@ -112,6 +114,9 @@ html {
 .success{
   color: var(--success-color2);
 }
+.success2{
+  color: var(--success-color3);
+}
 
 .inprogress{
   color: var(--warning-color);
@@ -140,6 +145,18 @@ html {
 
 .mb0 {
   margin-bottom: 0;
+}
+.fs-normal {
+  font-size: var(--fs-normal);
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.ml-10 {
+  margin-left: 10px;
+}
+.warning{
+  color: #ff9500;
 }
 
 body {
@@ -511,4 +528,13 @@ svg {
         margin-bottom: 10px;
         height: 140px;
     }
+}
+
+.dark-theme .swal2-container.swal2-center>.swal2-popup {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+.swal2-container.swal2-center>.swal2-popup {
+  background-color: var(--teritary-color);
+  color: var(--light-color);
 }

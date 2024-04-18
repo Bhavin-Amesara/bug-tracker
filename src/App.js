@@ -31,6 +31,7 @@ function App() {
   const [activeSingleBugzoneLink, setActiveSingleBugzoneLink] = useState("viewSingleBugzone");
   const [dashboardData, setDashboardData] = useState([]);
   const [activeDashboardItemLink, setActiveDashboardItemLink] = useState("");
+  const [activeSingleIssueReopenLink, setActiveSingleIssueReopenLink] = useState(false);
   
   return (
  <>
@@ -53,6 +54,8 @@ function App() {
             setActiveSingleBugzoneLink={setActiveSingleBugzoneLink}
             setActiveDashboardItemLink={setActiveDashboardItemLink}
             dashboardData={dashboardData}
+            activeSingleIssueReopenLink={activeSingleIssueReopenLink}
+            setActiveSingleIssueReopenLink={setActiveSingleIssueReopenLink}
           />
         </div>
         : null }
@@ -102,7 +105,12 @@ function App() {
           {user && user.isLoggedIn ? 
             user.role === "user" ? <AccessDeniedPage /> :
           <IssueTrackerContextProvider>
-            <SingleIssueView activeSingleIssueLink={activeSingleIssueLink} />
+            <SingleIssueView 
+              activeSingleIssueLink={activeSingleIssueLink} 
+              setActiveSingleIssueReopenLink={setActiveSingleIssueReopenLink} 
+              activeSingleIssueReopenLink={activeSingleIssueReopenLink}
+              setActiveSingleIssueLink={setActiveSingleIssueLink}
+            />
           </IssueTrackerContextProvider>
           : <Login />}
         </>

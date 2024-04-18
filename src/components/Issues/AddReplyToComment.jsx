@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useCommentContext } from '../../hooks/useCommentContext';
 
 const AddReplyToComment = ({ commentId, issueId, setActiveEditComment }) => {
@@ -12,7 +12,7 @@ const AddReplyToComment = ({ commentId, issueId, setActiveEditComment }) => {
 
     const addReply = (e) => {
         e.preventDefault();
-        setActiveEditComment(false);
+        setActiveEditComment(false); 
         const formData = new FormData();
         formData.append('comment', reply);
         formData.append('issueId', issueId);

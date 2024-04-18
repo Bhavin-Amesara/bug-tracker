@@ -127,13 +127,21 @@ const SingleIssueEdit = () => {
                 })
                 .then((response) => response.json())
                 .then((response) => {
-                    if(response.status){
+                    console.log(response);
+                    if(response.statusCode === 200){
                         mySwal.fire({
                             title: "Single Issue Deleted successful",
                             icon: "success",
                             confirmButtonText: "Ok",
                         }).then(() => {
                             navigate("/issues");
+                        });
+                    } else {
+                        mySwal.fire({
+                            title: "Single Issue not deleted",
+                            text: "Try Again",
+                            icon: "error",
+                            confirmButtonText: "Ok",
                         });
                     }
                 })

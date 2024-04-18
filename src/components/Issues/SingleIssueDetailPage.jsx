@@ -257,7 +257,7 @@ const SingleIssueDetailPage = ({ setActiveSingleIssueReopenLink, activeSingleIss
                             </div>
                             { activeReplyToComment &&  openCommentId === comment._id &&
                                 <div className='replyToComment'>
-                                    <AddReplyToComment commentId={comment._id} issueId={id} />
+                                    <AddReplyToComment commentId={comment._id} issueId={id} setActiveEditComment={setActiveEditComment} />
                                 </div> 
                             }
                             {comment.replies &&  

@@ -31,7 +31,7 @@ const ViewProject = () => {
                 });
                 dispatch({ type: "SET_PROJECTS", payload: data.data });
         });
-    }, [dispatch]);
+    }, []);
 
     if (projects) {
         $("#projectTable").DataTable({

@@ -37,7 +37,7 @@ const LoginPage = () => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
+            console.log(data.data,"login page");
             if (data.status === true) {
                 localStorage.setItem("user", JSON.stringify({
                     userId: data.data.userId,
@@ -55,7 +55,11 @@ const LoginPage = () => {
                     icon: "success",
                     confirmButtonText: "Ok",
                 }).then(() => {
-                    navigate("/issues");
+                    if(data.data.role === "user"){
+                        navigate("/bugzones");
+                    } else {
+                        navigate("/issues");
+                    }
                 });
                 setLoginMsg(data.message);
                 setSetErrorClass("authSuccess");

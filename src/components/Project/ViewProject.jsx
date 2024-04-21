@@ -1,5 +1,4 @@
 import React from "react";
-import DataTable from 'datatables.net';
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import { useProjectContext } from "../../hooks/useProjectContext";
 import { useEffect } from "react";
@@ -17,7 +16,6 @@ const ViewProject = () => {
     // navigate
     const navigate = useNavigate();
 
-    const notify = (message) => toast(message);
     const userId = user && user.isLoggedIn ? user.userId : "";
     // fetch all projects
     useEffect(() => {

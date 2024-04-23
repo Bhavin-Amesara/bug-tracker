@@ -6,6 +6,7 @@ import SingleIssueDetailPage from "./SingleIssueDetailPage";
 import SingleIssueAssign from "./SingleIssueAssign";
 import SingleIssueEdit from "./SingleIssueEdit";
 import ViewIssues from "./ViewIssues";
+import TransferIssue from "./TransferIssue";
 import { CommentContextProvider } from "../../context/CommentContext";
 
 const SingleIssueView = ({ activeSingleIssueLink, setActiveSingleIssueReopenLink, activeSingleIssueReopenLink, setActiveSingleIssueLink }) => {
@@ -48,7 +49,7 @@ const SingleIssueView = ({ activeSingleIssueLink, setActiveSingleIssueReopenLink
                             <SingleIssueAssign issueId={issueId} />
                         </div>
                     : activeSingleIssueLink === 'viewIssue' ? <ViewIssues />
-                    : activeSingleIssueLink === 'transferSingleIssue' ? "Transfer Issue"
+                    : activeSingleIssueLink === 'transferSingleIssue' ? <TransferIssue />
                     : null
                 }
             </div>

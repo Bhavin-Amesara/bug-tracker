@@ -1,45 +1,152 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import "./Issues.scss";
+import { ToastContainer, toast } from "react-toastify";
+import { useIssueContext } from "../../hooks/useIssueContext";
+import { formatDistanceToNow } from "date-fns";
+import { useAuthContext } from "../../hooks/useAuthContext";
+const Swal = require("sweetalert2");
+const withReactContent = require("sweetalert2-react-content");
+const mySwal = withReactContent(Swal);
 
-const TransferIssue = ({ setActiveSingleIssueLink, setActiveSingleIssueReopenLink }) => {
+const TransferIssue = () => {
+    // context
+    const { singleIssue, dispatch } = useIssueContext();
+    const { user } = useAuthContext();
+
     var tempId = useParams().id;
     tempId = tempId.toString();
+    const navigate = useNavigate();
     const [issueId, setIssueId] = useState(tempId);
-    const [issue, setIssue] = useState(null);
 
+    const [member, setMember] = useState([]);
+    const [selectedMember, setSelectedMember] = useState("");
     useEffect(() => {
-        // fetch those user who are assigned to this issue
-        fetch(`http://localhost:8000/api/issues/${issueId}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data, "from transfer issue");
-            setIssue(data);
-        })
-        .catch(err => {
-            console.log(err);
+        fetch("http://localhost:3300/api/issues/" + issueId)
+        .then((res) => res.json())
+        .then((data) => {
+            data.data.createdAt = formatDistanceToNow(new Date(data.data.createdAt), { addSuffix: true });    
+            data.data.updatedAt = formatDistanceToNow(new Date(data.data.updatedAt), { addSuffix: true });            
+            dispatch({ type: "SET_SINGLE_ISSUE", payload: data.data });
         });
     }, []);
-    
 
-    const goBackButton = () => {
-        setActiveSingleIssueLink('singleIssueDetails');
-        setActiveSingleIssueReopenLink(false);
-        navigate("/issues");
+    useEffect(() => {
+        fetch("http://localhost:3300/api/issues/"+issueId+"/assignee")
+        .then((response) => response.json())
+        .then((response) => {
+            if(response.status === false){
+                toast.error(response.message);
+            }
+            // filter out the user who currently logged in
+            response.data = response.data.filter((data) => data._id !== user.userId);
+            setMember(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    const transferIssue = (e) => {
+        e.preventDefault();
+        const transferTo = document.getElementById("transferTo").value;
+        if(transferTo === ""){
+            toast.error("Please select a member to transfer the issue");
+            return;
+        }
+        console.log(transferTo);
+        mySwal.fire({
+            title: "Are you sure?",
+            text: "You want to transfer this issue to another member",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, transfer it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+            fetch("http://localhost:3300/api/issues/"+issueId+"/transfer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    last_updated_by: user.userId,
+                    transferId: transferTo
+                }),
+            })
+            .then((response) => response.json())
+            .then((response) => {
+                if(response.status === false){
+                    toast.error(response.message);
+                }
+                toast.success(response.message);
+                navigate("/issues");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            }
+        });
     }
+
 
     return (
         <>
             <div className="container">
-                <div className="issueHeader">
-                    <div className="backButton">
-                        <a className="d-flex btn btn-button" onClick={goBackButton}>
-                            <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.6621 17C18.933 19.989 15.7013 22 11.9999 22C6.47703 22 1.99988 17.5228 1.99988 12C1.99988 6.47715 6.47703 2 11.9999 2C15.7013 2 18.933 4.01099 20.6621 7M11.9999 8L7.99995 12M7.99995 12L11.9999 16M7.99995 12H21.9999" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg> Back 
-                        </a>
+                <ToastContainer />
+                <div className="transferIssue">
+                    <div className="transferIssueHeader">
+                        <h2>Transfer Issue</h2>
+                    </div>
+                    <div className="transferIssueBody">
+                    {singleIssue && 
+                        <div className="transferIssueDetails">
+                            <div className="transferIssueDetail">
+                                <div className="transferIssueDetailTitle">
+                                    <h4>Issue Title</h4>
+                                </div>
+                                <div className="transferIssueDetailValue">
+                                    <p>{singleIssue.title}</p>
+                                </div>
+                            </div>
+                            <div className="transferIssueDetail">
+                                <div className="transferIssueDetailTitle">
+                                    <h4>Issue Description</h4>
+                                </div>
+                                <div className="transferIssueDetailValue">
+                                    <p>{singleIssue.description}</p>
+                                </div>
+                            </div>
+                            <div className="transferIssueDetail">
+                                <div className="transferIssueDetailTitle">
+                                    <h4>Project Title</h4>
+                                </div>
+                                <div className="transferIssueDetailValue">
+                                    <p>{singleIssue.project_id.title}</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                        <div className="form-group transferIssueForm">
+                            <label htmlFor="transferTo">Transfer To</label>
+                            <select className="form-control" id="transferTo" name="transferTo" value={selectedMember} onChange={(e) => setSelectedMember(e.target.value)}>
+                                <option value="">Select</option>
+                                {
+                                    member.map((data, index) => {
+                                        return (
+                                            <option key={index} value={data._id}>{data.username}</option>
+                                        );
+                                    })
+                                }
+                            </select>
+                            <div className="transferIssueFooter">
+                                <button type="submit" className="btn btn-primary" onClick={transferIssue} {...(( user && user.role === "admin" || user.role === "manager" || user.userId === singleIssue.created_by._id) ? null : { disabled: true })}>Transfer</button>
+                                <span className="error">Only the creator of the issue can transfer the issue</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                Transfer Issue
             </div>
         </>
     );

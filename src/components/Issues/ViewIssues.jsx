@@ -5,16 +5,17 @@ import DataTable from 'datatables.net';
 import { useIssueContext } from "../../hooks/useIssueContext";
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { useNavigate } from "react-router-dom";
-
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const ViewIssues = () => {
     // context
     const { issues, dispatch} = useIssueContext();
+    const { user } = useAuthContext();
     // navigate
     const navigate = useNavigate();
     
     useEffect(() => {
-        fetch("api/issues")
+        fetch("http://localhost:3300/api/issues/user/" + user.userId)
         .then((response) => response.json())
         .then((response) => {
             // use date-fns to format date

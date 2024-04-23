@@ -24,14 +24,32 @@ const SingleIssueAssign = ({ issueId }) => {
     // single issue assign user start
     const userId = user && user.isLoggedIn ? user.userId : "";
     const [assignedBy, setAssignedBy] = useState(userId);
-    const [assignTo, setAssignTo] = useState(userId);
+    const [assignTo, setAssignTo] = useState("");
     const [assignDescription, setAssignDescription] = useState("");
     const [assignFile, setAssignFile] = useState("");
     const [assignIssueId, setAssignIssueId] = useState(issueId);
-    const [assignStatus, setAssignStatus] = useState();
+    const [assignStatus, setAssignStatus] = useState("open");
     
     const handleAssigneeChange = (e) => {
         e.preventDefault();
+        if(assignTo === "") {
+            mySwal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please select a member to assign',
+                dangerMode: true,
+            });
+            return;
+        }
+        if(assignDescription === "") {
+            mySwal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please add some comments',
+                dangerMode: true,
+            });
+            return;
+        }
         var formData = new FormData();
         formData.append('assignedBy', assignedBy);
         formData.append('assignTo', assignTo);
@@ -52,6 +70,14 @@ const SingleIssueAssign = ({ issueId }) => {
         .then((response) => {
             console.log(response);
             if (!response.data) {
+                mySwal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.message,
+                });
+                return;
+            }
+            if (response.statusCode === 400) {
                 mySwal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -83,15 +109,16 @@ const SingleIssueAssign = ({ issueId }) => {
 
 
     // fecth user data pass body role[developer]
-    const [developer, setDeveloper] = useState([]);
+    const [member, setMember] = useState([]);
     useEffect(() => {
-        fetch("http://localhost:3300/api/users/role/developer")
+        fetch("http://localhost:3300/api/issues/"+issueId+"/assignee")
         .then((response) => response.json())
         .then((response) => {
             if(response.status === false){
                 toast.error(response.message);
             }
-            setDeveloper(response.data);
+            response.data = response.data.filter((data) => data._id !== user.userId);
+            setMember(response.data);
         })
         .catch((error) => {
             console.log(error);
@@ -175,7 +202,7 @@ const SingleIssueAssign = ({ issueId }) => {
         <div className="assignUserContent">
             <div className=" singleCommonViews d-flex-column">
                 <div className="commonEditHeader">
-                    <div className="table-title dashboard-title">Assign Developer</div>
+                    <div className="table-title dashboard-title">Assign Issue</div>
                 </div>
                 <form className="commonEditDetailsForm" encType='multipart/form-data' method='post' id='assignUserForm' name='assignUserForm' >
                     <div className="issueDetailsItem">
@@ -187,9 +214,9 @@ const SingleIssueAssign = ({ issueId }) => {
                         <div className="issueDetailsLabel">Assignee</div>
                         <div className="issueControls d-flex">
                             <select className="issueDetailsValue" name="assignTo" id="assignTo" value={assignTo} onChange={(e) => setAssignTo(e.target.value)}>
-                                <option value="">Select Developer</option>
-                                {developer.map((dev) => {
-                                    return <option key={dev._id} value={dev._id}>{dev.username}</option>
+                                <option value="">Select Member</option>
+                                {member && member.length>0 && member.map((mem) => {
+                                    return <option key={mem._id} value={mem._id}>{mem.username}</option>
                                 })}
                             </select>
                         </div>

@@ -130,10 +130,10 @@
         }
 
         .issueDetailContent{
-            font-size: var(--fs-normal);
+            font-size: var(--fs-small);
             .issueDetailContentItem{
                 padding: 5px 10px;
-                margin-bottom: 1rem;
+                margin-bottom: 0.5rem;
                 border-bottom: 1px solid var(--neon-color);
             }
         }
@@ -214,7 +214,7 @@
     background: transparent;
     border: 1px solid var(--info-color);
   }
-  .formBodyIssue {
+.formBodyIssue {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -364,4 +364,106 @@
         min-width: 478px;
         max-width: 800px;
     }
+}
+
+.transferIssue{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--info-color);
+    
+    .transferIssueHeader{
+        font-size: var(--fs-normal);
+        text-transform: capitalize;
+        width: 100%;
+        color: var(--primary-color2);
+    }
+
+    .transferIssueBody{
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        font-size: var(--fs-normal);
+
+        .transferIssueDetails,
+        .transferIssueForm{
+            width: 48%;
+        }
+        .transferIssueDetail{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .transferIssueForm{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            height: 100%;
+
+            label{
+                margin-bottom: 0.5rem;
+                color: var(--danger-color);
+            }
+            select{
+                width: 100%;
+                padding: 5px 10px;
+                margin-bottom: 0.5rem;
+            }
+            button{
+                color: var(--primary-color);
+                padding: 5px 10px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: var(--fs-small);
+                border: 1px solid var(--teritary-color);
+                transition: all 0.4s ease-in-out;
+                background: transparent;
+                cursor: pointer;
+                margin-top: 0.7rem;
+
+                &:hover {
+                    background-color: var(--teritary-color);
+                    color: var(--fade-light-color);
+                }
+
+                &.active {
+                    cursor: cursor;
+                    background-color: var(--teritary-color);
+                    color: var(--fade-light-color);
+                }
+            }
+            .transferIssueFooter{
+                span{
+                    margin-left: 0.5rem;
+                    font-size: var(--fs-xsmall);
+                    color: var(--danger-color);
+                }
+            }
+        }
+        .transferIssueDetailValue{
+            margin-bottom: 1.7rem;
+        }
+    }
+}
+.dark-theme .transferIssue .transferIssueBody .transferIssueForm button{
+    color: var(--primary-color2);
+    border: 1px solid var(--teritary-color);
+    &:hover{
+        background-color: var(--primary-color2);
+        color: var(--light-color);
+    }
+}
+.formBodyIssue .textareaExtraHeight{
+    min-height: 180px;
 }

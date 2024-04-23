@@ -182,7 +182,17 @@ const SingleIssueDetailPage = ({ setActiveSingleIssueReopenLink, activeSingleIss
                                     <span className='issueDetailContentItemLabel'>Issue Description: </span>
                                     <span className='issueDetailContentItemValue'>{issue.description}</span>
                                 </div>
-                            </div>
+                            </div>                      
+                            <div className='issueDetailContent'>
+                                <div className='issueDetailContentItem'>
+                                    <span className='issueDetailContentItemLabel'>Created By: </span>
+                                    <span className='issueDetailContentItemValue'>{issue.created_by.username}</span>
+                                </div>
+                                <div className='issueDetailContentItem'>
+                                    <span className='issueDetailContentItemLabel'>Project: </span>
+                                    <span className='issueDetailContentItemValue'>{issue.project_id.title}</span>
+                                </div>
+                            </div>  
                             <div className='issueDetailContent'>
                                 <div className='issueDetailContentItem'>
                                     <span className='issueDetailContentItemLabel'>Issue Created: </span>

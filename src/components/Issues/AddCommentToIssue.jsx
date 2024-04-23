@@ -37,7 +37,7 @@ const AddCommentToIssue = ({ issueId }) => {
     return (
         <><ToastContainer />
         <form className='formBodyIssue'>
-            <div className='addComment form-group form-group2'>
+            <div className='addComment form-group form-group2 textareaExtraHeight'>
                 <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder='Add a comment'></textarea>
             </div>
             <div className='form-group form-group2'>

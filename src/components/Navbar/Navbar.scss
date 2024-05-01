@@ -129,3 +129,80 @@ nav{
     }
 
 }
+
+.navbar .navbar-right .auth .notifications,
+#Popover1 {
+    border-radius: 17px;
+    padding: 5px 10px;
+    margin: 0 10px;
+    margin-right: 19px;
+    background: transparent;
+    color: var(--light-color);
+    svg {
+        margin-right: 0;
+    }
+    position: relative;
+
+    .notification-count{
+        position: absolute;
+        top: -11px;
+        right: -21px;
+        color: var(--light-color);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 21px;
+    }
+
+    .unread-color{
+        font-weight: 600;
+        color: var(--danger-color);
+    }
+}
+
+.popover {
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 10px;
+    width: 380px;
+    max-height: 230px;
+    font-size: var(--fs-small);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    z-index: 100;
+    position: absolute;
+    top: 50px;
+
+    .popover-inner .popover-body p{
+        padding: 5px;
+        font-size: var(--fs-small);
+        letter-spacing: 0;
+    }
+    .popover-inner .popover-body .unread{
+        font-weight: 600;
+        color: var(--fade-dark-color2);
+    }
+}
+
+.unread-notification-color{
+    border: 2px solid var(--danger-color) !important;
+    border-radius: 50% !important;
+    transition: var(--transition) ease-in-out;
+}
+.unread-notification-color:hover{
+    background-color: var(--danger-color) !important;
+    color: var(--light-color) !important;
+}
+.read-notification-color{
+    border: 2px solid var(--light-color) !important;
+    border-radius: 50% !important;
+    transition: var(--transition) ease-in-out;
+}
+.read-notification-color:hover{
+    background-color: var(--light-color) !important;
+    color: var(--primary-color2) !important;
+}

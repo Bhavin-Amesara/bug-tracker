@@ -15,14 +15,15 @@
     color: var(--secondary-color);
 }
 
-.countcards, .dashreport {   
+.dashreport .reportcard,
+.dashreport .graphCard {   
     padding: 20px;
     border-radius: var(--border-radius);
     background-color: var(--fade-light-color3);
     transition: var(--transition) ease-in-out;
     // glassmorphism effect
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-
+    margin-bottom: 20px;
     &:hover {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2),
                     0 1px 13px rgba(0, 0, 0, 0.15), 
@@ -33,7 +34,16 @@
     }
 }
 
+// .dashreport .graphCard {
+//     background-color: var(--toastify-color-info);
+// }
+
 .dashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+
 
     .dashheader {
         justify-content: space-between;
@@ -48,7 +58,7 @@
             letter-spacing: var();
             text-transform: uppercase;
             text-decoration: none;
-            color: var(--secondary-color);
+            color: var(--primary-color2);
         }
 
         .dashsearch {
@@ -85,7 +95,7 @@
         display: flex;
         justify-content: space-around;
         align-items: flex-start;
-        padding: 20px 0;
+        // padding: 20px 0;
         
         .countcards {
             width: 19%;
@@ -171,6 +181,302 @@
                         width: auto;
                     }
                 }
+            }
+        }
+    }
+}
+
+.dashreport .graphList{
+    display: flex;
+    align-items: flex-start;
+    // padding: 20px 0;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 20px;
+    .graphItemBtn{
+        margin-right: 10px;
+        padding: 5px 10px;
+        font-size: var(--fs-normal);
+        font-weight: 500;
+        letter-spacing: var(--letter-spacing);
+        transition: var(--transition) ease-in-out;
+        cursor: pointer;
+
+        &.active{
+            background-color: var(--primary-color);
+            color: var(--light-color);
+        }
+    }
+}
+
+.dashboard {
+    .graphPlot{
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 20px 0;
+        flex-wrap: wrap;
+        width: 100%;
+        .graphPlotItem{
+            width: 45%;
+            height: 300px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: rgba(234, 234, 255, 0.941);
+            transition: var(--transition) ease-in-out;
+            // glassmorphism effect
+            box-shadow: 0 4px 6px rgba(125, 125, 125, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            &:hover {
+                box-shadow: 0 4px 6px rgba(161, 161, 161, 0.2),
+                            0 1px 13px rgba(107, 107, 107, 0.15), 
+                            0 3px 5px rgba(0, 0, 0, 0.1),
+                            0 2px 4px rgba(0, 0, 0, 0.08);
+                // add more depth
+                transform: translateY(-2px);       
+            }
+        }
+    }
+}
+.dashcontent .dash-developer{
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    .dash-developer-content{
+        width: 100%;
+        // margin-top: 10px;
+        // padding: 10px 5px;
+        font-size: var(--fs-normal);
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+
+        .dash-developer-content-item{
+            width: 20%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            background-color: var(--fade-light-color3);
+            height: max-content;
+            
+            .dashItemBtn{
+                transition: var(--transition) ease-in-out;
+                box-shadow: 0 4px 6px rgba(0, 149, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+                overflow: hidden;
+                position: relative;
+                &:hover {
+                    box-shadow: 0 4px 6px rgba(0, 208, 255, 0.2),
+                                0 1px 13px rgba(5, 105, 155, 0.15), 
+                                0 3px 5px rgba(0, 170, 200, 0.1),
+                                0 2px 4px rgba(0, 185, 179, 0.08);
+                    // transform: translateY(-1px);
+                }
+                // on hover effect animate left to right and right to left using before and after pseudo elements
+                &::before{
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+                    transition: var(--transition) ease-in-out;
+                    z-index: 1;
+                    overflow: hidden;
+                    transform: rotate(45deg);
+                }
+                &::after{
+                    transform: rotate(45deg);
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(270deg, transparent, var(--primary-color), transparent);
+                    transition: var(--transition) ease-in-out;
+                    z-index: 1;
+                }
+                &:hover::before{
+                    transform: rotate(45deg);
+                    left: 50%;
+                    overflow: hidden;
+                }
+                &:hover::after{
+                    transform: rotate(45deg);
+                    right: 50%;
+                    overflow: hidden;
+                }
+                &.active::after{
+                    transform: rotate(45deg);
+                    right: 50%;
+                    overflow: hidden;
+                }
+                &.active::before{
+                    transform: rotate(45deg);
+                    left: 50%;
+                    overflow: hidden;
+                }
+                    
+                
+                height: max-content;
+                outline: none;
+                border: 1px solid var(--primary-color2);
+                width: 95%;
+                padding: 5px 10px;
+                font-size: var(--fs-normal);
+                font-weight: 500;
+                letter-spacing: var(--letter-spacing);
+                transition: var(--transition) ease-in-out;
+                margin-bottom: 5px;
+                cursor: pointer;
+            }
+        }
+        .dash-developer-content-item-issue{
+            height: max-content;
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            background: var(--fade-light-color3);
+            padding: 20px;
+
+            .singleCommonEdit .commonEditDetails{ 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: column;
+                .commonEditActualContent{
+                    width: 100%;
+                }
+                .commonEditDetailsItem{
+                    .commonEditDetailsValue{
+                        margin-right: 10px;
+                        padding: 3px 6px;
+                    }
+                    span{
+                        cursor: pointer;
+                    }
+                }
+                .commonEditDetailsItemDesc{
+                    .commonEditDetailsValue{
+                        width: 95%;
+                        min-height: 120px;
+                        resize: none;
+                        padding: 10px;
+                    }
+                    span{
+                        cursor: pointer;
+                    }
+                }
+            }
+            .singleCommonEdit .commonEditActualContent{
+                height: max-content;
+            }
+        }            
+    }
+}
+
+.dashboard .dash-reviews{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0px 20px;
+    font-size: var(--fs-normal);
+    .dash-reviews-content-details-item{
+        display: flex;
+        justify-content: space-between;
+    }
+    .dash-reviews-content-details{
+        .feature-svg {
+            display: flex;
+            justify-content: flex-start;
+            img{
+                width: 60%;
+                height: 60%;
+            }
+        }
+    }
+    .dash-reviews-content,
+    .dash-reviews-content-item
+    {
+        width: 100%;
+    }
+}
+
+.greetings{
+    width: 100%;
+    .greeting{
+        p{
+            font-size: var(--fs-large);
+        }
+        .dashboard-content{
+            padding-bottom: 7px;
+            border-bottom: 2px solid var(--fade-dark-color);
+        }
+    }
+    .features{
+        margin-top: 20px;
+        flex-wrap: wrap;
+        font-size: var(--fs-normal);
+        .dashboard-title{
+            font-size: var(--fs-xxlarge);
+        }
+        .feature{
+            align-items: flex-start;
+            ul{
+                list-style-type: none;
+                width: 50%;
+                overflow: hidden;
+                li{
+                    overflow: hidden;
+                    padding: 5px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-left: 3px solid var(--fade-dark-color);
+                    margin-bottom: 3px;
+                    transition: var(--transition) ease-in-out;
+                    cursor: pointer;
+                    position: relative;
+                    &:hover{
+                        border-left: 3px solid var(--primary-color2);
+                        background-color: var(--fade-light-color3);
+                    }
+                    &::before{
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: var(--primary-color2);
+                        transition: var(--transition) ease-in-out;
+                        z-index: 1;
+                        overflow: hidden;
+                    }
+                    &:hover::before{
+                        left: 100%;
+                        overflow: hidden;
+                    }
+                }
+            }
+            .feature-svg img{
+                width: 80%;
+                height: 80%;
+                margin-right: 10px;
             }
         }
     }

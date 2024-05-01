@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Project.scss";
 import { useProjectContext } from "../../hooks/useProjectContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -20,12 +20,32 @@ const Project = () => {
     const navigate = useNavigate();
 
     // state
-    const [projectTitle, setProjectTitle] = useState("G17 Frontend");
-    const [projectDescription, setProjectDescription] = useState("G17 Frontend Bug Tracking");
-    const [projectCreatedBy, setProjectCreatedBy] = useState(userId);
-    const [projectLead, setProjectLead] = useState(userId);
-    const [projectVisibility, setProjectVisibility] = useState("public");
-    const [projectDepartment, setProjectDepartment] = useState("general");
+    const [projectTitle, setProjectTitle] = useState("");
+    const [projectDescription, setProjectDescription] = useState("");
+    const [projectCreatedBy] = useState(userId);
+    const [projectLead, setProjectLead] = useState();
+    // const [projectVisibility, setProjectVisibility] = useState("private");
+    const [projectDepartment, setProjectDepartment] = useState("");
+    const [leadUsers, setLeadUsers] = useState([{}]);
+
+    useEffect(() => {
+        fetch('http://localhost:3300/api/users/role/manager')
+        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === true && (response.statusCode === 200) || (response.statusCode === 201)) {
+                setLeadUsers(response.data);
+            } else {
+                console.log(response);
+                if (response.message !== "") {
+                    toast.error(response.message);
+                } else if (response.extraDetails && response.extraDetails.message) {
+                    toast.error(response.extraDetails.message);
+                }else if (response.extraDetails ) {
+                    toast.error(response.extraDetails);
+                }
+            }
+        });
+    }, []);
 
     const HandleCreateProject = (e) => {
         e.preventDefault();
@@ -34,10 +54,10 @@ const Project = () => {
         formData.append("description", projectDescription);
         formData.append("created_by", projectCreatedBy);
         formData.append("lead", projectLead);
-        formData.append("visibility", projectVisibility);
+        // formData.append("visibility", projectVisibility);
         formData.append("department", projectDepartment);
 
-        fetch('api/projects', {
+        fetch('http://localhost:3300/api/projects', {
             method: 'POST',
             body: JSON.stringify(Object.fromEntries(formData)),
             headers: {
@@ -59,7 +79,7 @@ const Project = () => {
                 console.log(response);
                 if (response.message !== "") {
                     toast.error(response.message);
-                } else if (response.extraDetails && response.extraDetails.message) {
+                } else if (response.extraDetails & response.extraDetails.message) {
                     toast.error(response.extraDetails.message);
                 }else if (response.extraDetails ) {
                     toast.error(response.extraDetails);
@@ -116,17 +136,18 @@ const Project = () => {
                     <div className="form-group">
                         <label htmlFor="lead">Lead By</label>
                         <select className="form-control" id="lead" value={projectLead} onChange={(e) => setProjectLead(e.target.value)} name="lead">
-                            <option value="lead1">Lead 1</option>
-                            <option value="lead2">Lead 2</option>
+                            {leadUsers.map((user) => (
+                                <option key={user._id} value={user._id}>{user.username}</option>
+                            ))}
                         </select>
                     </div>
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label htmlFor="visibility">Visibility</label>
                         <select className="form-control" id="visibility" value={projectVisibility} onChange={(e) => setProjectVisibility(e.target.value)} name="visibility">
                             <option value="public">Public</option>
                             <option value="private">Private</option>
                         </select>
-                    </div>
+                    </div> */}
                     <div className="form-group">
                         <label htmlFor="department">Department</label>
                         <select className="form-control" id="department" value={projectDepartment} onChange={(e) => setProjectDepartment(e.target.value)} name="department">

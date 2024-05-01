@@ -74,9 +74,9 @@ const SingleProjectActions = () => {
                 <div className="table-title dashboard-title"> Project Users </div>
                 {
                     projectUsers && projectUsers.length > 0 ?
-                    projectUsers.map(user => {
+                    projectUsers.map((user, index)=> {
                         return (
-                            <button className="btn btn-button" key={user.id} onClick={() => showIssueCreatedByUser(user.userId._id) }> {user.userId.username} </button>
+                            <button className="btn btn-button" key={index} onClick={() => showIssueCreatedByUser(user.userId._id) }> {user.userId.username} </button>
                         )
                     }) : "This project not assigned to Users"
                 }

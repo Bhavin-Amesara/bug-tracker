@@ -20,10 +20,10 @@ const CreateIssue = ({ userDetails }) => {
     const [issueTitle, setIssueTitle] = useState("Issue 2");
     const [issueDescription, setIssueDescription] = useState("This is a test issue 2");
     const [issueProjectID, setIssueProjectID] = useState("");
-    const [issueCreatedBy, setIssueCreatedBy] = useState(userId);
+    const [issueCreatedBy] = useState(userId);
     const [issueStatus, setIssueStatus] = useState("open");
     const [issuePriority, setIssuePriority] = useState("minor");
-    const [issueVisibility, setIssueVisibility] = useState("public");
+    const [issueVisibility] = useState("public");
     const [issueFeature, setIssueFeature] = useState("bug");
     const [issueDueDate, setIssueDueDate] = useState("2024-07-31");
     const [issueFile, setIssueFile] = useState("");
@@ -124,17 +124,17 @@ const CreateIssue = ({ userDetails }) => {
                             <label htmlFor="status">Status</label>
                             <select name="status" id="status" required onChange={(e) => setIssueStatus(e.target.value)}>
                                 <option value="open">Open</option>
-                                <option value="in-progress">In Progress</option>
-                                <option value="on-hold">On Hold</option>
+                                {/* <option value="in-progress">In Progress</option>
+                                <option value="on-hold">On Hold</option> */}
                             </select>
                         </div>
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlFor="visibility">Visibility</label>
                             <select name="visibility" id="visibility" required onChange={(e) => setIssueVisibility(e.target.value)}>
                                 <option value="public">Public</option>
                                 <option value="private">Private</option>
                             </select>
-                        </div>
+                        </div> */}
                         <div className="form-group">
                             <label htmlFor="feature">Feature</label>
                             <select name="feature" id="feature" required onChange={(e) => setIssueFeature(e.target.value)}>

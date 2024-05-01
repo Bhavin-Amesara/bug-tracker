@@ -63,6 +63,16 @@
     font-size: var(--fs-normal);
     color: var(--teritary-color);
 }
+
+#issuesTrackerTable_wrapper{
+    .btn-button{
+        &.disabled{
+            cursor: not-allowed;
+            background-color: var(--teritary-color);
+            color: var(--light-color);
+        }
+    }
+}
 // css for assign issue to user
 .assignUserContent .issueDetailsItem {
     display: flex;

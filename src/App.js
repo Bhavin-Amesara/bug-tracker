@@ -20,9 +20,10 @@ import Bugzone from './components/BugZone/BugZone';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import SingleBugzoneView from './components/BugZone/SingleBugzoneView';
 import AccessDeniedPage from './components/AuthPage/AccessDeniedPage';
+import AdminPage from './components/AuthPage/AdminPage';
 
 function App() {
-  const { user } = useAuthContext();
+  const { user, dispatch } = useAuthContext();
   const [activeIssueLink, setActiveIssueLink] = useState("viewIssues");
   const [activeProjectLink, setActiveProjectLink] = useState("viewProjects");
   const [activeSingleIssueLink, setActiveSingleIssueLink] = useState("singleIssueDetails");
@@ -67,6 +68,14 @@ function App() {
             <Dashboard setDashboardData={setDashboardData} activeDashboardItemLink={activeDashboardItemLink} />
           </>
         } />
+        <Route path="/admin" element={
+          <>
+            {user && user.isLoggedIn ?              
+              <AdminPage />
+            : <Login />
+            }
+          </>
+        } />             
         <Route path="/login" element={
         <>
           {user && user.isLoggedIn ? <Dashboard /> : <Login />}

@@ -28,7 +28,7 @@ const LoginPage = () => {
             password: password,
         };
 
-        fetch("api/auth/login", {
+        fetch("http://localhost:3300/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const LoginPage = () => {
                     if(data.data.role === "user"){
                         navigate("/bugzones");
                     } else {
-                        navigate("/issues");
+                        navigate("/");
                     }
                 });
                 setLoginMsg(data.message);

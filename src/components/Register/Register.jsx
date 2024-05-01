@@ -31,7 +31,7 @@ const Register = () => {
             return;
         }
 
-        fetch("api/auth/register", {
+        fetch("http://localhost:3300/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

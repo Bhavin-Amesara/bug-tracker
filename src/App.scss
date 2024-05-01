@@ -158,6 +158,15 @@ html {
 .warning{
   color: #ff9500;
 }
+.warning2{
+  color: #df8200;
+}
+.light-color{
+  color: var(--light-color) !important;
+}
+.fs-normal-important{
+  font-size: var(--fs-normal) !important;
+}
 
 body {
   font-size: var(--font-size);
@@ -177,7 +186,7 @@ body {
 }
 
 .sidebar-container{
-  width: 15%;
+  width: 17%;
   height: 100vh;
   background-color: var(--primary-color);
   transition: all 0.4s ease-in-out;
@@ -197,7 +206,7 @@ body {
 }
 
 .content-container {
-  width: 85%;
+  width: 82%;
   margin-left: 15%;
   transition: all 0.4s ease-in-out;
 }

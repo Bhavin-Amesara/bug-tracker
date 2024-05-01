@@ -40,3 +40,28 @@
         margin-top: 20px;
     }
 }
+.adminPage{
+    padding: 40px;
+    .commonEditHeader{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 20px;
+        .btn{
+            margin-left: 20px;
+        }
+    }
+    .btn{
+    border-radius: 5px;
+    padding: 3px;       
+    .material-symbols-outlined{
+        font-size: 2rem;
+    }
+}
+    .adminEditBtn{
+        border: none;
+    }
+}
+.swal2-select {
+    background: var(--teritary-color);
+}

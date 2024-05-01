@@ -35,7 +35,6 @@ const Comment = ({ comment }) => {
             setOpenEditCommentId(commentId);
         }
     }
-    console.log(comment.parent_id !== null, comment.replies, 'comment');
     const editDescription = (e) => {
         e.preventDefault();
         setActiveEditComment(!activeEditComment);

@@ -134,7 +134,7 @@ const SingleIssueAssign = ({ issueId }) => {
         fetch("http://localhost:3300/api/issue-tracker/" + issueId)
         .then((response) => response.json())
         .then((response) => {
-            console.log(response, "response from issue tracker path: components/Issues/IssueTracker.jsx");
+            console.log(response.data, "response from issue tracker path: components/Issues/IssueTracker.jsx");
             // use date-fns to format date
             response.data.forEach((issue) => {
                 issue.updatedAt = formatDistanceToNow(new Date(issue.updatedAt), { addSuffix: true });
@@ -158,8 +158,8 @@ const SingleIssueAssign = ({ issueId }) => {
                 } },
                 { title: "Updated At", data: "updatedAt" },
                 { title: "Action", data: null, "render": function (data, type, row) {
-                    return `<button class="btn-button" data-id="${data._id}">
-                        <svg width="186px" viewBox="0 0 24 24" fill="#3A76F5" x="128" y="128" role="img" xmlns="http://www.w3.org/2000/svg"><g fill="#3A76F5"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16l-1.58 14.22A2 2 0 0 1 16.432 22H7.568a2 2 0 0 1-1.988-1.78L4 6Zm3.345-2.853A2 2 0 0 1 9.154 2h5.692a2 2 0 0 1 1.81 1.147L18 6H6l1.345-2.853ZM2 6h20m-12 5v5m4-5v5"/></g></svg>
+                    return `<button class="btn-button ${user && (user.userId === data.assigned_to._id) ? "disabled" : ""}" data-id="${data._id}" ${user && (user.userId === data.assigned_to._id)? "disabled" : ""}>
+                        <svg width="186px" viewBox="0 0 24 24" fill="#3A76F5" x="128" y="128" role="img" xmlns="http://www.w3.org/2000/svg"><g fill="#3A76F5"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="6" d="M4 6h16l-1.58 14.22A2 2 0 0 1 16.432 22H7.568a2 2 0 0 1-1.988-1.78L4 6Zm3.345-2.853A2 2 0 0 1 9.154 2h5.692a2 2 0 0 1 1.81 1.147L18 6H6l1.345-2.853ZM2 6h20m-12 5v5m4-5v5"/></g></svg>
                     </button>`;
                 }},
             ],
@@ -242,7 +242,7 @@ const SingleIssueAssign = ({ issueId }) => {
                     </div>
                     <div className="issueDetailsItem">
                         <div className="issueActions">
-                            <button className="btn-button save" type="submit" onClick={handleAssigneeChange}>Save</button>
+                            <button className="btn-button save" type="submit" onClick={handleAssigneeChange}>Assign Issue</button>
                         </div>
                     </div>
                 </form>

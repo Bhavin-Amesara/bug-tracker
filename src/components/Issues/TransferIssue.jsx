@@ -17,7 +17,7 @@ const TransferIssue = () => {
     var tempId = useParams().id;
     tempId = tempId.toString();
     const navigate = useNavigate();
-    const [issueId, setIssueId] = useState(tempId);
+    const [issueId] = useState(tempId);
 
     const [member, setMember] = useState([]);
     const [selectedMember, setSelectedMember] = useState("");
@@ -50,7 +50,7 @@ const TransferIssue = () => {
     const transferIssue = (e) => {
         e.preventDefault();
         const transferTo = document.getElementById("transferTo").value;
-        if(transferTo === ""){
+        if(transferTo === "" || transferTo === null || transferTo === undefined){
             toast.error("Please select a member to transfer the issue");
             return;
         }
@@ -132,6 +132,8 @@ const TransferIssue = () => {
                             <label htmlFor="transferTo">Transfer To</label>
                             <select className="form-control" id="transferTo" name="transferTo" value={selectedMember} onChange={(e) => setSelectedMember(e.target.value)}>
                                 <option value="">Select</option>
+                                {user && user.role==="manager" | user.role==="admin" | user.userId === singleIssue?.created_by?._id ?
+                                <>
                                 {
                                     member.map((data, index) => {
                                         return (
@@ -139,9 +141,11 @@ const TransferIssue = () => {
                                         );
                                     })
                                 }
+                                </>
+                                : null}
                             </select>
                             <div className="transferIssueFooter">
-                                <button type="submit" className="btn btn-primary" onClick={transferIssue} {...(( user && user.role === "admin" || user.role === "manager" || user.userId === singleIssue.created_by._id) ? null : { disabled: true })}>Transfer</button>
+                                <button type="submit" className="btn btn-primary" onClick={transferIssue} {...(( user && user.role === "admin" | user.role === "manager" | user.userId === singleIssue.created_by._id) ? null : { disabled: true })}>Transfer</button>
                                 <span className="error">Only the creator of the issue can transfer the issue</span>
                             </div>
                         </div>

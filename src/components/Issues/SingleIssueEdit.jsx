@@ -4,11 +4,9 @@ import { useIssueContext } from '../../hooks/useIssueContext';
 import './Issues.scss';
 import { formatDistanceToNow } from 'date-fns';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { useIssueTrackerContext } from '../../hooks/useIssueTrackerContext';
-// react toastify
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -36,7 +34,7 @@ const SingleIssueEdit = () => {
 
     useEffect(() => {
         setIssueId(tempId);
-    }, []);
+    }, [tempId]);
 
     // first time loading issue data based on issue ID
     useEffect(() => {
@@ -65,7 +63,7 @@ const SingleIssueEdit = () => {
         .catch((error) => {
             console.log(error);
         });
-    }, [dispatch]);
+    }, [dispatch, issueId]);
     
     // handle form change [updating issue data using issue ID]
     const handleFormUpdate = (e) => {
@@ -198,18 +196,28 @@ const SingleIssueEdit = () => {
                     <div className="commonEditDetailsItem">
                         <div className="commonEditDetailsLabel">Status</div>
                         <div className="commonEditControls d-flex" >
-                            <select className="commonEditDetailsValue" name="status" id="status" value={status} disabled={!editStatus} onChange={(e) => setStatus(e.target.value)}>
-                                <option value="open">Open</option>
-                                <option value="in-progress">In Progress</option>
-                                <option value="resolved">Resolved</option>
-                            </select>
+                            {user && user.role==="manager" | user.role==="admin" | user.userId === singleIssue?.created_by?._id ?
+                            <>
+                                <select className="commonEditDetailsValue" name="status" id="status" value={status} disabled={!editStatus} onChange={(e) => setStatus(e.target.value)}>
+                                    <option value="open">Open</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
                                 <span className={editStatus?"material-symbols-outlined active":"material-symbols-outlined"}
                                 onClick={() => setEditStatus(!editStatus)}>edit</span>
+                            </>
+                                : 
+                            <>
+                                <div className="commonEditDetailsValue light-color">{singleIssue?.status}</div>
+                            </>
+                            }
                         </div>
                     </div>
                     <div className="commonEditDetailsItem">
                         <div className="commonEditDetailsLabel">Priority</div>
                         <div className="commonEditControls d-flex">
+                        {user && user.role==="manager" | user.role==="admin" | user.userId === singleIssue?.created_by?._id ?
+                        <>
                             <select className="commonEditDetailsValue" name="priority" id="priority" value={priority} disabled={!editPriority} onChange={(e) => setPriority(e.target.value)}>
                                 <option value="minor">Minor</option>
                                 <option value="major">Major</option>
@@ -218,19 +226,30 @@ const SingleIssueEdit = () => {
                             </select>
                             <span className={editPriority?"material-symbols-outlined active":"material-symbols-outlined"}
                             onClick={() => setEditPriority(!editPriority)}>edit</span>
+                        </>
+                            : <div className="commonEditDetailsValue light-color">{singleIssue?.priority}</div>
+                        }
                         </div>
                     </div>
                     <div className="commonEditDetailsItemDesc d-flex">
+                        {user && user.role==="manager" | user.role==="admin" | user.userId === singleIssue?.created_by?._id ?
+                        <>
                         <textarea className="commonEditDetailsValue" name="description" id="description" disabled={!editDescription} onChange={(e) => setDescription(e.target.value)} value={desc}>
                         </textarea>
                         <span className={editDescription?"material-symbols-outlined active":"material-symbols-outlined"}
                         onClick={() => setEditDescription(!editDescription)}>edit</span>
+                        </>
+                            : <div className="commonEditDetailsValue light-color">{singleIssue?.description}</div>
+                        }
                     </div>
                     <div className="commonEditDetailsItem">
-                        <div className="commonEditActions">
-                            <button className="btn-button save" type="submit" onClick={handleFormUpdate}>Update</button>
-                            <button className="btn-button delete" type="button" onClick={handleFormDelete}>Delete</button>
-                        </div>
+                        {user && user.role==="manager" | user.role==="admin" | user.userId === singleIssue?.created_by?._id ?
+                            <div className="commonEditActions">
+                                <button className="btn-button save" type="submit" onClick={handleFormUpdate}>Update</button>
+                                <button className="btn-button delete" type="button" onClick={handleFormDelete}>Delete</button>
+                            </div>
+                            : <p className='warning2 fs-normal-important d-flex'><span className="material-symbols-outlined mr-10">info</span> Only the creator of the issue can update the issue</p>
+                        }
                     </div>
                 </form>
                 </div>
